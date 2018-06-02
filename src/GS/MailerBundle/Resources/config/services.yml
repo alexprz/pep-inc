@@ -1,0 +1,4 @@
+services:
+#    gs_mailer.example:
+#        class: GS\MailerBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

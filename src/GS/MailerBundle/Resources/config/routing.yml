@@ -1,0 +1,88 @@
+gs_mailer_homepage:
+    path:     /
+    defaults: { _controller: GSMailerBundle:Default:index }
+
+gs_mailer_writeMail:
+    path:   /writeMail
+    defaults:
+        _controller: GSMailerBundle:Default:writeMail
+
+gs_mailer_sendMail:
+    path:   /sendMail
+    defaults:
+        _controller: GSMailerBundle:Default:sendMail
+
+gs_mailer_showStats:
+    path:   /stats
+    defaults:
+        _controller: GSMailerBundle:Default:showStats
+
+gs_mailer_dropStats:
+    path:   /dropStats
+    defaults:
+        _controller: GSMailerBundle:Default:dropStats
+
+
+# For AJAX requests
+gs_mailer_verifyMail:
+    path:   /verifyMail
+    defaults:
+        _controller: GSMailerBundle:Default:verifyMail
+
+gs_mailer_loadMailSession:
+    path:   /loadMail
+    defaults:
+        _controller: GSMailerBundle:Default:loadMailSession
+
+gs_mailer_saveMailSession:
+    path:   /saveMail
+    defaults:
+        _controller: GSMailerBundle:Default:saveMailSession
+
+gs_mailer_loadUser:
+    path:   /loadUser/{id}
+    defaults:
+        _controller: GSMailerBundle:Default:loadUser
+    requirements:
+        id: \d+
+
+gs_mailer_updateMailState:
+    path:   /updateMailState
+    defaults:
+        _controller: GSMailerBundle:Default:updateStateMail
+
+
+gs_mailer_showMailDatabase:
+    path:   /database
+    defaults:
+        _controller: GSMailerBundle:Default:showMailDatabase
+
+gs_mailer_searchIntoDatabase:
+    path:   /search
+    defaults:
+        _controller: GSMailerBundle:Default:searchIntoDatabase
+
+gs_mailer_showMailDetailsRoot:
+    path:   /details
+
+gs_mailer_showMailDetails:
+    path:   /details/{id}
+    defaults:
+        _controller: GSMailerBundle:Default:showMailDetails
+    requirements:
+        id: \d+
+
+gs_mailer_settings:
+    path:   /settings
+    defaults:
+        _controller: GSMailerBundle:Default:settings
+
+gs_mailer_writePepRecrute:
+    path: /writePepRecrute
+    defaults:
+        _controller: GSMailerBundle:Default:writePepRecrute
+
+gs_mailer_send:
+    path: /send
+    defaults:
+        _controller: GSMailerBundle:Default:send

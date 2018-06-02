@@ -1,0 +1,47 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        GS\UserBundle\Entity\User: sha512
+
+    providers:
+        main:
+          id: fos_user.user_provider.username_email
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+        in_memory:
+            memory: ~
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main_login:
+            # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+            pattern:   ^/login$
+            anonymous: true # On autorise alors les anonymes sur ce pare-feu
+            logout_on_user_change: true
+
+         # Firewall principal pour le reste du site
+        main:
+            pattern:      ^/
+            anonymous:    false
+            provider:     main
+            form_login:
+              login_path: fos_user_security_login
+              check_path: fos_user_security_check
+            logout:
+              path:       fos_user_security_logout
+              target:     fos_user_security_login
+            remember_me:
+              secret:     "%secret%"
+            logout_on_user_change: true
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~

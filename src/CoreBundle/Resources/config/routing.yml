@@ -1,0 +1,11 @@
+core_homepage:
+    path:     /
+    defaults: { _controller: CoreBundle:Default:index }
+
+mailer_homepage:
+    path:     /mailer/
+    defaults: { _controller: GSMailerBundle:Default:index }
+
+platform_homepage:
+    path:     /mailer/
+    defaults: { _controller: GSPlatformBundle:Default:index }

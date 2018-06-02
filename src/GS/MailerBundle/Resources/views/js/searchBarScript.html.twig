@@ -1,0 +1,20 @@
+{#Script fait pour fonctionner avec searchBar.html.twig#}
+{#Doit être fourni le chamin de la page à laquelle se trouve la liste ex : path('je_platform_profil_company_list')#}
+<script>
+        var refreshSearch = function()
+        {
+          var search = document.getElementById("search").value;
+          var location = "{{ path }}"+"?search="+search;
+          var obj = "document.location.href='"+location+"'";
+        }
+
+        var timer;
+        function onKeyUpHandler()
+        {
+            timer = setTimeout("refreshSearch()", 800)
+        }
+        function onKeyDownHandler()
+        {
+            clearTimeout(timer);
+        }
+</script>
