@@ -3,9 +3,9 @@ gs_mailer_homepage:
     defaults: { _controller: GSMailerBundle:Default:index }
 
 gs_mailer_writeMail:
-    path:   /writeMail
+    path:   /writeProspeMail
     defaults:
-        _controller: GSMailerBundle:Default:writeMail
+        _controller: GSMailerBundle:Default:writeProspeMail
 
 gs_mailer_sendMail:
     path:   /sendMail
@@ -72,10 +72,10 @@ gs_mailer_showMailDetails:
     requirements:
         id: \d+
 
-gs_mailer_settings:
-    path:   /settings
-    defaults:
-        _controller: GSMailerBundle:Default:settings
+# gs_mailer_settings:
+#     path:   /settings
+#     defaults:
+#         _controller: GSMailerBundle:Default:settings
 
 gs_mailer_writePepRecrute:
     path: /writePepRecrute

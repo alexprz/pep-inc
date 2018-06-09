@@ -16,10 +16,10 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('GSMailerBundle:Default:index.html.twig');
+        return $this->render('GSMailerBundle::index.html.twig');
     }
 
-    public function writeMailAction()
+    public function writeProspeMailAction()
     {
         $repository = $this
           ->getDoctrine()
@@ -34,7 +34,7 @@ class DefaultController extends Controller
 
         $form = $this->createForm(MailType::class, new Mail(), array('sendAsUsers' => $sendAsUsers));
 
-        return $this->render('GSMailerBundle::sendMail.html.twig', array(
+        return $this->render('GSMailerBundle::prospeMailEdit.html.twig', array(
             'form' => $form->createView()
         ));
     }
@@ -191,12 +191,12 @@ class DefaultController extends Controller
 
     public function writePepRecruteAction()
     {
-        return $this->render('GSMailerBundle::writePepRecrute.html.twig');
+        return $this->render('GSMailerBundle::pepRecruteEdit.html.twig');
     }
 
     public function showStatsAction()
     {
-        return $this->render('GSMailerBundle::showStats.html.twig');
+        return $this->render('GSMailerBundle::statistics.html.twig');
     }
 
     public function dropStatsAction(Request $request)
@@ -239,7 +239,7 @@ class DefaultController extends Controller
 
         $stateIndex = $repoState->getStateIndex();
 
-        return $this->render('GSMailerBundle::showMailDatabase.html.twig', array(
+        return $this->render('GSMailerBundle::prospeMailDatabase.html.twig', array(
             'form' => $form->createView(),
             'stateIndex' => $stateIndex
         ));
@@ -307,7 +307,7 @@ class DefaultController extends Controller
           throw new NotFoundHttpException("Le mail d'id ".$id." n'existe pas.");
         }
 
-        return $this->render('GSMailerBundle::showMailDetails.html.twig', array(
+        return $this->render('GSMailerBundle::prospeMailDetails.html.twig', array(
             'mail' => $mail,
         ));
     }
