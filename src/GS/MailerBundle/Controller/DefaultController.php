@@ -69,6 +69,8 @@ class DefaultController extends Controller
             ->setContent($request->get("content"))
             ->setScheduledDate(new \DateTime($request->get("scheduledDate")))
             ->setPlainText($request->get("plainText"))
+            ->setAttachmentPath($request->get("attachmentPath"))
+            ->setAttachmentName($request->get("attachmentName"))
         ;
         if ($request->get("scheduledDate") == null)
             $mail->setScheduledDate(null);

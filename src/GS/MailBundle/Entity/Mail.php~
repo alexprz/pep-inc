@@ -64,6 +64,8 @@ class Mail
     private $content;
 
     /**
+     * @var bool|null
+     *
      * @ORM\Column(name="plainText", type="boolean", nullable=true)
      */
     private $plainText;
@@ -88,6 +90,13 @@ class Mail
      * @ORM\Column(name="scheduledDate", type="datetime", nullable=true)
      */
     private $scheduledDate;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="attachmentPath", type="string", length=255, nullable=true)
+     */
+    private $attachmentPath;
 
 
     public function __construct(){
@@ -347,5 +356,29 @@ class Mail
     public function getSubject()
     {
         return $this->subject;
+    }
+
+    /**
+     * Set plainText.
+     *
+     * @param bool|null $plainText
+     *
+     * @return Mail
+     */
+    public function setPlainText($plainText = null)
+    {
+        $this->plainText = $plainText;
+
+        return $this;
+    }
+
+    /**
+     * Get plainText.
+     *
+     * @return bool|null
+     */
+    public function getPlainText()
+    {
+        return $this->plainText;
     }
 }

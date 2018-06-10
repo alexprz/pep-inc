@@ -91,6 +91,20 @@ class Mail
      */
     private $scheduledDate;
 
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="attachmentPath", type="string", length=255, nullable=true)
+     */
+    private $attachmentPath;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="attachmentName", type="string", length=255, nullable=true)
+     */
+    private $attachmentName;
+
 
     public function __construct(){
         $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
@@ -373,5 +387,53 @@ class Mail
     public function getPlainText()
     {
         return $this->plainText;
+    }
+
+    /**
+     * Set attachmentPath.
+     *
+     * @param string|null $subject
+     *
+     * @return Mail
+     */
+    public function setAttachmentPath($attachmentPath = null)
+    {
+        $this->attachmentPath = $attachmentPath;
+
+        return $this;
+    }
+
+    /**
+     * Get attachmentPath.
+     *
+     * @return string|null
+     */
+    public function getAttachmentPath()
+    {
+        return $this->attachmentPath;
+    }
+
+    /**
+     * Set attachmenName.
+     *
+     * @param string|null $subject
+     *
+     * @return Mail
+     */
+    public function setAttachmentName($attachmentName = null)
+    {
+        $this->attachmentName = $attachmentName;
+
+        return $this;
+    }
+
+    /**
+     * Get attachmentName.
+     *
+     * @return string|null
+     */
+    public function getAttachmentName()
+    {
+        return $this->attachmentName;
     }
 }

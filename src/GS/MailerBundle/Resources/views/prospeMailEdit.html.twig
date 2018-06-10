@@ -651,7 +651,9 @@
             content: content,
             scheduledDate: mailAttributes.scheduledDate,
             userId: {{ app.user.id }},
-            sendAsUserId: mailAttributes.sendAsUserId
+            sendAsUserId: mailAttributes.sendAsUserId,
+            attachmentPath: "bundles/plaquette.pdf",
+            attachmentName: "Plaquette commerciale PEP.pdf"
         }
 
         $.ajax({

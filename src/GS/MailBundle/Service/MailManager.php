@@ -46,6 +46,8 @@ class MailManager
         $subject = $mail->getSubject();
         $content = $mail->getContent();
         $plainText = $mail->getPlainText();
+        $attachmentPath = $mail->getAttachmentPath();
+        $attachmentName = $mail->getAttachmentName();
 
         // Si aucun destinataires : erreur
         if($recipientEmail == null)
@@ -65,6 +67,9 @@ class MailManager
             $message->setContentType('text/plain');
         else
             $message->setContentType('text/html');
+
+        if($attachmentPath != null)
+            $message->attach(\Swift_Attachment::fromPath($attachmentPath)->setFilename($attachmentName));
 
         $mailer = $this->mailer;
 
