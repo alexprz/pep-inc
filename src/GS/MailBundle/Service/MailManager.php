@@ -76,7 +76,7 @@ class MailManager
         return $sent;
     }
 
-    public function sendPendinMails()
+    public function sendPendingMails()
     {
         $em = $this->entityManager;
 

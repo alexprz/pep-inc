@@ -29,8 +29,6 @@ class SendPendingMailsCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Checking mails');
-        $this->mailManager->sendPendinMails();
-        $output->writeln('Done');
+        $this->mailManager->sendPendingMails();
     }
 }
