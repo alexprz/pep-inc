@@ -71,7 +71,7 @@ swiftmailer:
     password: '%mailer_password%'
     # port: 587
     # encryption: tls
-    #disable_delivery: true
+    disable_delivery: true
 
 fos_user:
     db_driver:     orm

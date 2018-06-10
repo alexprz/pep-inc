@@ -248,10 +248,15 @@
 
                 // onclick="window.location=\'{{ path('gs_mailer_showMailDetailsRoot')}}'+'/'+mail.id+'\'"
                 rowContent = "";
-                rowContent += '<tr onmouseover="">'; //style="cursor: pointer;" >';
+                // rowContent += '<tr onmouseover="">'; //style="cursor: pointer;" >';
+                rowContent += mail.sentAt == null ?  '<tr style="color: #f39c12;" onmouseover="">' : '<tr onmouseover="">';
                 rowContent += '<td>'+mail.recipientEmail+'</td>';
                 rowContent += '<td>'+mail.userFirstName+' '+mail.userLastName+'</td>';
-                rowContent += '<td>'+mail.sentAt+'</td>';
+
+                if(mail.sentAt == null)
+                    rowContent += '<td><img width=20px height=20px src="https://png.icons8.com/windows/50/f39c12/time.png">'+mail.scheduledDate+'</td>';
+                else
+                    rowContent += '<td>'+mail.sentAt+'</td>';
                 rowContent += '<td id="toggleStateSelector'+mail.id+'">'+getStateDiv(mail.id, mail.state)+'</td>';
                 rowContent += '</tr>';
 

@@ -253,11 +253,11 @@ class DefaultController extends Controller
         return $this->render('GSMailerBundle::statistics.html.twig');
     }
 
-    public function dropStatsAction(Request $request)
+    public function dumpStatsAction(Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
-        $repo = $em->getRepository('GSMailerBundle:Mail');
+        $repo = $em->getRepository('GSMailerBundle:ProspeMail');
 
         $numberOfMails = $repo->countAll();
         // $numberOfMailsByDay = $repo->countDaily();
@@ -307,7 +307,7 @@ class DefaultController extends Controller
         $repository = $this
           ->getDoctrine()
           ->getManager()
-          ->getRepository('GSMailerBundle:Mail')
+          ->getRepository('GSMailerBundle:ProspeMail')
         ;
 
         $search = $searchParameters->search;
@@ -329,18 +329,19 @@ class DefaultController extends Controller
 
         foreach ($listMails as $mail) {
             //Récupération des paramètres non nulls
-            $state = null;
-            if($mail->getState() != null){
-                $state = $mail->getState()->getName();
-            }
+            // $state = null;
+            // if($mail->getState() != null){
+            //     $state = $mail->getState()->getName();
+            // }
 
              array_push($resultList, array(
                  "id" => $mail->getId(),
-                "recipientEmail" => $mail->getRecipientEmail(),
-                "userFirstName" => $mail->getUser()->getFirstName(),
-                "userLastName" => $mail->getUser()->getLastName(),
-                "sentAt" => $mail->getSentAt()->format('d M Y  à  H:i'),
-                "state" =>  $state
+                "recipientEmail" => $mail->getMail() == null ? "Aucun destinataire" : $mail->getMail()->getRecipientEmail(),
+                "userFirstName" => $mail->getUser() == null ? null : $mail->getUser()->getFirstName(),
+                "userLastName" => $mail->getUser() == null ? null : $mail->getUser()->getLastName(),
+                "sentAt" => $mail->getMail() == null ? null : ($mail->getMail()->getSentDate() == null ? null : $mail->getMail()->getSentDate()->format('d M Y  à  H:i')),
+                "scheduledDate" => $mail->getMail() == null ? null : ($mail->getMail()->getScheduledDate() == null ? null : $mail->getMail()->getScheduledDate()->format('d M Y  à  H:i')),
+                "state" =>  $mail->getState() == null ? null : $mail->getState()->getName()
             ));
         }
 
@@ -457,7 +458,7 @@ class DefaultController extends Controller
           ->getDoctrine()
           ->getManager();
 
-        $repoMail = $em->getRepository('GSMailerBundle:Mail');
+        $repoMail = $em->getRepository('GSMailerBundle:ProspeMail');
         $repoState = $em->getRepository('GSMailerBundle:State');
 
         $mail = $repoMail->find($id);

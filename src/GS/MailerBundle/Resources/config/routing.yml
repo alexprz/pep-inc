@@ -17,10 +17,10 @@ gs_mailer_showStats:
     defaults:
         _controller: GSMailerBundle:Default:showStats
 
-gs_mailer_dropStats:
-    path:   /dropStats
+gs_mailer_dumpStats:
+    path:   /dumpStats
     defaults:
-        _controller: GSMailerBundle:Default:dropStats
+        _controller: GSMailerBundle:Default:dumpStats
 
 
 # For AJAX requests
