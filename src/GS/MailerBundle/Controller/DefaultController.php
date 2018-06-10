@@ -85,6 +85,10 @@ class DefaultController extends Controller
         $prospeMail->setUser($user)
             ->setSendAsUser($sendAsUser)
             ->setMail($mail)
+            ->setRecipientName($request->get("recipientName"))
+            ->setCompany($request->get("company"))
+            ->setSpecializationIdArray($request->get("specializationIdArray"))
+            ->setTitleId($request->get("titleId"))
         ;
 
         $em->persist($prospeMail);

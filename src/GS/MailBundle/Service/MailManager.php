@@ -77,6 +77,8 @@ class MailManager
 
         if($sent)
             $mail->setSentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
+        else
+            $mail->setError(true);
 
         return $sent;
     }

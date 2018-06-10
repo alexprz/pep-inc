@@ -105,6 +105,14 @@ class Mail
      */
     private $attachmentName;
 
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="error", type="boolean", nullable=true)
+     */
+    private $error;
+
+
 
     public function __construct(){
         $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
@@ -113,7 +121,6 @@ class Mail
     public function isSent(){
         return $this->sentDate != null;
     }
-
 
     /**
      * Get id.
@@ -436,4 +443,29 @@ class Mail
     {
         return $this->attachmentName;
     }
+
+    /**
+     * Set error.
+     *
+     * @param bool|null $plainText
+     *
+     * @return Mail
+     */
+    public function setError($error = null)
+    {
+        $this->error = $error;
+
+        return $this;
+    }
+
+    /**
+     * Get error.
+     *
+     * @return bool|null
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
 }

@@ -52,6 +52,30 @@ class ProspeMail
      */
     private $mail;
 
+    /**
+     * @var string
+     * @ORM\Column(name="recipientName", type="string", nullable=true)
+     */
+    private $recipientName;
+
+    /**
+     * @var string
+     * @ORM\Column(name="titleId", type="string", nullable=true)
+     */
+    private $titleId;
+
+    /**
+     * @var string
+     * @ORM\Column(name="company", type="string", nullable=true)
+     */
+    private $company;
+
+    /**
+     * @var string
+     * @ORM\Column(name="specializationIdArray", type="simple_array", nullable=true)
+     */
+    private $specializationIdArray;
+
 
 
 
@@ -187,5 +211,125 @@ class ProspeMail
     public function getMail()
     {
         return $this->mail;
+    }
+
+    /**
+     * Set recipientName.
+     *
+     * @param string|null $recipientName
+     *
+     * @return ProspeMail
+     */
+    public function setRecipientName($recipientName = null)
+    {
+        $this->recipientName = $recipientName;
+
+        return $this;
+    }
+
+    /**
+     * Get recipientName.
+     *
+     * @return string|null
+     */
+    public function getRecipientName()
+    {
+        return $this->recipientName;
+    }
+
+    /**
+     * Set title.
+     *
+     * @param string|null $title
+     *
+     * @return ProspeMail
+     */
+    public function setTitle($title = null)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title.
+     *
+     * @return string|null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set company.
+     *
+     * @param string|null $company
+     *
+     * @return ProspeMail
+     */
+    public function setCompany($company = null)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * Get company.
+     *
+     * @return string|null
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * Set specializationIdArray.
+     *
+     * @param array|null $specializationIdArray
+     *
+     * @return ProspeMail
+     */
+    public function setSpecializationIdArray($specializationIdArray = null)
+    {
+        $this->specializationIdArray = $specializationIdArray;
+
+        return $this;
+    }
+
+    /**
+     * Get specializationIdArray.
+     *
+     * @return array|null
+     */
+    public function getSpecializationIdArray()
+    {
+        return $this->specializationIdArray;
+    }
+
+    /**
+     * Set titleId.
+     *
+     * @param string|null $titleId
+     *
+     * @return ProspeMail
+     */
+    public function setTitleId($titleId = null)
+    {
+        $this->titleId = $titleId;
+
+        return $this;
+    }
+
+    /**
+     * Get titleId.
+     *
+     * @return string|null
+     */
+    public function getTitleId()
+    {
+        return $this->titleId;
     }
 }

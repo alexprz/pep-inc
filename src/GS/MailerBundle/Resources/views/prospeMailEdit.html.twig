@@ -79,20 +79,20 @@
     <br>
 
     <label for="specializationInput">Spécialisation :</label><br>
-    <input type="checkbox" name="specialization" value="Génie Mécanique" class="specializationInput">Génie Mécanique</input><br>
-    <input type="checkbox" name="specialization" value="Génie Civil" class="specializationInput">Génie Civil</input><br>
-    <input type="checkbox" name="specialization" value="Énergie, Transports et Urbanisme" class="specializationInput">Énergie, Transports et Urbanisme</input><br>
-    <input type="checkbox" name="specialization" value="Stratégie, Finance et Économie" class="specializationInput">Stratégie, Finance et Économie</input><br>
-    <input type="checkbox" name="specialization" value="Génie Industriel et Marketing" class="specializationInput">Génie Industriel et Marketing</input><br>
-    <input type="checkbox" name="specialization" value="Informatique" class="specializationInput">Informatique</input><br>
-    <input type="checkbox" name="specialization" value="Traduction technique" class="specializationInput">Traduction technique</input><br>
+    <input type="checkbox" name="specialization" value="1" class="specializationInput">Génie Mécanique</input><br>
+    <input type="checkbox" name="specialization" value="2" class="specializationInput">Génie Civil</input><br>
+    <input type="checkbox" name="specialization" value="3" class="specializationInput">Énergie, Transports et Urbanisme</input><br>
+    <input type="checkbox" name="specialization" value="4" class="specializationInput">Stratégie, Finance et Économie</input><br>
+    <input type="checkbox" name="specialization" value="5" class="specializationInput">Génie Industriel et Marketing</input><br>
+    <input type="checkbox" name="specialization" value="6" class="specializationInput">Informatique</input><br>
+    <input type="checkbox" name="specialization" value="7" class="specializationInput">Traduction technique</input><br>
     <br>
 
 
     <label for="titleInput">Civilité :</label><br>
-    <input type="radio" name="title" value=" Monsieur" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Monsieur</input><br>
-    <input type="radio" name="title" value=" Madame" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Madame</input><br>
-    <input type="radio" name="title" value="" class="titleInput" onchange="$('#nameInput').attr('readonly', true);" checked>Aucun</input><br>
+    <input type="radio" name="title" value="1" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Monsieur</input><br>
+    <input type="radio" name="title" value="2" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Madame</input><br>
+    <input type="radio" name="title" value="0" class="titleInput" onchange="$('#nameInput').attr('readonly', true);" checked>Aucun</input><br>
     <br>
 
     <label for="toInput">Nom :</label>
@@ -145,6 +145,22 @@
 
     // Stocke toutes les entrées de mail effectuées
     var mailAttributesList = [];
+
+    var specializationIndex = {
+        1: "Génie Mécanique",
+        2: "Génie Civil",
+        3: "Énergie, Transports et Urbanisme",
+        4: "Stratégie, Finance et Économie",
+        5: "Génie Industriel et Marketing",
+        6: "Informatique",
+        7: "Traduction technique"
+    }
+
+    var titleIndex = {
+        0: "",
+        1: " Monsieur",
+        2: " Madame"
+    }
 
     function defaultValues()
     {
@@ -262,7 +278,8 @@
         var selected = [];
         var string = "";
         $('.specializationInput:checked').each(function() {
-            selected.push($(this).attr('value'));
+            selected.push(specializationIndex[$(this).val()]);
+            // selected.push($(this).attr('value'));
         });
         if(selected.length == 1){
             string = selected[0];
@@ -279,6 +296,14 @@
             }
         }
         return string;
+    }
+
+    function getSpecializationIdArray(){
+        var selectedId = []
+        $('.specializationInput:checked').each(function() {
+            selectedId.push($(this).val());
+        });
+        return selectedId
     }
 
     // Delete a mail entry by id in the pending mail queue
@@ -465,9 +490,11 @@
         mailAttributes.fromAlias = $("#fromFirstNameInput").val() + " " + $("#fromLastNameInput").val()
         mailAttributes.recipient = $('#toInput').val();
         mailAttributes.company = $('#companyInput').val();
-        mailAttributes.title = $('.titleInput:checked').val();
+        mailAttributes.title = titleIndex[$('.titleInput:checked').val()];
+        mailAttributes.titleId = $('.titleInput:checked').val();
         mailAttributes.name = $('#nameInput').val();
         mailAttributes.specialization = getSpecializationString();
+        mailAttributes.specializationIdArray = getSpecializationIdArray();
         mailAttributes.object= $('#objectInput').val();
         mailAttributes.error = false;
         mailAttributes.sent = false;
@@ -650,6 +677,10 @@
             subject: mailAttributes.object,
             content: content,
             scheduledDate: mailAttributes.scheduledDate,
+            specializationIdArray: mailAttributes.specializationIdArray,
+            company: mailAttributes.company,
+            recipientName: mailAttributes.name,
+            titleId: mailAttributes.titleId,
             userId: {{ app.user.id }},
             sendAsUserId: mailAttributes.sendAsUserId,
             attachmentPath: "bundles/plaquette.pdf",
