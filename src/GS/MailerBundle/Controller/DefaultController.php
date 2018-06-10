@@ -9,8 +9,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use GS\MailerBundle\Form\MailType;
 use GS\MailerBundle\Form\DatabaseType;
-use GS\MailerBundle\Entity\Mail;
+// use GS\MailerBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use GS\MailBundle\Entity\Mail;
+use GS\MailerBundle\Entity\ProspeMail;
 
 class DefaultController extends Controller
 {
@@ -39,83 +41,133 @@ class DefaultController extends Controller
         ));
     }
 
-    public function sendMailAction(Request $request)
+    public function sendProspeMailAction(Request $request)
     {
-        // Récupère les paramètres de la requette
-        $text = $request->get("text");
-        $from = $request->get("from");
-        $fromAlias = $request->get("fromAlias");
-        $to = $request->get("to");
-        $object = $request->get("object");
-        $scheduledDate = $request->get("scheduledDate");
-
-        //Récupère l'utilisateur
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository('GSUserBundle:User')->find($request->get("userid"));
 
-        // Crée une nouvelle instance de Mail
-        $repoMail = $em->getRepository('GSMailerBundle:Mail');
+        $userId = $request->get("userId");
+        $sendAsUserId = $request->get("sendAsUserId");
+        $user = null;
+        $sendAsUser = null;
+
+        if($userId != null)
+            $user = $em->getRepository('GSUserBundle:User')->find($userId);
+
+        if($sendAsUserId != null)
+            $sendAsUser = $em->getRepository('GSUserBundle:User')->find($sendAsUserId);
+
+        $response = new Response();
+        $response->setStatusCode(200);
+
         $mail = new Mail();
 
-        //Enregistre les paramètres
-        $mail->setFromAlias($fromAlias);
-        $mail->setFromEmail($from);
-        $mail->setRecipientEmail($to);
-        $mail->setObject($object);
-        $mail->setContent($text);
-        $mail->setUser($user);
-        $mail->setScheduledDate(new \DateTime($scheduledDate));
-        if ($scheduledDate == null) {
+        $mail->setRecipientEmail($request->get("recipientEmail"))
+            ->setFromEmail($request->get("fromEmail"))
+            ->setFromAlias($request->get("fromAlias"))
+            ->setReplyToEmail($request->get("replyToEmail"))
+            ->setSubject($request->get("subject"))
+            ->setContent($request->get("content"))
+            ->setScheduledDate(new \DateTime($request->get("scheduledDate")))
+            ->setPlainText($request->get("plainText"))
+        ;
+        if ($request->get("scheduledDate") == null)
             $mail->setScheduledDate(null);
-        }
+
+        $mailManager = $this->container->get('gs_mail.mail_manager');
+
+        if(!$mailManager->prepareSend($mail))
+            $response->setStatusCode(450);
+
+        $prospeMail = new ProspeMail();
+
+        $prospeMail->setUser($user)
+            ->setSendAsUser($sendAsUser)
+            ->setMail($mail)
+        ;
+
+        $em->persist($prospeMail);
+        $em->flush();
+
+        return $response;
+    }
+
+    public function sendMailAction(Request $request)
+    {
+        // // Récupère les paramètres de la requette
+        // $text = $request->get("text");
+        // $from = $request->get("from");
+        // $fromAlias = $request->get("fromAlias");
+        // $to = $request->get("to");
+        // $object = $request->get("object");
+        // $scheduledDate = $request->get("scheduledDate");
+        //
+        // //Récupère l'utilisateur
+        // $em = $this->getDoctrine()->getManager();
+        // $user = $em->getRepository('GSUserBundle:User')->find($request->get("userid"));
+        //
+        // // Crée une nouvelle instance de Mail
+        // $repoMail = $em->getRepository('GSMailerBundle:Mail');
+        // $mail = new Mail();
+        //
+        // //Enregistre les paramètres
+        // $mail->setFromAlias($fromAlias);
+        // $mail->setFromEmail($from);
+        // $mail->setRecipientEmail($to);
+        // $mail->setObject($object);
+        // $mail->setContent($text);
+        // $mail->setUser($user);
+        // $mail->setScheduledDate(new \DateTime($scheduledDate));
+        // if ($scheduledDate == null) {
+        //     $mail->setScheduledDate(null);
+        // }
 
         // Crée une réponse
         $response = new Response();
 
         // Si aucun destinataires : erreur
-        if($to == null){
-            $response->setStatusCode(450);
-            return $response;
-        }
+        // if($to == null){
+        //     $response->setStatusCode(450);
+        //     return $response;
+        // }
 
         // Prépare le message
-        $message = (new \Swift_Message($object))
-            ->setFrom([$from => $fromAlias])
-            ->setTo($to)
-            // ->setReplyTo($from)
-            ->setBody(
-                $text,
-                'text/html'
-            )
-            ->attach(\Swift_Attachment::fromPath('bundles/plaquette.pdf')->setFilename('Plaquette commerciale PEP.pdf'))
-        ;
-
-        $mailer = $this->get('mailer');
-
-
-        $mail->setSent(false);
-        $sent = false;
-
-        // Envoie le message ou non
-        if($scheduledDate == null){
-            //Pas d'envoie différé
-            $sent = $mailer->send($message);
-            if($sent){
-                $mail->setSent(true);
-                $mail->setSentAt(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
-            }
-        }
-
-        if($sent || $scheduledDate != null){
-            // Envoie réussi : stocke le nouveau mail dans la BDD et renvoie code 200
-            $response->setStatusCode(200);
-            $em->persist($mail);
-            $em->flush();
-        }
-        else {
-            // Erreur : renvoie directement un code d'erreur
-            $response->setStatusCode(451);
-        }
+        // $message = (new \Swift_Message($object))
+        //     ->setFrom([$from => $fromAlias])
+        //     ->setTo($to)
+        //     // ->setReplyTo($from)
+        //     ->setBody(
+        //         $text,
+        //         'text/html'
+        //     )
+        //     ->attach(\Swift_Attachment::fromPath('bundles/plaquette.pdf')->setFilename('Plaquette commerciale PEP.pdf'))
+        // ;
+        //
+        // $mailer = $this->get('mailer');
+        //
+        //
+        // $mail->setSent(false);
+        // $sent = false;
+        //
+        // // Envoie le message ou non
+        // if($scheduledDate == null){
+        //     //Pas d'envoie différé
+        //     $sent = $mailer->send($message);
+        //     if($sent){
+        //         $mail->setSent(true);
+        //         $mail->setSentAt(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
+        //     }
+        // }
+        //
+        // if($sent || $scheduledDate != null){
+        //     // Envoie réussi : stocke le nouveau mail dans la BDD et renvoie code 200
+        //     $response->setStatusCode(200);
+        //     $em->persist($mail);
+        //     $em->flush();
+        // }
+        // else {
+        //     // Erreur : renvoie directement un code d'erreur
+        //     $response->setStatusCode(451);
+        // }
 
         return $response;
     }
@@ -123,42 +175,42 @@ class DefaultController extends Controller
     public function sendAction(Request $request)
     {
         // Récupère les paramètres de la requette
-        $text = $request->get("text");
-        $from = $request->get("from");
-        $fromAlias = $request->get("fromAlias");
-        $to = $request->get("to");
-        $object = $request->get("object");
-
-        // Crée une réponse
+        // $text = $request->get("text");
+        // $from = $request->get("from");
+        // $fromAlias = $request->get("fromAlias");
+        // $to = $request->get("to");
+        // $object = $request->get("object");
+        //
+        // // Crée une réponse
         $response = new Response();
-
-        // Si aucun destinataires : erreur
-        if($to == null){
-            $response->setStatusCode(450);
-            return $response;
-        }
-
-        // Prépare le message
-        $message = (new \Swift_Message($object))
-            ->setFrom([$from => $fromAlias])
-            ->setTo($to)
-            // ->setReplyTo($from)
-            ->setBody(
-                $text,
-                'text/html'
-            )
-        ;
-
-        $mailer = $this->get('mailer');
-
-        $sent = $mailer->send($message);
-        if(!$sent){
-            // Erreur : renvoie directement un code d'erreur
-            $response->setStatusCode(451);
-        }
-        else {
-            $response->setStatusCode(200);
-        }
+        //
+        // // Si aucun destinataires : erreur
+        // if($to == null){
+        //     $response->setStatusCode(450);
+        //     return $response;
+        // }
+        //
+        // // Prépare le message
+        // $message = (new \Swift_Message($object))
+        //     ->setFrom([$from => $fromAlias])
+        //     ->setTo($to)
+        //     // ->setReplyTo($from)
+        //     ->setBody(
+        //         $text,
+        //         'text/html'
+        //     )
+        // ;
+        //
+        // $mailer = $this->get('mailer');
+        //
+        // $sent = $mailer->send($message);
+        // if(!$sent){
+        //     // Erreur : renvoie directement un code d'erreur
+        //     $response->setStatusCode(451);
+        // }
+        // else {
+        //     $response->setStatusCode(200);
+        // }
 
         return $response;
     }

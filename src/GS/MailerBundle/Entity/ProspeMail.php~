@@ -1,0 +1,61 @@
+<?php
+
+namespace GS\MailerBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * ProspeMail
+ *
+ * @ORM\Table(name="prospe_mail")
+ * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\ProspeMailRepository")
+ */
+class ProspeMail
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creationDate", type="datetime")
+     */
+    private $creationDate;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $sendAsUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GS\MailerBundle\Entity\State")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $state;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="GS\MailBundle\Entity\Mail")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $mail;
+
+
+
+
+    public function __construct(){
+        $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+    }
+}

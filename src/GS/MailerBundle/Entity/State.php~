@@ -76,4 +76,28 @@ class State//  implements JsonSerializable
     {
         return $this->name;
     }
+
+    /**
+     * Set sortCode.
+     *
+     * @param int $sortCode
+     *
+     * @return State
+     */
+    public function setSortCode($sortCode)
+    {
+        $this->sortCode = $sortCode;
+
+        return $this;
+    }
+
+    /**
+     * Get sortCode.
+     *
+     * @return int
+     */
+    public function getSortCode()
+    {
+        return $this->sortCode;
+    }
 }

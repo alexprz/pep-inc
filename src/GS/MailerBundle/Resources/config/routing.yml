@@ -86,3 +86,8 @@ gs_mailer_send:
     path: /send
     defaults:
         _controller: GSMailerBundle:Default:send
+
+gs_mailer_sendProspeMail:
+    path: /sendProspeMail
+    defaults:
+        _controller: GSMailerBundle:Default:sendProspeMail

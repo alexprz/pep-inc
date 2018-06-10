@@ -104,12 +104,12 @@
     <input type="button" name="addMail" id="addButton" value="Ajouter">
     <br><br>
 
-    <!-- <input type="checkbox" id="delayCheckbox" name="delayed" onclick="toggleDelayedInput()">Envoi différé</input>
+    <input type="checkbox" id="delayCheckbox" name="delayed" onclick="toggleDelayedInput()">Envoi différé</input>
     <br><br>
 
     {{ form_errors(form.delayedDate) }}
     {{ form_widget(form.delayedDate) }}
-    <br> -->
+    <br>
 
     <input type="button" name="sendButton" id="sendButton" value="Envoyer">
     <a style="float: right;" class="text-danger" href="#" onclick="deleteSession()">Effacer tout</a>
@@ -476,6 +476,7 @@
         mailAttributes.fromPhone = sendAsUser.phone;
         mailAttributes.fromGender = sendAsUser.gender;
         mailAttributes.fromPostName = sendAsUser.postName;
+        mailAttributes.sendAsUserId = $("#mail_sendAs").val();
         if($("#delayCheckbox:checked").length>0){
             mailAttributes.scheduledDate = getDelayedDateTime();
         }
@@ -639,13 +640,26 @@
 
 
     // Envoie une requette demandant l'envoie d'un mail avec les attributs passés en paramètre
-    function sendMail(i, from, fromAlias, to, object, text, scheduledDate)
+    // function sendMail(i, from, fromAlias, to, object, text, scheduledDate)
+    function sendMail(i, mailAttributes, content)
     {
+        var dataArray = {
+            recipientEmail: mailAttributes.recipient,
+            fromEmail: "pontsetudesprojets.commercial@gmail.com",
+            fromAlias: mailAttributes.fromAlias,
+            subject: mailAttributes.object,
+            content: content,
+            scheduledDate: mailAttributes.scheduledDate,
+            userId: {{ app.user.id }},
+            sendAsUserId: mailAttributes.sendAsUserId
+        }
 
         $.ajax({
             type: 'POST',
-            url: "{{ path("gs_mailer_sendMail") }}",
-            data: {from: from, fromAlias: fromAlias, to: to, object: object, text: text, scheduledDate: scheduledDate, userid: {{ app.user.id }}},
+            // url: "{# path("gs_mailer_sendMail") #}",
+            url: "{{ path("gs_mailer_sendProspeMail") }}",
+            // data: {from: from, fromAlias: fromAlias, to: to, object: object, text: text, scheduledDate: scheduledDate, userid: {{ app.user.id }}},
+            data: dataArray,
             dataType: "html",
             beforeSend: function() {
                 $('#loadGif').html("<img src='http://www.mediaforma.com/sdz/jquery/ajax-loader.gif'>")
@@ -676,7 +690,7 @@
             mailAttributes = mailAttributesList[i];
             if(!mailAttributes.sent){
                 //sendMail(i, mailAttributes.from, mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
-		sendMail(i, "pontsetudesprojets.commercial@gmail.com", mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
+		sendMail(i, mailAttributes, getHtml(mailAttributes, 'send'));
             }
         }
         // $('#success').html("Envoyé !");
