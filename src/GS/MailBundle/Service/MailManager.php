@@ -2,6 +2,7 @@
 namespace GS\MailBundle\Service;
 
 use Doctrine\ORM\EntityManager;
+use GS\MailBundle\Entity\Mail;
 
 class MailManager
 {
@@ -26,8 +27,8 @@ class MailManager
         if($mail->getScheduledDate() == null) // Envoi immédiat
         {
             $sent = $this->send($mail);
-            if($sent)
-                $mail->setSentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
+            // if($sent)
+            //     $mail->setSentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
         }
 
         $em->persist($mail);
@@ -67,7 +68,25 @@ class MailManager
 
         $mailer = $this->mailer;
 
-        return $mailer->send($message);
+        $sent = $mailer->send($message);
+
+        if($sent)
+            $mail->setSentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
+
+        return $sent;
+    }
+
+    public function sendPendinMails()
+    {
+        $em = $this->entityManager;
+
+        $mailList = $em->getRepository("GSMailBundle:Mail")->getMailsToSend();
+
+        foreach ($mailList as $mail) {
+            $em->persist($mail);
+            $this->send($mail);
+        }
+        $em->flush();
     }
 
 }

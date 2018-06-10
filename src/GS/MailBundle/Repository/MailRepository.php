@@ -10,4 +10,18 @@ namespace GS\MailBundle\Repository;
  */
 class MailRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getMailsToSend()
+    {
+        $qb = $this->createQueryBuilder('mail')
+            ->where("mail.sentDate IS NULL")
+            ->andWhere("mail.scheduledDate IS NOT NULL")
+            ->andWhere("mail.scheduledDate <= :date")
+            ->setParameter('date', new \DateTime("now", new \DateTimeZone("EUROPE/Paris")))
+        ;
+
+        return $qb
+          ->getQuery()
+          ->getResult()
+        ;
+    }
 }
