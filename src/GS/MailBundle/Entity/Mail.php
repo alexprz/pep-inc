@@ -112,6 +112,13 @@ class Mail
      */
     private $error;
 
+    /**
+     * @var bool|null
+     *
+     * @ORM\Column(name="artificial", type="boolean", nullable=true)
+     */
+    private $artificial;
+
 
 
     public function __construct(){
@@ -466,6 +473,30 @@ class Mail
     public function getError()
     {
         return $this->error;
+    }
+
+    /**
+     * Set artificial.
+     *
+     * @param bool|null
+     *
+     * @return Mail
+     */
+    public function setArtificial($artificial = null)
+    {
+        $this->artificial = $artificial;
+
+        return $this;
+    }
+
+    /**
+     * Get artificial.
+     *
+     * @return bool|null
+     */
+    public function getArtificial()
+    {
+        return $this->artificial;
     }
 
 }

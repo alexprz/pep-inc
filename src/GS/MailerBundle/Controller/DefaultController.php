@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use GS\MailerBundle\Form\MailType;
 use GS\MailerBundle\Form\DatabaseType;
+use GS\MailerBundle\Form\ProspeMailType;
 // use GS\MailerBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use GS\MailBundle\Entity\Mail;
@@ -473,5 +474,22 @@ class DefaultController extends Controller
         $em->flush();
 
         return new JsonResponse();
+    }
+
+    public function addProspeMailAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $prospeMail = new ProspeMail();
+        $form   = $this->createForm(ProspeMailType::class, $prospeMail, array('user' => $this->getUser()));
+        if ($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->get('Ajouter')->isClicked() && $form->isValid()){
+                $em->persist($prospeMail);
+                $em->flush();
+            }
+        }
+        return $this->render("GSMailerBundle::prospeMailAdd.html.twig", array(
+            "form" => $form->createView()
+        ));
     }
 }

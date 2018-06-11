@@ -14,7 +14,10 @@
     <div class="input-block-level">
         <input class="form-control mr-sm-2 input-block-level" type="search" placeholder="Rechercher" aria-label="Rechercher" id='searchBar' name='search' value='' autofocus autocomplete="off">
     </div>
-    <div style="display: block; float: right;" class="">
+    <div style="display: inline-block; float: left;">
+        <a href="{{ path("gs_mailer_prospeMailAdd") }}" class="text-success">Ajouter</a>
+    </div>
+    <div style="display: inline-block; float: right;" class="">
         <a href="#" id="advancedSearch">Recherche avancée</a>
     </div>
     <div id="advancedSearchInputs" style="display: none;">

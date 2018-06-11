@@ -47,7 +47,7 @@ class ProspeMail
     private $state;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GS\MailBundle\Entity\Mail")
+     * @ORM\ManyToOne(targetEntity="GS\MailBundle\Entity\Mail", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $mail;
@@ -59,10 +59,10 @@ class ProspeMail
     private $recipientName;
 
     /**
-     * @var string
-     * @ORM\Column(name="titleId", type="string", nullable=true)
+     * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Gender", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $titleId;
+    private $gender;
 
     /**
      * @var string
@@ -71,10 +71,10 @@ class ProspeMail
     private $company;
 
     /**
-     * @var string
-     * @ORM\Column(name="specializationIdArray", type="simple_array", nullable=true)
+     * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Specialization", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $specializationIdArray;
+    private $specialization;
 
 
 
@@ -286,50 +286,102 @@ class ProspeMail
     }
 
     /**
-     * Set specializationIdArray.
+     * Set gender.
      *
-     * @param array|null $specializationIdArray
+     * @param \GS\MailerBundle\Entity\Gender|null $gender
      *
      * @return ProspeMail
      */
-    public function setSpecializationIdArray($specializationIdArray = null)
+    public function setGender(\GS\MailerBundle\Entity\Gender $gender = null)
     {
-        $this->specializationIdArray = $specializationIdArray;
+        $this->gender = $gender;
 
         return $this;
     }
 
     /**
-     * Get specializationIdArray.
+     * Get gender.
      *
-     * @return array|null
+     * @return \GS\MailerBundle\Entity\Gender|null
      */
-    public function getSpecializationIdArray()
+    public function getGender()
     {
-        return $this->specializationIdArray;
+        return $this->gender;
     }
 
     /**
-     * Set titleId.
+     * Set specialization.
      *
-     * @param string|null $titleId
+     * @param \GS\MailerBundle\Entity\Specialization|null $specialization
      *
      * @return ProspeMail
      */
-    public function setTitleId($titleId = null)
+    public function setSpecialization(\GS\MailerBundle\Entity\Specialization $specialization = null)
     {
-        $this->titleId = $titleId;
+        $this->specialization = $specialization;
 
         return $this;
     }
 
     /**
-     * Get titleId.
+     * Get specialization.
      *
-     * @return string|null
+     * @return \GS\MailerBundle\Entity\Specialization|null
      */
-    public function getTitleId()
+    public function getSpecialization()
     {
-        return $this->titleId;
+        return $this->specialization;
+    }
+
+    /**
+     * Add gender.
+     *
+     * @param \GS\MailerBundle\Entity\Gender $gender
+     *
+     * @return ProspeMail
+     */
+    public function addGender(\GS\MailerBundle\Entity\Gender $gender)
+    {
+        $this->gender[] = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Remove gender.
+     *
+     * @param \GS\MailerBundle\Entity\Gender $gender
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeGender(\GS\MailerBundle\Entity\Gender $gender)
+    {
+        return $this->gender->removeElement($gender);
+    }
+
+    /**
+     * Add specialization.
+     *
+     * @param \GS\MailerBundle\Entity\Specialization $specialization
+     *
+     * @return ProspeMail
+     */
+    public function addSpecialization(\GS\MailerBundle\Entity\Specialization $specialization)
+    {
+        $this->specialization[] = $specialization;
+
+        return $this;
+    }
+
+    /**
+     * Remove specialization.
+     *
+     * @param \GS\MailerBundle\Entity\Specialization $specialization
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeSpecialization(\GS\MailerBundle\Entity\Specialization $specialization)
+    {
+        return $this->specialization->removeElement($specialization);
     }
 }
