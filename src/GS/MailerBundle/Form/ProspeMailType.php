@@ -25,7 +25,7 @@ class ProspeMailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $user = $options['user'];
+        // $user = $options['user'];
         $builder
             ->add('company', TextType::class)
             ->add('specialization', EntityType::class, array(
@@ -50,11 +50,11 @@ class ProspeMailType extends AbstractType
             // ->add('user', HiddenType::class, array(
             //     'data' => $user->getId()
             // ))
-            ->add('user', EntityType::class, array(
-                    'class'        => 'GSUserBundle:User',
-                    'choices' => array($user),
-                    // 'attr' => array('style' => "display: none;")
-            ))
+            // ->add('user', EntityType::class, array(
+            //         'class'        => 'GSUserBundle:User',
+            //         'choices' => array($user),
+            //         // 'attr' => array('style' => "display: none;")
+            // ))
             ->add('Ajouter', SubmitType::class)
         ;
         // $builder->get('user')
@@ -74,7 +74,7 @@ class ProspeMailType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'GS\MailerBundle\Entity\ProspeMail'
         ));
-        $resolver->setRequired('user');
+        // $resolver->setRequired('user');
     }
 
     /**

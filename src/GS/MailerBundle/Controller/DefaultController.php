@@ -479,13 +479,21 @@ class DefaultController extends Controller
     public function addProspeMailAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        $session = $request->getSession();
+
         $prospeMail = new ProspeMail();
-        $form   = $this->createForm(ProspeMailType::class, $prospeMail, array('user' => $this->getUser()));
+
+        $form   = $this->createForm(ProspeMailType::class, $prospeMail);//, array('user' => $this->getUser()));
+
         if ($request->isMethod('POST')){
             $form->handleRequest($request);
             if($form->get('Ajouter')->isClicked() && $form->isValid()){
+                $prospeMail->getMail()->setArtificial(true);
+                $prospeMail->setUser($this->getUser());
                 $em->persist($prospeMail);
                 $em->flush();
+
+                $session->getFlashBag()->add('success',  $prospeMail->getMail()->getRecipientEmail()." ajouté.");
             }
         }
         return $this->render("GSMailerBundle::prospeMailAdd.html.twig", array(

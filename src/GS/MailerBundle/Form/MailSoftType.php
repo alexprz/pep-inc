@@ -31,10 +31,10 @@ class MailSoftType extends AbstractType
             ->add('sentDate', DateTimeType::class, array(
                 'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
             ))
-            ->add('artificial', HiddenType::class, array(
-                'required' => false,
-                'data' => true
-            ))
+            // ->add('artificial', HiddenType::class, array(
+            //     'required' => false,
+            //     'data' => true
+            // ))
         ;
         // $builder->get('artificial')
         //    ->addModelTransformer(new CallbackTransformer(
