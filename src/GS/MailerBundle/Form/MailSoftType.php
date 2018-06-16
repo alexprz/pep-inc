@@ -24,18 +24,27 @@ class MailSoftType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        // $sendAsUsers = $options['sendAsUsers'];
+        $artificial = $options['artificial'];
 
         $builder
             ->add('recipientEmail', TextType::class)
-            ->add('sentDate', DateTimeType::class, array(
-                'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
-            ))
-            // ->add('artificial', HiddenType::class, array(
-            //     'required' => false,
-            //     'data' => true
-            // ))
         ;
+        if($artificial){
+            $builder->add('sentDate', DateTimeType::class, array(
+                'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
+            ));
+        }
+        if(!$artificial){
+
+            $builder->add('subject', TextType::class, array(
+                'attr' => array('value' => 'Ponts Études Projets')
+            ))
+            ;
+            $builder->add('scheduledDate',   DateTimeType::class, array(
+                'attr' => array('class' => "datePicker"),
+                'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris"))
+            ));
+        }
         // $builder->get('artificial')
         //    ->addModelTransformer(new CallbackTransformer(
         //        function ($property) {
@@ -53,6 +62,7 @@ class MailSoftType extends AbstractType
         $resolver->setDefaults(array(
           'data_class' => 'GS\MailBundle\Entity\Mail'
         ));
+        $resolver->setRequired('artificial');
     }
 
     /**

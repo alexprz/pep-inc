@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="gs_prospe_mail_specialization")
  * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\SpecializationRepository")
  */
-class Specialization
+class Specialization implements \JsonSerializable
 {
     /**
      * @var int
@@ -34,6 +34,13 @@ class Specialization
      * @ORM\Column(name="sortCode", type="integer", nullable=true)
      */
     private $sortCode;
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
 
 
     /**

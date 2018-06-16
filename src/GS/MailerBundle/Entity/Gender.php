@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="gs_prospe_mail_gender")
  * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\GenderRepository")
  */
-class Gender
+class Gender implements \JsonSerializable
 {
     /**
      * @var int
@@ -35,6 +35,12 @@ class Gender
      */
     private $sortCode;
 
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
 
     /**
      * Get id.

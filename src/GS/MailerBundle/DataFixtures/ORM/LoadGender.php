@@ -10,7 +10,6 @@ class LoadGender extends Fixture
     public function load(ObjectManager $manager)
     {
         $names = array(
-            'Aucun',
             'Monsieur',
             'Madame'
         );

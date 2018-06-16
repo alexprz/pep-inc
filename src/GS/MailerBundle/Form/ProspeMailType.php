@@ -8,9 +8,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use GS\MailerBundle\Form\MailSoftType;
@@ -25,7 +27,17 @@ class ProspeMailType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $sendAsUsers = $options['sendAsUsers'];
+        $artificial = $options['artificial'];
         // $user = $options['user'];
+        if(!$artificial){
+            $builder->add('sendAsUser',   EntityType::class, array(
+                'class'        => 'GSUserBundle:User',
+                'choice_label' => 'email',
+                'choices'      => $sendAsUsers,
+                'multiple'     => false
+            ));
+        }
         $builder
             ->add('company', TextType::class)
             ->add('specialization', EntityType::class, array(
@@ -37,7 +49,8 @@ class ProspeMailType extends AbstractType
             ->add('gender', EntityType::class, array(
                     'class'        => 'GSMailerBundle:Gender',
                     'choice_label' => 'name',
-                    'multiple'     => true,
+                    'multiple'     => false,
+                    'required' => false,
                     'expanded' => true,
             ))
             // ->add('specialization', CollectionType::class, array(
@@ -46,7 +59,13 @@ class ProspeMailType extends AbstractType
             // 'allow_delete' => true
             // ))
             ->add('recipientName', TextType::class)
-            ->add('mail', MailSoftType::class)
+            ->add('mail', MailSoftType::class, array('artificial' => $artificial));
+            if(!$artificial){
+                $builder->add('toggleDelayedInput', CheckboxType::class, array(
+                    'required' => false,
+                    'mapped' => false
+                ));
+            }
             // ->add('user', HiddenType::class, array(
             //     'data' => $user->getId()
             // ))
@@ -55,8 +74,9 @@ class ProspeMailType extends AbstractType
             //         'choices' => array($user),
             //         // 'attr' => array('style' => "display: none;")
             // ))
-            ->add('Ajouter', SubmitType::class)
-        ;
+
+
+        $builder->add('Ajouter', SubmitType::class);
         // $builder->get('user')
         //    ->addModelTransformer(new CallbackTransformer(
         //        function ($property) {
@@ -74,7 +94,8 @@ class ProspeMailType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'GS\MailerBundle\Entity\ProspeMail'
         ));
-        // $resolver->setRequired('user');
+        $resolver->setRequired('sendAsUsers');
+        $resolver->setRequired('artificial');
     }
 
     /**

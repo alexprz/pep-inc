@@ -2,10 +2,6 @@ gs_mailer_homepage:
     path:     /
     defaults: { _controller: GSMailerBundle:Default:index }
 
-gs_mailer_writeMail:
-    path:   /writeProspeMail
-    defaults:
-        _controller: GSMailerBundle:Default:writeProspeMail
 
 gs_mailer_sendMail:
     path:   /sendMail
@@ -87,12 +83,31 @@ gs_mailer_send:
     defaults:
         _controller: GSMailerBundle:Default:send
 
-gs_mailer_sendProspeMail:
-    path: /sendProspeMail
+gs_mailer_prospeMailAddManually:
+    path: /addProspeMailManually
     defaults:
-        _controller: GSMailerBundle:Default:sendProspeMail
+        _controller: GSMailerBundle:Default:addProspeMailManually
 
+gs_mailer_writeMail:
+    path:   /writeProspeMail
+    defaults:
+        _controller: GSMailerBundle:ProspeMail:writeProspeMail
 gs_mailer_prospeMailAdd:
     path: /addProspeMail
     defaults:
-        _controller: GSMailerBundle:Default:addProspeMail
+        _controller: GSMailerBundle:ProspeMail:addProspeMail
+
+gs_mailer_prospeMailLoad:
+    path: /loadProspeMail
+    defaults:
+        _controller: GSMailerBundle:ProspeMail:loadProspeMail
+
+gs_mailer_prospeMailRemove:
+    path: /removeProspeMail
+    defaults:
+        _controller: GSMailerBundle:ProspeMail:removeProspeMail
+
+gs_mailer_prospeMailSend:
+    path: /sendProspeMail
+    defaults:
+        _controller: GSMailerBundle:ProspeMail:sendProspeMail

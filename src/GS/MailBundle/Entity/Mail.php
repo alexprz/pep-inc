@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="gs_new_mail")
  * @ORM\Entity(repositoryClass="GS\MailBundle\Repository\MailRepository")
  */
-class Mail
+class Mail implements \JsonSerializable
 {
     /**
      * @var int
@@ -123,6 +123,13 @@ class Mail
 
     public function __construct(){
         $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+    }
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
     }
 
     public function isSent(){

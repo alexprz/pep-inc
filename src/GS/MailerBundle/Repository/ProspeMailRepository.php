@@ -10,6 +10,19 @@ namespace GS\MailerBundle\Repository;
  */
 class ProspeMailRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByRecipientEmail($recipientEmail)
+    {
+        $qb = $this->createQueryBuilder('a')
+          ->leftJoin('a.mail', 'm')
+          ->where('m.recipientEmail = :pattern')
+          ->setParameter('pattern', $recipientEmail)
+        ;
+
+        return $qb
+          ->getQuery()
+          ->getResult()
+        ;
+    }
     public function findByLike($pattern, $sortCode)
     {
       $qb = $this->createQueryBuilder('a')

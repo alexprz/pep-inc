@@ -22,171 +22,81 @@ class DefaultController extends Controller
         return $this->render('GSMailerBundle::index.html.twig');
     }
 
-    // public function writeProspeMailAction()
-    // {
-    //     $repository = $this
-    //       ->getDoctrine()
-    //       ->getManager()
-    //       ->getRepository('GSUserBundle:User')
-    //     ;
-    //
-    //     $user = $this->getUser();
-    //     $sendAsUsers = $repository->findByPostName('Directeur Commercial');
-    //     array_push($sendAsUsers, $user);
-    //
-    //
-    //     $form = $this->createForm(ProspeMailType::class, new ProspeMail(), array(
-    //         'artificial' => false,
-    //         'sendAsUsers' => $sendAsUsers
-    //     ));
-    //
-    //     return $this->render('GSMailerBundle::prospeMailEdit.html.twig', array(
-    //         'form' => $form->createView()
-    //     ));
-    // }
-    //
-    // public function addProspeMailAction(Request $request)
-    // {
-    //     $session = $request->getSession();
-    //     $prospeMail = new ProspeMail();
-    //     $form = $this->createForm(ProspeMailType::class, $prospeMail, array(
-    //         'artificial' => false,
-    //         'sendAsUsers' => null
-    //     ));
-    //     if($request->isMethod('POST'))
-    //     {
-    //         $form->handleRequest($request);
-    //         if($form->isValid())
-    //         {
-    //             $prospeMailList = $session->get('prospeMailList');
-    //             $pseudo_id = 0;
-    //             if($prospeMailList==null)
-    //                 $prospeMailList = array(array("pseudo_id" => $pseudo_id, "mail" => $prospeMail));
-    //             else{
-    //                 $pseudo_id = $prospeMailList[count($prospeMailList)-1]["pseudo_id"]+1;
-    //                 array_push($prospeMailList, array("pseudo_id" => $pseudo_id, "mail" => $prospeMail));
-    //             }
-    //             $session->set('prospeMailList', $prospeMailList);
-    //             //verify prospe mail
-    //             //send result of verification
-    //             return new JsonResponse(array("newProspeMail" => json_encode($prospeMail),
-    //                     "isDuplication" => false,
-    //                     "pseudo_id" => $pseudo_id
-    //             ));
-    //         }
-    //     }
-    //
-    //     return new JsonResponse();
-    // }
-    //
-    // public function loadProspeMailAction(Request $request)
-    // {
-    //     $session = $request->getSession();
-    //     $prospeMailList = $session->get('prospeMailList');
-    //     $responseArray = array();
-    //     for ($i=0; $i < count($prospeMailList); $i++) {
-    //         array_push($responseArray, array("newProspeMail" => json_encode($prospeMailList[$i]['mail']),
-    //                                         "isDuplication" => false,
-    //                                         "pseudo_id" => $prospeMailList[$i]['pseudo_id']
-    //                                     ));
-    //     }
-    //     return new JsonResponse($responseArray);
-    // }
-    //
-    // public function removeProspeMailAction(Request $request)
-    // {
-    //     $session = $request->getSession();
-    //     $pseudo_id = $request->get('pseudo_id');
-    //     $prospeMailList = $session->get('prospeMailList');
-    //     $tempArray = array();
-    //     for($i=0; $i<count($prospeMailList); $i++){
-    //         if($prospeMailList[$i]['pseudo_id'] != $pseudo_id)
-    //             array_push($tempArray, $prospeMailList[$i]);
-    //     }
-    //     $session->set('prospeMailList', $tempArray);
-    //     return new JsonResponse();
-    // }
-    //
-    // public function sendProspeMailAction(Request $request)
-    // {
-    //     $session = $request->getSession();
-    //     $em = $this->getDoctrine()->getManager();
-    //     $mailManager = $this->container->get('gs_mail.mail_manager');
-    //     $pseudo_id = $request->get('pseudo_id');
-    //     $prospeMailList = $session->get('prospeMailList');
-    //     for($i=0; $i<count($prospeMailList); $i++){
-    //         if($prospeMailList[$i]['pseudo_id'] == $pseudo_id){
-    //             $prospeMail = $prospeMailList[$i]['mail'];
-    //             $prospeMail->setUser($this->getUser());
-    //             $prospeMail->getMail()->setFromEmail("pontsetudesprojets.commercial@gmail.com");
-    //             $prospeMail->getMail()->setFromAlias($prospeMail->getMail()->getSendAsUser()->getFirstName()." ".$prospeMail->getMail()->getSendAsUser()->getLastName());
-    //             $prospeMail->getMail()->setAttachmentName("Plaquette commerciale PEP");
-    //             $prospeMail->getMail()->setAttachmentPath("bundles/plaquette.pdf");
-    //             $mailManager->prepareSend($prospeMail->getMail());
-    //             $em->merge($prospeMail);
-    //             $em->flush();
-    //             break;
-    //         }
-    //     }
-    //
-    //     return new JsonResponse();
-    // }
+    public function writeProspeMailAction()
+    {
+        $repository = $this
+          ->getDoctrine()
+          ->getManager()
+          ->getRepository('GSUserBundle:User')
+        ;
 
-    // public function sendProspeMailAction(Request $request)
-    // {
-    //     $em = $this->getDoctrine()->getManager();
-    //
-    //     $userId = $request->get("userId");
-    //     $sendAsUserId = $request->get("sendAsUserId");
-    //     $user = null;
-    //     $sendAsUser = null;
-    //
-    //     if($userId != null)
-    //         $user = $em->getRepository('GSUserBundle:User')->find($userId);
-    //
-    //     if($sendAsUserId != null)
-    //         $sendAsUser = $em->getRepository('GSUserBundle:User')->find($sendAsUserId);
-    //
-    //     $response = new Response();
-    //     $response->setStatusCode(200);
-    //
-    //     $mail = new Mail();
-    //
-    //     $mail->setRecipientEmail($request->get("recipientEmail"))
-    //         ->setFromEmail($request->get("fromEmail"))
-    //         ->setFromAlias($request->get("fromAlias"))
-    //         ->setReplyToEmail($request->get("replyToEmail"))
-    //         ->setSubject($request->get("subject"))
-    //         ->setContent($request->get("content"))
-    //         ->setScheduledDate(new \DateTime($request->get("scheduledDate")))
-    //         ->setPlainText($request->get("plainText"))
-    //         ->setAttachmentPath($request->get("attachmentPath"))
-    //         ->setAttachmentName($request->get("attachmentName"))
-    //     ;
-    //     if ($request->get("scheduledDate") == null)
-    //         $mail->setScheduledDate(null);
-    //
-    //     $mailManager = $this->container->get('gs_mail.mail_manager');
-    //
-    //     if(!$mailManager->prepareSend($mail))
-    //         $response->setStatusCode(450);
-    //
-    //     $prospeMail = new ProspeMail();
-    //
-    //     $prospeMail->setUser($user)
-    //         ->setSendAsUser($sendAsUser)
-    //         ->setMail($mail)
-    //         ->setRecipientName($request->get("recipientName"))
-    //         ->setCompany($request->get("company"))
-    //         ->setSpecializationIdArray($request->get("specializationIdArray"))
-    //         ->setTitleId($request->get("titleId"))
-    //     ;
-    //
-    //     $em->persist($prospeMail);
-    //     $em->flush();
-    //
-    //     return $response;
-    // }
+        $user = $this->getUser();
+        $sendAsUsers = $repository->findByPostName('Directeur Commercial');
+        array_push($sendAsUsers, $user);
+
+
+        $form = $this->createForm(MailType::class, new Mail(), array('sendAsUsers' => $sendAsUsers));
+
+        return $this->render('GSMailerBundle::prospeMailEdit.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    public function sendProspeMailAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $userId = $request->get("userId");
+        $sendAsUserId = $request->get("sendAsUserId");
+        $user = null;
+        $sendAsUser = null;
+
+        if($userId != null)
+            $user = $em->getRepository('GSUserBundle:User')->find($userId);
+
+        if($sendAsUserId != null)
+            $sendAsUser = $em->getRepository('GSUserBundle:User')->find($sendAsUserId);
+
+        $response = new Response();
+        $response->setStatusCode(200);
+
+        $mail = new Mail();
+
+        $mail->setRecipientEmail($request->get("recipientEmail"))
+            ->setFromEmail($request->get("fromEmail"))
+            ->setFromAlias($request->get("fromAlias"))
+            ->setReplyToEmail($request->get("replyToEmail"))
+            ->setSubject($request->get("subject"))
+            ->setContent($request->get("content"))
+            ->setScheduledDate(new \DateTime($request->get("scheduledDate")))
+            ->setPlainText($request->get("plainText"))
+            ->setAttachmentPath($request->get("attachmentPath"))
+            ->setAttachmentName($request->get("attachmentName"))
+        ;
+        if ($request->get("scheduledDate") == null)
+            $mail->setScheduledDate(null);
+
+        $mailManager = $this->container->get('gs_mail.mail_manager');
+
+        if(!$mailManager->prepareSend($mail))
+            $response->setStatusCode(450);
+
+        $prospeMail = new ProspeMail();
+
+        $prospeMail->setUser($user)
+            ->setSendAsUser($sendAsUser)
+            ->setMail($mail)
+            ->setRecipientName($request->get("recipientName"))
+            ->setCompany($request->get("company"))
+            ->setSpecializationIdArray($request->get("specializationIdArray"))
+            ->setTitleId($request->get("titleId"))
+        ;
+
+        $em->persist($prospeMail);
+        $em->flush();
+
+        return $response;
+    }
 
     public function sendMailAction(Request $request)
     {
@@ -566,17 +476,14 @@ class DefaultController extends Controller
         return new JsonResponse();
     }
 
-    public function addProspeMailManuallyAction(Request $request)
+    public function addProspeMailAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
 
         $prospeMail = new ProspeMail();
 
-        $form   = $this->createForm(ProspeMailType::class, $prospeMail, array(
-            "artificial" => true,
-            "sendAsUsers" => null
-        ));//, array('user' => $this->getUser()));
+        $form   = $this->createForm(ProspeMailType::class, $prospeMail);//, array('user' => $this->getUser()));
 
         if ($request->isMethod('POST')){
             $form->handleRequest($request);

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="gs_prospe_mail")
  * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\ProspeMailRepository")
  */
-class ProspeMail
+class ProspeMail implements \JsonSerializable
 {
     /**
      * @var int
@@ -59,7 +59,7 @@ class ProspeMail
     private $recipientName;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Gender", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="GS\MailerBundle\Entity\Gender", cascade={"persist"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $gender;
@@ -72,7 +72,7 @@ class ProspeMail
 
     /**
      * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Specialization", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
+     *
      */
     private $specialization;
 
@@ -81,6 +81,13 @@ class ProspeMail
 
     public function __construct(){
         $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+    }
+
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
     }
 
     /**
@@ -309,55 +316,31 @@ class ProspeMail
         return $this->gender;
     }
 
-    /**
-     * Set specialization.
-     *
-     * @param \GS\MailerBundle\Entity\Specialization|null $specialization
-     *
-     * @return ProspeMail
-     */
-    public function setSpecialization(\GS\MailerBundle\Entity\Specialization $specialization = null)
-    {
-        $this->specialization = $specialization;
+    // /**
+    //  * Set specialization.
+    //  *
+    //  * @param \GS\MailerBundle\Entity\Specialization|null $specialization
+    //  *
+    //  * @return ProspeMail
+    //  */
+    // public function setSpecialization(\GS\MailerBundle\Entity\Specialization $specialization = null)
+    // {
+    //     $this->specialization = $specialization;
+    //
+    //     return $this;
+    // }
+    //
+    // /**
+    //  * Get specialization.
+    //  *
+    //  * @return \GS\MailerBundle\Entity\Specialization|null
+    //  */
+    // public function getSpecialization()
+    // {
+    //     return $this->specialization;
+    // }
 
-        return $this;
-    }
 
-    /**
-     * Get specialization.
-     *
-     * @return \GS\MailerBundle\Entity\Specialization|null
-     */
-    public function getSpecialization()
-    {
-        return $this->specialization;
-    }
-
-    /**
-     * Add gender.
-     *
-     * @param \GS\MailerBundle\Entity\Gender $gender
-     *
-     * @return ProspeMail
-     */
-    public function addGender(\GS\MailerBundle\Entity\Gender $gender)
-    {
-        $this->gender[] = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Remove gender.
-     *
-     * @param \GS\MailerBundle\Entity\Gender $gender
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeGender(\GS\MailerBundle\Entity\Gender $gender)
-    {
-        return $this->gender->removeElement($gender);
-    }
 
     /**
      * Add specialization.
@@ -383,5 +366,15 @@ class ProspeMail
     public function removeSpecialization(\GS\MailerBundle\Entity\Specialization $specialization)
     {
         return $this->specialization->removeElement($specialization);
+    }
+
+    /**
+     * Get specialization.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSpecialization()
+    {
+        return $this->specialization;
     }
 }
