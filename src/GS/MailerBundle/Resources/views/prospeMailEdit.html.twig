@@ -57,10 +57,12 @@
     <a style="float: right;" href="{{ path("gs_mailer_showMailDatabase") }}">Base de données</a>
     <br><br>
 
-    <br>
+    {{ form(form, {'attr': {'id': 'form'}}) }}
+
+    <!-- <br>
     Envoyer en tant que :
-    {{ form_errors(form.sendAs) }}
-    {{ form_widget(form.sendAs, {'attr': {'onchange': 'refreshSender()'}}) }}
+    {# form_errors(form.sendAs) #}
+    {# form_widget(form.sendAs, {'attr': {'onchange': 'refreshSender()'}}) #}
 
     <label for="fromInput">Envoyé par :</label>
     <input type="text" name="fromFirstName" value="" id="fromFirstNameInput" readonly>
@@ -79,20 +81,20 @@
     <br>
 
     <label for="specializationInput">Spécialisation :</label><br>
-    <input type="checkbox" name="specialization" value="Génie Mécanique" class="specializationInput">Génie Mécanique</input><br>
-    <input type="checkbox" name="specialization" value="Génie Civil" class="specializationInput">Génie Civil</input><br>
-    <input type="checkbox" name="specialization" value="Énergie, Transports et Urbanisme" class="specializationInput">Énergie, Transports et Urbanisme</input><br>
-    <input type="checkbox" name="specialization" value="Stratégie, Finance et Économie" class="specializationInput">Stratégie, Finance et Économie</input><br>
-    <input type="checkbox" name="specialization" value="Génie Industriel et Marketing" class="specializationInput">Génie Industriel et Marketing</input><br>
-    <input type="checkbox" name="specialization" value="Informatique" class="specializationInput">Informatique</input><br>
-    <input type="checkbox" name="specialization" value="Traduction technique" class="specializationInput">Traduction technique</input><br>
+    <input type="checkbox" name="specialization" value="1" class="specializationInput">Génie Mécanique</input><br>
+    <input type="checkbox" name="specialization" value="2" class="specializationInput">Génie Civil</input><br>
+    <input type="checkbox" name="specialization" value="3" class="specializationInput">Énergie, Transports et Urbanisme</input><br>
+    <input type="checkbox" name="specialization" value="4" class="specializationInput">Stratégie, Finance et Économie</input><br>
+    <input type="checkbox" name="specialization" value="5" class="specializationInput">Génie Industriel et Marketing</input><br>
+    <input type="checkbox" name="specialization" value="6" class="specializationInput">Informatique</input><br>
+    <input type="checkbox" name="specialization" value="7" class="specializationInput">Traduction technique</input><br>
     <br>
 
 
     <label for="titleInput">Civilité :</label><br>
-    <input type="radio" name="title" value=" Monsieur" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Monsieur</input><br>
-    <input type="radio" name="title" value=" Madame" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Madame</input><br>
-    <input type="radio" name="title" value="" class="titleInput" onchange="$('#nameInput').attr('readonly', true);" checked>Aucun</input><br>
+    <input type="radio" name="title" value="1" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Monsieur</input><br>
+    <input type="radio" name="title" value="2" class="titleInput" onchange="$('#nameInput').attr('readonly', false);">Madame</input><br>
+    <input type="radio" name="title" value="0" class="titleInput" onchange="$('#nameInput').attr('readonly', true);" checked>Aucun</input><br>
     <br>
 
     <label for="toInput">Nom :</label>
@@ -101,17 +103,17 @@
 
     <label for="toInput">Destinataire :</label>
     <input type="email" name="email" value="" id="toInput">
-    <input type="button" name="addMail" id="addButton" value="Ajouter">
     <br><br>
 
-    <!-- <input type="checkbox" id="delayCheckbox" name="delayed" onclick="toggleDelayedInput()">Envoi différé</input>
+    <input type="checkbox" id="delayCheckbox" name="delayed" onclick="toggleDelayedInput()">Envoi différé</input>
     <br><br>
 
-    {{ form_errors(form.delayedDate) }}
-    {{ form_widget(form.delayedDate) }}
-    <br> -->
-
-    <input type="button" name="sendButton" id="sendButton" value="Envoyer">
+    {# form_errors(form.delayedDate) #}
+    {# form_widget(form.delayedDate) #}
+    <br>
+    -->
+    <!-- <input type="button" name="addMail" id="addButton" value="Ajouter"> -->
+    <input type="button" name="sendButton" id="sendButton" value="Envoyer" onclick="sendAll()">
     <a style="float: right;" class="text-danger" href="#" onclick="deleteSession()">Effacer tout</a>
     <br><br>
 
@@ -144,75 +146,91 @@
     <script type="text/javascript">
 
     // Stocke toutes les entrées de mail effectuées
-    var mailAttributesList = [];
+    // var mailAttributesList = [];
+    //
+    // var specializationIndex = {
+    //     1: "Génie Mécanique",
+    //     2: "Génie Civil",
+    //     3: "Énergie, Transports et Urbanisme",
+    //     4: "Stratégie, Finance et Économie",
+    //     5: "Génie Industriel et Marketing",
+    //     6: "Informatique",
+    //     7: "Traduction technique"
+    // }
+    //
+    // var titleIndex = {
+    //     0: "",
+    //     1: " Monsieur",
+    //     2: " Madame"
+    // }
 
-    function defaultValues()
-    {
-        $("#objectInput").val("Ponts Études Projets");
-        $("#companyInput").val("");
-        $("#mail_sendAs").val($("#mail_sendAs option:first").val());
-        mailAttributesList = [];
-    }
-    defaultValues();
+    // function defaultValues()
+    // {
+    //     $("#objectInput").val("Ponts Études Projets");
+    //     $("#companyInput").val("");
+    //     $("#mail_sendAs").val($("#mail_sendAs option:first").val());
+    //     mailAttributesList = [];
+    // }
+    // defaultValues();
 
-    $.ajax({
-        type: 'POST',
-        url: "{{ path("gs_mailer_loadMailSession") }}",
-        data: {},
-        dataType: "json",
-        success: function(data){
-            if(data.mailList != undefined){
-                mailAttributesList = JSON.parse(data.mailList);
-            }
-            if(data.object != undefined){
-                $("#objectInput").val(data.object);
-            }
-            if(data.company != undefined){
-                $("#companyInput").val(data.company);
-            }
-            if(data.sendAsId != undefined){
-                $("#mail_sendAs").val(data.sendAsId);
-            }
-
-            refreshSender();
-            refreshMails();
-        }
-    });
+    // $.ajax({
+    //     type: 'POST',
+    //     url: "{{ path("gs_mailer_loadMailSession") }}",
+    //     data: {},
+    //     dataType: "json",
+    //     success: function(data){
+    //         if(data.mailList != undefined){
+    //             mailAttributesList = JSON.parse(data.mailList);
+    //         }
+    //         if(data.object != undefined){
+    //             $("#objectInput").val(data.object);
+    //         }
+    //         if(data.company != undefined){
+    //             $("#companyInput").val(data.company);
+    //         }
+    //         if(data.sendAsId != undefined){
+    //             $("#mail_sendAs").val(data.sendAsId);
+    //         }
+    //
+    //         refreshSender();
+    //         refreshMails();
+    //     }
+    // });
 
     // $(document).ready(function() {
     //     $("#mail_sendAs").val(data.sendAsId);
     // };
 
-    function saveToSession()
-    {
-
-        var object = $("#objectInput").val();
-        var company = $("#companyInput").val();
-        var sendAsId = $("#mail_sendAs").val();
-
-
-        $.ajax({
-            type: 'POST',
-            url: "{{ path("gs_mailer_saveMailSession") }}",
-            data: {mailList: JSON.stringify(mailAttributesList), object: object, company: company, sendAsId: sendAsId},
-            dataType: "json",
-            success: function(data){
-                refreshMails();
-            }
-        });
-    }
-
-    function deleteSession()
-    {
-        defaultValues();
-        saveToSession();
-        refreshMails();
-    }
+    // function saveToSession()
+    // {
+    //
+    //     var object = $("#objectInput").val();
+    //     var company = $("#companyInput").val();
+    //     var sendAsId = $("#mail_sendAs").val();
+    //
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ path("gs_mailer_saveMailSession") }}",
+    //         data: {mailList: JSON.stringify(mailAttributesList), object: object, company: company, sendAsId: sendAsId},
+    //         dataType: "json",
+    //         success: function(data){
+    //             refreshMails();
+    //         }
+    //     });
+    // }
+    //
+    // function deleteSession()
+    // {
+    //     defaultValues();
+    //     saveToSession();
+    //     refreshMails();
+    // }
 
     // Display or hide delayed input
     function toggleDelayedInput()
     {
-        if($("#delayCheckbox:checked").length>0)
+        if($("#prospe_mail_toggleDelayedInput:checked").length>0)
             $(".datePicker").css("display", "block");
         else
             $(".datePicker").css("display", "none");
@@ -223,16 +241,20 @@
 
     ///////////// DELAYED INPUT GENERATION (DATE, HOUR...) ///////////////
 
-    function getDelayedDateTime(){
-
-        var year = $("#mail_delayedDate_date_year").val();
-        var month = $("#mail_delayedDate_date_month").val();
-        var day = $("#mail_delayedDate_date_day").val();
-        var hour = $("#mail_delayedDate_time_hour").val();
-        var minute = $("#mail_delayedDate_time_minute").val();
-
-        return year+"-"+month+"-"+day+" "+hour+":"+minute;
-    }
+    $("#prospe_mail_toggleDelayedInput").click(function() {
+        toggleDelayedInput();
+    });
+    //
+    // function getDelayedDateTime(){
+    //
+    //     var year = $("#mail_delayedDate_date_year").val();
+    //     var month = $("#mail_delayedDate_date_month").val();
+    //     var day = $("#mail_delayedDate_date_day").val();
+    //     var hour = $("#mail_delayedDate_time_hour").val();
+    //     var minute = $("#mail_delayedDate_time_minute").val();
+    //
+    //     return year+"-"+month+"-"+day+" "+hour+":"+minute;
+    // }
 
 
     ///////////// MAIL PREVIEW BOX ///////////////
@@ -255,93 +277,102 @@
     }
 
     ///////////// MAIL FUNCTIONS ///////////////
+    function getProspeMailFromResponse(response)
+    {
+        newProspeMail = JSON.parse(response.newProspeMail)
+        newProspeMail.duplicatedInfos = JSON.parse(response.duplicatedInfos)
+        newProspeMail.multiple = newProspeMail.duplicatedInfos.length != 0
+        newProspeMail.pseudo_id = response.pseudo_id
+        newProspeMail.registered = response.registered
+        newProspeMail.sent = (newProspeMail.mail.sentDate != null)
+        newProspeMail.scheduled = newProspeMail.mail.scheduledDate != null
+        newProspeMail.error = false
+        newProspeMail.red_content = response.red_content
 
-
-    // Get the string from checked scpecialization inputs values
-    function getSpecializationString(){
-        var selected = [];
-        var string = "";
-        $('.specializationInput:checked').each(function() {
-            selected.push($(this).attr('value'));
-        });
-        if(selected.length == 1){
-            string = selected[0];
-        }
-        else{
-            for (var i = 0; i < selected.length; i++) {
-                string = string + selected[i];
-                if(i < selected.length-2){
-                    string += ", en ";
-                }
-                else if(i == selected.length-2){
-                    string += " et en ";
-                }
-            }
-        }
-        return string;
+        return newProspeMail
     }
 
-    // Delete a mail entry by id in the pending mail queue
-    function deleteMailAttribute(id){
+    prospeMailList = []
+    function load(){
+        var url = "{{ path('gs_mailer_prospeMailLoad') }}"
+        $.post(url, null, function(listOfResponse) {
+            for (var i = 0; i < listOfResponse.length; i++) {
+                newProspeMail = getProspeMailFromResponse(listOfResponse[i])
+                prospeMailList.push(newProspeMail)
+            }
+            refreshMailsImproved()
+        }, 'JSON');
+    }
+    load()
+
+    $('#form').submit(function(e) {
+
+        e.preventDefault();
+        var url = "{{ path('gs_mailer_prospeMailAdd') }}";
+        var formSerialize = $(this).serialize();
+
+        $.post(url, formSerialize, function(response) {
+            //your callback here
+            newProspeMail = getProspeMailFromResponse(response)
+            prospeMailList.push(newProspeMail)
+            if(newProspeMail.multiple)
+                previewMultipleMails(newProspeMail.pseudo_id)
+            refreshMailsImproved()
+        }, 'JSON');
+    });
+
+    function deleteProspeMail(id){
         temp = [];
-        for (var i = 0; i < mailAttributesList.length; i++) {
-            if(mailAttributesList[i].id != id){
-                temp.push(mailAttributesList[i]);
+        for (var i = 0; i < prospeMailList.length; i++) {
+            if(prospeMailList[i].pseudo_id != id){
+                temp.push(prospeMailList[i]);
             }
         }
-        mailAttributesList = temp;
+        prospeMailList = temp;
+        refreshMailsImproved();
 
-        refreshMails();
+        //Sync with session
+        var url = "{{ path('gs_mailer_prospeMailRemove') }}"
+        $.post(url, {pseudo_id: id}, function(response) {
+        }, 'JSON');
     }
 
-    // Renvoie dans un string un mail et ses attributs bien présentés
-    function getMailContent(mailAttributes, content){
-        var string = "<div class='row'><div class='col-md-12'>";
-        string += "De : "+mailAttributes.fromAlias+" ("+mailAttributes.from+")<br>";
-        string += "À : "+mailAttributes.name+" ("+mailAttributes.recipient+")<br>";
-        string += "Objet : ";
-        if(mailAttributes.object == "" || mailAttributes.object == undefined){
-            string += "<b style='color: red;'>Aucun objet !</b>";
+    function sendProspeMail(id){
+        var url = "{{ path('gs_mailer_prospeMailSend') }}"
+        $.post(url, {pseudo_id: id}, function(response) {
+            // maj de l'état à faire
+            for (var i = 0; i < prospeMailList.length; i++) {
+                if(prospeMailList[i].pseudo_id == id){
+                    prospeMailList[i].registered = response.registered
+                    prospeMailList[i].sent = response.sent
+                    prospeMailList[i].scheduled = prospeMailList[i].mail.scheduledDate != null
+                }
+            }
+            refreshMailsImproved()
+        }, 'JSON');
+    }
+
+    function sendAll(){
+        for(i=0; i<prospeMailList.length; i++){
+            if(!prospeMailList[i].registered)
+                sendProspeMail(prospeMailList[i].pseudo_id);
+        }
+    }
+
+    function refreshMailsImproved() {
+        var n = prospeMailList.length;
+        if (prospeMailList != null && n > 0) {
+            $("#mailList").html(getMailRowImproved(prospeMailList[n-1]));  //On efface le paragraphe
+            for (var i = 1; i < n; i++) {
+                $("#mailList").html($("#mailList").html() + getMailRowImproved(prospeMailList[n-i-1]));
+            }
         }
         else {
-            string += mailAttributes.object
-        }
-        string += "<br><hr><br>"+content+"</div></div><br><br>";
-        return string;
-    }
-
-    // Affiche dans le modal la prévisualisation du mail id
-    function previewMail(id){
-        for (var i = 0; i < mailAttributesList.length; i++) {
-            if(mailAttributesList[i].id == id){
-                var string = getMailContent(mailAttributesList[i], getHtml(mailAttributesList[i], "preview"));
-                $("#modalContent").html(string);
-                modal.style.display = "block";  //Open the moadl
-                break;
-            }
+            $("#mailList").html("Aucun destinataire");
         }
     }
 
-    // Affiche dans le modal tous les mails qui ont déjà été envoyés avec la même adresse mail que le mail id
-    function previewMultipleMails(id){
-        for (var i = 0; i < mailAttributesList.length; i++) {
-            if(mailAttributesList[i].id == id){
-                var multipleMails = mailAttributesList[i].multipleMails;
-                var string = "";
-                for (var i = 0; i < multipleMails.length; i++) {
-                    var mail = multipleMails[i];
-                    string += getMailContent(mail, mail.content);
-                }
-                $("#modalContent").html(string);
-                modal.style.display = "block";  //Open the moadl
-                break;
-            }
-        }
-
-    }
-
-    // Renvoie une string correspondant à une nouvelle ligne (nouvelle entrée de mail)
-    function getMailRow(mailAttributes){
+    function getMailRowImproved(prospeMail){
         var imgDeleteData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJGSURBVGhD7ZnLSsNAFIaLPoT6GmLiQqGQCCqICNIquGmXCi7d6kpRFMU3EPsIXjZCN2JVfAEvO1FBRTdJWwvimNPOlNaexJOEmZQ2P3ybyWRyvsyEkEwiTpw4cTorLJXqtYzhedvUc7ahn6nEMrVDyxyaY2uJHl5OsNjjgwOWod84EixKLFO/tpNaPy/LX6ozYWpX2MBR4NzQQqCZ4csJHTQqYJnx8uhxTsz9HShq4Jnh5dFjm1oeGyxatDwvjx7b0M7xwSLEqYmXR09XipRXlpk9PoIe+4/iVBJtR5EpUtnZYOztg32fHvuWqexusp/be1ZamEGPtyBLREiw988qfmRAQpxHlpEhUpydYD+PT/ViBBSZRgkByBSnDbR/HVkzUl7KOjLPLUV5yWASALRj/ZuQJQL4kQklAcgUASgyoSUA2SKAl0xlf7ulHfAlAagQAdxkMHxLAKpEAIpMIAlApQgAMuzlFZdwlhl2DgnVIm4PNkB5z7iiUsRLQhBYRpWIqwSyzALJqBBxk4B2ynuGhGwRLwnRx1Xm5IguI1OEIiEILSNLxI+EIJSMDJFSJt30LSLwkhBgMvBJUMqk0P51ZM3I1/pqkwxFQtAoAxLlxSzarwlZIoCQqextoce9qMrcPdAkAJkiACwzrJ3E5CjejiFbRBndLdIpv0zhhzE+WHQE+ondltsKhp7i5dFT23LTC9iAURB4owdS23rTLrGBFXPhrJA+XlawwF2wxrS0c0cOsA1LmcA14dqhN0PjxIkTp82SSPwCQFNrym7ccbIAAAAASUVORK5CYII=";
 
         var imgEyeData =
@@ -353,191 +384,361 @@
         +"OIioqCiFioWBhREMEqjQQLay3UwkL/guAPCBIEiRALde98xY9c71nO4brLye7MvXd2ZzUvPDCcfQfOw+wkN2ls5n9JJwx2yih4JSORyTBYi8PgbRJOBfjxZKTTbrbiSHTiKFB/o4XyJAyOYK3eQQnZL0HA06m9zDAJotYyRSWIWsqUlSBqJWMrQdRCxlWCGKuMLwliLDK+JYiRylQlQYxEpoxEen5OrS0u9AAzrttPpTJln0R+77bqD8y4LkclMjZfp/zuLVzfBGZcdyO8yti+E9nNq7i+Ccy47iC8yLi82Nn1y7i+Ccy47jCcZFwkgOzKOVzfBGZctwhWMq4SQHphDtc3gRnXLUopGR8SQHr2BK5vAjOuW4ZCMr4kgOTkLK5vAjOuW5aBMt/bze367+pv3I02JMcP4/omMOO6NnRl2mIa1zeRoXjK3WBLMhvi+iYw47r2iDe4vomMxDJftuTQXlzfBGZs1xL4Dw2ub6LtlriyC/3hOm4Iieub6OECX7ZH5Tkq6OhrruNEKJ7j+ibxgd1b9Au0wt5gyXos0UJ1r7mONfoHU2f/1A5cvzdyn9ilC6vsjRasf1lFDS2ir7mOHULCrwpcm49PGTiSwPmqi8PxpJcCEhTfT8YfJSQoXmTaTZVeOq2yaxdVfLDFdwpjIUFxkplpqV/v3+Ebot+RlU8qOXWU7w7FQYJiK5M/uIMKJj9ePGO7g/EgQbGRyR/dx/VNfr5+yXY3xqMEpawMnKt+f1xGBf3Vkh2VnilzjK9AglL6yeizVT5/Q+UP51VybIbvsFQoQXH6AVCIEUhQqpMZoQTFv8wYJCj+ZMYoQXGXqYEExV6mRhKU8jI1lKAUl6mxBGW4zARIUEBGRsFnRuTrxEhQknDPVhmKx/oJLMkw+KCvn2TR9Db8eDP/eBqNP0aPUTEL5Io4AAAAAElFTkSuQmCC";
 
         var string = "";
-        if(mailAttributes.multiple){
-            if(mailAttributes.sent)
+        if(prospeMail.multiple){
+            if(prospeMail.sent)
                 string += "<div class='row' style='color: green; background-color: #ffe6e6;'>";
             else
                 string += "<div class='row' style='background-color: #ffe6e6;'>";
         }
-        else if(mailAttributes.sent){
+        else if(prospeMail.registered && prospeMail.sent){
             string += "<div class='row' style='color: green;'>";
         }
-        else if(mailAttributes.sent){
-            string += "<div class='row' style='color: green;'>";
+        else if(prospeMail.registered && prospeMail.scheduled){
+            string += "<div class='row' style='color: orange;'>";
         }
-        else if(mailAttributes.error){
+        else if(prospeMail.error){
             string += "<div class='row' style='color: red;'>";
         }
         else{
             string += "<div class='row'>";
         }
         string += "<div class='col-md-1'>"
-            string += "<img width='20' height='20' src='"+imgDeleteData+"' style='cursor: pointer;' onclick='deleteMailAttribute("+mailAttributes.id+")'>"
-            string += "<img width='20' height='20' src='"+imgEyeData+"' style='cursor: pointer;' onclick='previewMail("+mailAttributes.id+")'>"
+            string += "<img width='20' height='20' src='"+imgDeleteData+"' style='cursor: pointer;' onclick='deleteProspeMail("+prospeMail.pseudo_id+")'>"
+            string += "<img width='20' height='20' src='"+imgEyeData+"' style='cursor: pointer;' onclick='previewMail("+prospeMail.pseudo_id+")'>"
         string += "</div>";
         string += "<div class='col-md-3'>";
-            if (mailAttributes.multiple)
-                string += "<img width='20' height='20' src='"+imgDangerData+"' style='cursor: pointer;' onclick='previewMultipleMails("+mailAttributes.id+")'>&nbsp;";
-            if(mailAttributes.multiple && ! mailAttributes.sent){
-                string += "<b style='color: red;'>"+mailAttributes.recipient+"</b>";
+            if (prospeMail.multiple)
+                string += "<img width='20' height='20' src='"+imgDangerData+"' style='cursor: pointer;' onclick='previewMultipleMails("+prospeMail.pseudo_id+")'>&nbsp;";
+            if(prospeMail.multiple && ! prospeMail.sent){
+                string += "<b style='color: red;'>"+prospeMail.mail.recipientEmail+"</b>";
             }
-            else if(mailAttributes.recipient == "" || mailAttributes.recipient == undefined){
+            else if(prospeMail.mail.recipientEmail == "" || prospeMail.mail.recipientEmail == undefined){
                 string += "<b style='color: red;'>Aucun destinataire !</b>";
             }
             else {
-                string += mailAttributes.recipient
+                string += prospeMail.mail.recipientEmail
             }
         string += "</div>";
         string += "<div class='col-md-2'>"
-            string += mailAttributes.title;
+            string += prospeMail.gender == null ? "" : prospeMail.gender.name;
         string += "</div>";
         string += "<div class='col-md-2'>"
-            string += mailAttributes.name
+            string += prospeMail.recipientName
             string += "</div>";
         string += "<div class='col-md-2'>"
-            if(mailAttributes.company == "" || mailAttributes.company == undefined){
+            if(prospeMail.company == "" || prospeMail.company == undefined){
                 string += "<b style='color: red;'>Aucune entreprise !</b>";
             }
             else {
-                string += mailAttributes.company
+                string += prospeMail.company
             }
         string += "</div>";
         string += "<div class='col-md-2'>"
-            if(mailAttributes.object == "" || mailAttributes.object == undefined){
+            if(prospeMail.mail.subject == "" || prospeMail.mail.subject == undefined){
                 string += "<b style='color: red;'>Aucun objet !</b>";
             }
-            else if(mailAttributes.specialization == "" || mailAttributes.specialization == undefined){
-                string += "<b style='color: red;'>Aucune spécialisation !</b>";
-            }
+            // else if(prospeMail.specialization == "" || mailAttributes.specialization == undefined){
+            //     string += "<b style='color: red;'>Aucune spécialisation !</b>";
+            // }
         string += "</div>";
         string += "</div>";
 
         return string;
     }
 
+    // Get the string from checked scpecialization inputs values
+    // function getSpecializationString(){
+    //     var selected = [];
+    //     var string = "";
+    //     $('.specializationInput:checked').each(function() {
+    //         selected.push(specializationIndex[$(this).val()]);
+    //         // selected.push($(this).attr('value'));
+    //     });
+    //     if(selected.length == 1){
+    //         string = selected[0];
+    //     }
+    //     else{
+    //         for (var i = 0; i < selected.length; i++) {
+    //             string = string + selected[i];
+    //             if(i < selected.length-2){
+    //                 string += ", en ";
+    //             }
+    //             else if(i == selected.length-2){
+    //                 string += " et en ";
+    //             }
+    //         }
+    //     }
+    //     return string;
+    // }
+
+    // function getSpecializationIdArray(){
+    //     var selectedId = []
+    //     $('.specializationInput:checked').each(function() {
+    //         selectedId.push($(this).val());
+    //     });
+    //     return selectedId
+    // }
+
+    // Delete a mail entry by id in the pending mail queue
+    // function deleteMailAttribute(id){
+    //     temp = [];
+    //     for (var i = 0; i < mailAttributesList.length; i++) {
+    //         if(mailAttributesList[i].id != id){
+    //             temp.push(mailAttributesList[i]);
+    //         }
+    //     }
+    //     mailAttributesList = temp;
+    //
+    //     refreshMails();
+    // }
+
+    // Renvoie dans un string un mail et ses attributs bien présentés
+    // function getMailContent(prospeMail){
+    //     var string = "<div class='row'><div class='col-md-12'>";
+    //     string += "De : "+prospeMail.mail.fromAlias+" ("+prospeMail.mail.from+")<br>";
+    //     string += "À : "+prospeMail.recipientName+" ("+prospeMail.mail.recipientEmail+")<br>";
+    //     string += "Objet : ";
+    //     if(prospeMail.mail.subject == "" || prospeMail.mail.subject == undefined){
+    //         string += "<b style='color: red;'>Aucun objet !</b>";
+    //     }
+    //     else {
+    //         string += prospeMail.mail.subject
+    //     }
+    //     string += "<br><hr><br>"+content+"</div></div><br><br>";
+    //     return string;
+    // }
+
+    // Affiche dans le modal la prévisualisation du mail id
+    function previewMail(id){
+        for (var i = 0; i < prospeMailList.length; i++) {
+            if(prospeMailList[i].pseudo_id == id){
+                $("#modalContent").html(prospeMailList[i].red_content);
+                modal.style.display = "block";  //Open the moadl
+                break;
+            }
+        }
+    }
+
+    // Affiche dans le modal tous les mails qui ont déjà été envoyés avec la même adresse mail que le mail id
+    function previewMultipleMails(id){
+        for (var i = 0; i < prospeMailList.length; i++) {
+            if(prospeMailList[i].pseudo_id == id){
+                var duplicatedInfos = prospeMailList[i].duplicatedInfos;
+                var nbMails = duplicatedInfos.length
+                var string = "<h1>"+(nbMails > 1 ? "Plusieurs mails ont déjà été envoyés ":"Un mail a déjà été envoyé ")+"à cette adresse : </h1>";
+                for (var i = 0; i < nbMails; i++) {
+                    var red_content = duplicatedInfos[i].red_content;
+                    string += red_content+'<br>';
+                }
+                $("#modalContent").html(string);
+                modal.style.display = "block";  //Open the moadl
+                break;
+            }
+        }
+
+    }
+
+    // Renvoie une string correspondant à une nouvelle ligne (nouvelle entrée de mail)
+    // function getMailRow(mailAttributes){
+    //     var imgDeleteData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJGSURBVGhD7ZnLSsNAFIaLPoT6GmLiQqGQCCqICNIquGmXCi7d6kpRFMU3EPsIXjZCN2JVfAEvO1FBRTdJWwvimNPOlNaexJOEmZQ2P3ybyWRyvsyEkEwiTpw4cTorLJXqtYzhedvUc7ahn6nEMrVDyxyaY2uJHl5OsNjjgwOWod84EixKLFO/tpNaPy/LX6ozYWpX2MBR4NzQQqCZ4csJHTQqYJnx8uhxTsz9HShq4Jnh5dFjm1oeGyxatDwvjx7b0M7xwSLEqYmXR09XipRXlpk9PoIe+4/iVBJtR5EpUtnZYOztg32fHvuWqexusp/be1ZamEGPtyBLREiw988qfmRAQpxHlpEhUpydYD+PT/ViBBSZRgkByBSnDbR/HVkzUl7KOjLPLUV5yWASALRj/ZuQJQL4kQklAcgUASgyoSUA2SKAl0xlf7ulHfAlAagQAdxkMHxLAKpEAIpMIAlApQgAMuzlFZdwlhl2DgnVIm4PNkB5z7iiUsRLQhBYRpWIqwSyzALJqBBxk4B2ynuGhGwRLwnRx1Xm5IguI1OEIiEILSNLxI+EIJSMDJFSJt30LSLwkhBgMvBJUMqk0P51ZM3I1/pqkwxFQtAoAxLlxSzarwlZIoCQqextoce9qMrcPdAkAJkiACwzrJ3E5CjejiFbRBndLdIpv0zhhzE+WHQE+ondltsKhp7i5dFT23LTC9iAURB4owdS23rTLrGBFXPhrJA+XlawwF2wxrS0c0cOsA1LmcA14dqhN0PjxIkTp82SSPwCQFNrym7ccbIAAAAASUVORK5CYII=";
+    //
+    //     var imgEyeData =
+    //     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAZjSURBVGhD7ZhZbBtFGMc3vaAgEKDyADwhXpDoU9WnPiAhRCsh3iiiHKLQU/QACqJQJFqEKiH1iO0AoRc0je22SWwndd20aZLaOUjSJo7tJvHa3o2bw0mc24kTN46P4Zv1uO7uTtK0SUsf9id9iuWd+b7/NzPft+MwCgoKCgoKCgozoyktfSJba1ylyjd+ptKavlfrjAdVOtOvap3hO7XeuEGdb1x5wGpdQoY/XhwtKHghW2fcqdIZy0D0bbXOhGYzSDAMYw1qrWnj8ePmp4ib/48cveF1EJQHgiI0wXMyrSkEf1VH8wpeIW4fHTgoCNCBgIRI1DwM7yTs1BHV6eLnSJiHB0IoS6M17sZHgyYmbRp9MTpWZInmmctGdZbKAe2l8sG8krJQbsHFGG28xHqhxtaTkAvPEb15hUprvEgJLFgOiNdfvhZsbPPwt6eiU5A0lfBkZKLW0cadMZcPq3XFVF/EjkHtLSfhFwaNzvAWOA5IAgmWc7YkabbVd4QjkTDRKjCVSCDHaBhZ+obRleAIah2bRPFkkjxNMRwKDxaWVfVoKH6xwXFryT5b9AaRMT+ENqozTUuD4ONzrvRacGQ8PEp0CWDxG6670TMltYgxVIlsxcU6tNXuQx2Tt8noFIHgUM8ZOIbSGNigmYzhhSRyHgxIYB8cp6TUee55c5z1d/uJDoEYrPZXTh4tMorF02yZqRod8naTmRkabrK+32GHpfGgsURVOsOHRNb9AS+yQzKHYHjl4JyPkdgC0UQSrau5SRU9m22D3ZEyMBwKnjRdlrVzvKDQBLYQeXMDJv0idYStxFrXkQRIzDtgQTShc7HDlJ2ZjsWm9JcqB"+
+    //     "qTxoVvGYXc+JTJnB7dXqQM11EPFdQdH4oioGQxRBd4xfRlizpXTn4E9WVyDuiLyJocXzFBe3S3VIiSjM71H5NLRaE1ryUBREv86W+RngLB2piP1hxYxu75FzOdbUvbND4g5UUQdu4O+RgJmW90tkR5s+DYAdzYiW4zmnOk1cl0QTbI2umZMYjgaQ4uN1XJxOWcQ88XWTBJp27QdMScNsvEvWeoRlNmMGCtquqS6oIa5XL3leSI/xYHCwmXw0C4dbLHVizqTFPyOkIpiimyI2b5bnkTa9uyTzwHjwhHiVQ4+Znq4IUj1QVc1kRRSwJcq6SCtpWIQOyC+qJy61ScX9U8JPYG04Z0qqJTNsw6IXkcyoAFET5lK5d1Mb/qSpAFdCi5qeJuu1tpX32j1TjS2eRHXGbARHzNywt8rE3TPRLBREqm8RyJ4UVv4jgasrbHV032hrOFVrFmjLX2WpCHG7uU3NLNcEltwaLSW+KFi7h2SCWKKrIjZtpOeALav98rngHlnOVoYf0/Q6vDwqNnDR0HbGiJ3dhws91t60shY2E58yeifmqa/ybP/pieBj9Vf52XjX4Sri/QedjeB/qEqvLCCJje/kci8NzB3UbOHM+KJDg83OTYx6Uq5lPOmzSkTJhhOZvuuTBI79iDmTz117OYmL/Emp29opBaSSAhaYIGJxLnT2tq6DCZeSiczPDp+g/gWcbV/hCpOMNzB8i4gJt+S+kwZsxTuXTN1rEBwEO9EKgkPn0Ok3T91XV3LM8nwMbw6JIaIj66zVJFzsf1tHcRLBlzY/kCvUBOCsVwufJ1FZD0YTU1NS+GYnU479XUGqhKJhOhOMRlPoDVWB1XobPZBgxtJKyMWj4daoTul40Gd7idS5g/4zwKHB9MF5/K1u6ei0a5U6BQRSOaTG3PbGdwgfmzxy97mUIstTg8fEBJg+SmHl9tKJCwszV7+XQfLDwirxXKRdtj+eDw+QXQI4Bfb"+
+    //     "29UutIRydVkOF8T369uQKySagl92w56O7upMPXA+O8uvJmEfDnaWfRkCVqYCCtaHaweO2zTRJYDvYWXwEzevI4i0nf1CghOxOHmaAi9CZ1+/DRYldMcfy+c3+Hz0l9xCAxqycD+HlevLJMQF8Q7Bjy53SiadRDIZD42HnXBzqALRY3fN9zlZbh0J8WhxOp1Pg4i9IKI3IwgXKDfSwvvt+Ljw3T02bJ5b3dUun98FtRa+eywY1+zxbbY+Dv9GFTob61sPoopA6LhEqNyEOuPymt3t78Amza+tPixwUi43t8rJtm+CpH6G7nMUxB+GuvoJPn/sdPMrCxFaTIYrKCgoKCgoKMhgmP8A8hlz7X12SVkAAAAASUVORK5CYII=";
+    //
+    //     var imgDangerData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAALUSURBVGhD7Zg9axRRFIb3b4idIIh2JnfWYi2cWTSKBAULFV"
+    //     +"OIioqCiFioWBhREMEqjQQLay3UwkL/guAPCBIEiRALde98xY9c71nO4brLye7MvXd2ZzUvPDCcfQfOw+wkN2ls5n9JJwx2yih4JSORyTBYi8PgbRJOBfjxZKTTbrbiSHTiKFB/o4XyJAyOYK3eQQnZL0HA06m9zDAJotYyRSWIWsqUlSBqJWMrQdRCxlWCGKuMLwliLDK+JYiRylQlQYxEpoxEen5OrS0u9AAzrttPpTJln0R+77bqD8y4LkclMjZfp/zuLVzfBGZcdyO8yti+E9nNq7i+Ccy47iC8yLi82Nn1y7i+Ccy47jCcZFwkgOzKOVzfBGZctwhWMq4SQHphDtc3gRnXLUopGR8SQHr2BK5vAjOuW4ZCMr4kgOTkLK5vAjOuW5aBMt/bze367+pv3I02JMcP4/omMOO6NnRl2mIa1zeRoXjK3WBLMhvi+iYw47r2iDe4vomMxDJftuTQXlzfBGZs1xL4Dw2ub6LtlriyC/3hOm4Iieub6OECX7ZH5Tkq6OhrruNEKJ7j+ibxgd1b9Au0wt5gyXos0UJ1r7mONfoHU2f/1A5cvzdyn9ilC6vsjRasf1lFDS2ir7mOHULCrwpcm49PGTiSwPmqi8PxpJcCEhTfT8YfJSQoXmTaTZVeOq2yaxdVfLDFdwpjIUFxkplpqV/v3+Ebot+RlU8qOXWU7w7FQYJiK5M/uIMKJj9ePGO7g/EgQbGRyR/dx/VNfr5+yXY3xqMEpawMnKt+f1xGBf3Vkh2VnilzjK9AglL6yeizVT5/Q+UP51VybIbvsFQoQXH6AVCIEUhQqpMZoQTFv8wYJCj+ZMYoQXGXqYEExV6mRhKU8jI1lKAUl6mxBGW4zARIUEBGRsFnRuTrxEhQknDPVhmKx/oJLMkw+KCvn2TR9Db8eDP/eBqNP0aPUTEL5Io4AAAAAElFTkSuQmCC";
+    //
+    //     var string = "";
+    //     if(mailAttributes.multiple){
+    //         if(mailAttributes.sent)
+    //             string += "<div class='row' style='color: green; background-color: #ffe6e6;'>";
+    //         else
+    //             string += "<div class='row' style='background-color: #ffe6e6;'>";
+    //     }
+    //     else if(mailAttributes.sent){
+    //         string += "<div class='row' style='color: green;'>";
+    //     }
+    //     else if(mailAttributes.sent){
+    //         string += "<div class='row' style='color: green;'>";
+    //     }
+    //     else if(mailAttributes.error){
+    //         string += "<div class='row' style='color: red;'>";
+    //     }
+    //     else{
+    //         string += "<div class='row'>";
+    //     }
+    //     string += "<div class='col-md-1'>"
+    //         string += "<img width='20' height='20' src='"+imgDeleteData+"' style='cursor: pointer;' onclick='deleteMailAttribute("+mailAttributes.id+")'>"
+    //         string += "<img width='20' height='20' src='"+imgEyeData+"' style='cursor: pointer;' onclick='previewMail("+mailAttributes.id+")'>"
+    //     string += "</div>";
+    //     string += "<div class='col-md-3'>";
+    //         if (mailAttributes.multiple)
+    //             string += "<img width='20' height='20' src='"+imgDangerData+"' style='cursor: pointer;' onclick='previewMultipleMails("+mailAttributes.id+")'>&nbsp;";
+    //         if(mailAttributes.multiple && ! mailAttributes.sent){
+    //             string += "<b style='color: red;'>"+mailAttributes.recipient+"</b>";
+    //         }
+    //         else if(mailAttributes.recipient == "" || mailAttributes.recipient == undefined){
+    //             string += "<b style='color: red;'>Aucun destinataire !</b>";
+    //         }
+    //         else {
+    //             string += mailAttributes.recipient
+    //         }
+    //     string += "</div>";
+    //     string += "<div class='col-md-2'>"
+    //         string += mailAttributes.title;
+    //     string += "</div>";
+    //     string += "<div class='col-md-2'>"
+    //         string += mailAttributes.name
+    //         string += "</div>";
+    //     string += "<div class='col-md-2'>"
+    //         if(mailAttributes.company == "" || mailAttributes.company == undefined){
+    //             string += "<b style='color: red;'>Aucune entreprise !</b>";
+    //         }
+    //         else {
+    //             string += mailAttributes.company
+    //         }
+    //     string += "</div>";
+    //     string += "<div class='col-md-2'>"
+    //         if(mailAttributes.object == "" || mailAttributes.object == undefined){
+    //             string += "<b style='color: red;'>Aucun objet !</b>";
+    //         }
+    //         else if(mailAttributes.specialization == "" || mailAttributes.specialization == undefined){
+    //             string += "<b style='color: red;'>Aucune spécialisation !</b>";
+    //         }
+    //     string += "</div>";
+    //     string += "</div>";
+    //
+    //     return string;
+    // }
+
 
     // Affiche toutes les entrées de mailAttributesList
-    function refreshMails() {
-        var n = mailAttributesList.length;
-        if (mailAttributesList != null && n > 0) {
-            $("#mailList").html(getMailRow(mailAttributesList[n-1]));  //On efface le paragraphe
-            for (var i = 1; i < n; i++) {
-                $("#mailList").html($("#mailList").html() + getMailRow(mailAttributesList[n-i-1]));
-            }
-
-            $("#output").html(getHtml(mailAttributesList[0], 'send'));
-        }
-        else {
-            $("#mailList").html("Aucun destinataire");
-        }
-    }
+    // function refreshMails() {
+    //     var n = mailAttributesList.length;
+    //     if (mailAttributesList != null && n > 0) {
+    //         $("#mailList").html(getMailRow(mailAttributesList[n-1]));  //On efface le paragraphe
+    //         for (var i = 1; i < n; i++) {
+    //             $("#mailList").html($("#mailList").html() + getMailRow(mailAttributesList[n-i-1]));
+    //         }
+    //
+    //         $("#output").html(getHtml(mailAttributesList[0], 'send'));
+    //     }
+    //     else {
+    //         $("#mailList").html("Aucun destinataire");
+    //     }
+    // }
     // refreshMails();
-
-    var sendAsUser = {};
-    function refreshSender()
-    {
-        var sendAsId = $('#mail_sendAs').val();
-
-        $.ajax({
-            type: 'POST',
-            url: "{{ path("gs_mailer_homepage") }}"+"loadUser/"+sendAsId,
-            data: {},
-            dataType: "json",
-            success: function(data){
-                sendAsUser = JSON.parse(data);
-                $('#fromFirstNameInput').val(sendAsUser.firstName);
-                $('#fromLastNameInput').val(sendAsUser.lastName);
-                $('#fromInput').val(sendAsUser.email);
-                saveToSession();
-            }
-        });
-
-    }
+    //
+    // var sendAsUser = {};
+    // function refreshSender()
+    // {
+    //     var sendAsId = $('#mail_sendAs').val();
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{# path("gs_mailer_homepage") #}"+"loadUser/"+sendAsId,
+    //         data: {},
+    //         dataType: "json",
+    //         success: function(data){
+    //             sendAsUser = JSON.parse(data);
+    //             $('#fromFirstNameInput').val(sendAsUser.firstName);
+    //             $('#fromLastNameInput').val(sendAsUser.lastName);
+    //             $('#fromInput').val(sendAsUser.email);
+    //             saveToSession();
+    //         }
+    //     });
+    //
+    // }
     // refreshSender(); Pas besoin car l'appel est fait dans le chargement de session
 
     // Ajoute une nouvelle entrée dans mailAttributesList
-    function addMail()
-    {
-        //Save the attributes
-        mailAttributes = new Object();
-        mailAttributes.id = mailAttributesList.length;
-        mailAttributes.from = $('#fromInput').val();
-        mailAttributes.fromAlias = $("#fromFirstNameInput").val() + " " + $("#fromLastNameInput").val()
-        mailAttributes.recipient = $('#toInput').val();
-        mailAttributes.company = $('#companyInput').val();
-        mailAttributes.title = $('.titleInput:checked').val();
-        mailAttributes.name = $('#nameInput').val();
-        mailAttributes.specialization = getSpecializationString();
-        mailAttributes.object= $('#objectInput').val();
-        mailAttributes.error = false;
-        mailAttributes.sent = false;
-        mailAttributes.multiple = false;
-        mailAttributes.multipleMails = [];
-        mailAttributes.fromPhone = sendAsUser.phone;
-        mailAttributes.fromGender = sendAsUser.gender;
-        mailAttributes.fromPostName = sendAsUser.postName;
-        if($("#delayCheckbox:checked").length>0){
-            mailAttributes.scheduledDate = getDelayedDateTime();
-        }
-        else {
-            mailAttributes.scheduledDate = null;
-        }
-
-        mailAttributesList.push(mailAttributes);
-
-    }
+    // function addMail()
+    // {
+    //     //Save the attributes
+    //     mailAttributes = new Object();
+    //     mailAttributes.id = mailAttributesList.length;
+    //     mailAttributes.from = $('#fromInput').val();
+    //     mailAttributes.fromAlias = $("#fromFirstNameInput").val() + " " + $("#fromLastNameInput").val()
+    //     mailAttributes.recipient = $('#toInput').val();
+    //     mailAttributes.company = $('#companyInput').val();
+    //     mailAttributes.title = titleIndex[$('.titleInput:checked').val()];
+    //     mailAttributes.titleId = $('.titleInput:checked').val();
+    //     mailAttributes.name = $('#nameInput').val();
+    //     mailAttributes.specialization = getSpecializationString();
+    //     mailAttributes.specializationIdArray = getSpecializationIdArray();
+    //     mailAttributes.object= $('#objectInput').val();
+    //     mailAttributes.error = false;
+    //     mailAttributes.sent = false;
+    //     mailAttributes.multiple = false;
+    //     mailAttributes.multipleMails = [];
+    //     mailAttributes.fromPhone = sendAsUser.phone;
+    //     mailAttributes.fromGender = sendAsUser.gender;
+    //     mailAttributes.fromPostName = sendAsUser.postName;
+    //     mailAttributes.sendAsUserId = $("#mail_sendAs").val();
+    //     if($("#delayCheckbox:checked").length>0){
+    //         mailAttributes.scheduledDate = getDelayedDateTime();
+    //     }
+    //     else {
+    //         mailAttributes.scheduledDate = null;
+    //     }
+    //
+    //     mailAttributesList.push(mailAttributes);
+    //
+    // }
 
     // Déclenche addMail() et fait la requette pour savoir si d'autres mails ont été envoyés avec cette adresse
-    $("#addButton").click( function () {
-
-        addMail();
-        //Clear the attributes
-        $('#toInput').val("");
-        $('#nameInput').val("");
-
-        refreshMails();
-
-        mailAttributes = mailAttributesList[mailAttributesList.length-1]
-
-        $.ajax({
-            type: 'POST',
-            url: "{{ path("gs_mailer_verifyMail") }}",
-            data: {recipient: mailAttributes.recipient, id: mailAttributes.id},
-            dataType: "json",
-            success: function(data){
-                if(data.isMultiple){
-                    for (var i = 0; i < mailAttributesList.length; i++) {
-                        if(mailAttributesList[i].id == data.id){
-                            mailAttributes = mailAttributesList[i];
-                            mailAttributes.multiple = true;
-                            var multipleMail = new Object();
-                            var multipleMailsList = [];
-                            mailList = JSON.parse(data.multipleMails);
-                            // var mailList = data.multipleMails;
-                            // alert(mailList[0].from);
-                            var k = 0;
-                            for (var i = 0; i < mailList.length; i++) {
-                                var mail = mailList[i];
-                                multipleMail.from = mail.from;
-                                multipleMail.fromAlias = mail.fromAlias;
-                                multipleMail.recipient = mail.recipient;
-                                multipleMail.name = "";
-                                multipleMail.object= mail.object;
-                                multipleMail.content= mail.content;
-                                multipleMailsList.push(multipleMail);
-                                mailAttributes.multipleMails = multipleMailsList;
-                                k += 1;
-                            }
-                            // alert(""+k);
-                        }
-                    }
-                }
-                saveToSession();
-                refreshMails();
-            }
-        });
-
-    });
+    // $("#addButton").click( function () {
+    //
+    //     addMail();
+    //     //Clear the attributes
+    //     $('#toInput').val("");
+    //     $('#nameInput').val("");
+    //
+    //     refreshMails();
+    //
+    //     mailAttributes = mailAttributesList[mailAttributesList.length-1]
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         url: "{{ path("gs_mailer_verifyMail") }}",
+    //         data: {recipient: mailAttributes.recipient, id: mailAttributes.id},
+    //         dataType: "json",
+    //         success: function(data){
+    //             if(data.isMultiple){
+    //                 for (var i = 0; i < mailAttributesList.length; i++) {
+    //                     if(mailAttributesList[i].id == data.id){
+    //                         mailAttributes = mailAttributesList[i];
+    //                         mailAttributes.multiple = true;
+    //                         var multipleMail = new Object();
+    //                         var multipleMailsList = [];
+    //                         mailList = JSON.parse(data.multipleMails);
+    //                         // var mailList = data.multipleMails;
+    //                         // alert(mailList[0].from);
+    //                         var k = 0;
+    //                         for (var i = 0; i < mailList.length; i++) {
+    //                             var mail = mailList[i];
+    //                             multipleMail.from = mail.from;
+    //                             multipleMail.fromAlias = mail.fromAlias;
+    //                             multipleMail.recipient = mail.recipient;
+    //                             multipleMail.name = "";
+    //                             multipleMail.object= mail.object;
+    //                             multipleMail.content= mail.content;
+    //                             multipleMailsList.push(multipleMail);
+    //                             mailAttributes.multipleMails = multipleMailsList;
+    //                             k += 1;
+    //                         }
+    //                         // alert(""+k);
+    //                     }
+    //                 }
+    //             }
+    //             saveToSession();
+    //             refreshMails();
+    //         }
+    //     });
+    //
+    // });
 
 //   $("#toInput").on('paste', function(e) {
 //
@@ -555,120 +756,139 @@
 // });
 
     // Donne la signature sous forme html en fonction des attributs de l'utilisateur (poste, téléphone, nom...)
-    function getSignature(mailAttributes){
-        return '<table style="width: 509px; background-color: #fdfdfd;" class="mceItemTable" cellspacing="5" cellpadding="0" border="0" align="left" height="130">'+
-        '<tbody>'+
-        '<tr>'+
-        '<td style="text-align: center; width: 150px;">'+
-        '<div style="text-align: center;"><a href="http://pep.enpc.org"><img moz-do-not-send="false" src="https://pbs.twimg.com/profile_images/580072788721008640/YT4GZ0RK.png" width="100" height="100" /></a></div>'+
-        '<div style="text-align: center;"><a href="https://www.facebook.com/pontsetudespro/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://facebook.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
-            '<a href="https://twitter.com/pontsetudes"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://twitter.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
-            '<a href="https://www.linkedin.com/company-beta/423587/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=www.linkedin.com" width="16" height="16" /></a></div>'+
-        '</td>'+
-        '<td>'+
-        '<div><span style="font-size: 12pt;"><strong><strong><span style="font-family: \'trebuchet ms\', sans-serif;">'+mailAttributes.fromAlias+'</span></strong></strong></span><hr /><span style="font-size: xx-small;"><strong><span style="font-family: \'trebuchet ms\', sans-serif;"></span></strong></span></div>'+
-        '<div><span style="font-family: \'trebuchet ms\' , sans-serif; font-size: small; color: #404040;"><b>'+mailAttributes.fromPostName+'</b>&nbsp;chez</span><span style="color: #404040; font-family: \'trebuchet ms\', sans-serif; font-size: small;">&nbsp;Ponts Etudes Projets,</span></div>'+
-        '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">la Junior-Entreprise de l\'Ecole des Ponts ParisTech</span></div>'+
-        '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">&nbsp;</span></div>'+
-        '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: small; color: #336699; background-color: #ffffff;">'+
-            '<span class="Object" id="OBJ_PREFIX_DWT1173_com_zimbra_phone" style="cursor: pointer;">'+
-                '<span style="cursor: pointer;">'+mailAttributes.fromPhone+'&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span></span></span>'+
-                '<span class="Object" id="OBJ_PREFIX_DWT166_com_zimbra_url" style="color: #336699; cursor: pointer;"><a href="https://zimbra.enpc.fr/pep.enpc.org" title="Site Web" target="_blank" style="color: #336699; text-decoration: none; cursor: pointer;"><span style="color: #8e3232;"><em>pep.enpc.org</em>'+
-                '</span></a></span></div>'+
-        '</td>'+
-        '</tr>'+
-        '</tbody>'+
-        '</table>'
-        ;
-    }
-
-    // Renvoie le texte html correspondant à un mail avec les champs en rouge ou non selon option (preview/final)
-    function getHtml(mailAttributes, option){
-
-        var title;
-        var name;
-        var company;
-        var specialization;
-
-        var finalTitle;
-
-
-        if(option == "preview") {
-            title = '<b style="color: red;">'+mailAttributes.title+'</b>';
-            name = '<b style="color: red;">'+mailAttributes.name+'</b>';
-            company = '<b style="color: red;">'+mailAttributes.company+'</b>';
-            specialization = '<b style="color: red;">'+mailAttributes.specialization+'</b>';
-        }
-        else{
-            title = mailAttributes.title;
-            name = mailAttributes.name;
-            company = mailAttributes.company;
-            specialization = mailAttributes.specialization;
-        }
-        if(mailAttributes.title == "" && mailAttributes.name == "")
-            finalTitle = "";
-        else if(mailAttributes.name == "")
-            finalTitle = " "+title;
-        else if(mailAttributes.title != "") {
-            finalTitle = " "+title + " " + name;
-        }
-        else {
-            finalTitle = "";
-        }
-
-        var title = "Prospecteur";
-
-        if (mailAttributes.fromGender == 'Feminin'){
-            title = 'Prospectrice';
-        }
-
-        return 'Bonjour'+finalTitle+','+
-                    '<br><br>'+
-                        'Je suis Responsable Commercial de Ponts Etudes et Projets, la Junior Entreprise de l’école d’ingénieur des Ponts et Chaussées. Je me permets de vous contacter car <b>notre association s’occupe de faire réaliser des projets dispensés par des entreprises par les étudiants de notre école.</b>'+
-                    '<br><br>'+
-                        'Nous serions très intéressés pour travailler avec le groupe '+company+'. En effet, de par nos spécialisations poussées en '+specialization+', nous pensons avoir des projets à vous proposer qui pourraient vous intéresser.'+
-                    '<br><br>'+
-                        'Je souhaite donc savoir quand vous êtes disponible afin que je puisse succinctement vous contacter pour vous présenter plus en détail notre Junior Entreprise et les projets que nous réalisons.'+
-                    '<br><br>'+
-            'Dans l’attente de votre retour,'+
-            '<br>Cordialement,<br><br>'+getSignature(mailAttributes);
-
-    }
+    // function getSignature(mailAttributes){
+    //     return '<table style="width: 509px; background-color: #fdfdfd;" class="mceItemTable" cellspacing="5" cellpadding="0" border="0" align="left" height="130">'+
+    //     '<tbody>'+
+    //     '<tr>'+
+    //     '<td style="text-align: center; width: 150px;">'+
+    //     '<div style="text-align: center;"><a href="http://pep.enpc.org"><img moz-do-not-send="false" src="https://pbs.twimg.com/profile_images/580072788721008640/YT4GZ0RK.png" width="100" height="100" /></a></div>'+
+    //     '<div style="text-align: center;"><a href="https://www.facebook.com/pontsetudespro/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://facebook.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
+    //         '<a href="https://twitter.com/pontsetudes"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://twitter.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
+    //         '<a href="https://www.linkedin.com/company-beta/423587/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=www.linkedin.com" width="16" height="16" /></a></div>'+
+    //     '</td>'+
+    //     '<td>'+
+    //     '<div><span style="font-size: 12pt;"><strong><strong><span style="font-family: \'trebuchet ms\', sans-serif;">'+mailAttributes.fromAlias+'</span></strong></strong></span><hr /><span style="font-size: xx-small;"><strong><span style="font-family: \'trebuchet ms\', sans-serif;"></span></strong></span></div>'+
+    //     '<div><span style="font-family: \'trebuchet ms\' , sans-serif; font-size: small; color: #404040;"><b>'+mailAttributes.fromPostName+'</b>&nbsp;chez</span><span style="color: #404040; font-family: \'trebuchet ms\', sans-serif; font-size: small;">&nbsp;Ponts Etudes Projets,</span></div>'+
+    //     '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">la Junior-Entreprise de l\'Ecole des Ponts ParisTech</span></div>'+
+    //     '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">&nbsp;</span></div>'+
+    //     '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: small; color: #336699; background-color: #ffffff;">'+
+    //         '<span class="Object" id="OBJ_PREFIX_DWT1173_com_zimbra_phone" style="cursor: pointer;">'+
+    //             '<span style="cursor: pointer;">'+mailAttributes.fromPhone+'&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span></span></span>'+
+    //             '<span class="Object" id="OBJ_PREFIX_DWT166_com_zimbra_url" style="color: #336699; cursor: pointer;"><a href="https://zimbra.enpc.fr/pep.enpc.org" title="Site Web" target="_blank" style="color: #336699; text-decoration: none; cursor: pointer;"><span style="color: #8e3232;"><em>pep.enpc.org</em>'+
+    //             '</span></a></span></div>'+
+    //     '</td>'+
+    //     '</tr>'+
+    //     '</tbody>'+
+    //     '</table>'
+    //     ;
+    // }
+    //
+    // // Renvoie le texte html correspondant à un mail avec les champs en rouge ou non selon option (preview/final)
+    // function getHtml(mailAttributes, option){
+    //
+    //     var title;
+    //     var name;
+    //     var company;
+    //     var specialization;
+    //
+    //     var finalTitle;
+    //
+    //
+    //     if(option == "preview") {
+    //         title = '<b style="color: red;">'+mailAttributes.title+'</b>';
+    //         name = '<b style="color: red;">'+mailAttributes.name+'</b>';
+    //         company = '<b style="color: red;">'+mailAttributes.company+'</b>';
+    //         specialization = '<b style="color: red;">'+mailAttributes.specialization+'</b>';
+    //     }
+    //     else{
+    //         title = mailAttributes.title;
+    //         name = mailAttributes.name;
+    //         company = mailAttributes.company;
+    //         specialization = mailAttributes.specialization;
+    //     }
+    //     if(mailAttributes.title == "" && mailAttributes.name == "")
+    //         finalTitle = "";
+    //     else if(mailAttributes.name == "")
+    //         finalTitle = " "+title;
+    //     else if(mailAttributes.title != "") {
+    //         finalTitle = " "+title + " " + name;
+    //     }
+    //     else {
+    //         finalTitle = "";
+    //     }
+    //
+    //     var title = "Prospecteur";
+    //
+    //     if (mailAttributes.fromGender == 'Feminin'){
+    //         title = 'Prospectrice';
+    //     }
+    //
+    //     return 'Bonjour'+finalTitle+','+
+    //                 '<br><br>'+
+    //                     'Je suis Responsable Commercial de Ponts Etudes et Projets, la Junior Entreprise de l’école d’ingénieur des Ponts et Chaussées. Je me permets de vous contacter car <b>notre association s’occupe de faire réaliser des projets dispensés par des entreprises par les étudiants de notre école.</b>'+
+    //                 '<br><br>'+
+    //                     'Nous serions très intéressés pour travailler avec le groupe '+company+'. En effet, de par nos spécialisations poussées en '+specialization+', nous pensons avoir des projets à vous proposer qui pourraient vous intéresser.'+
+    //                 '<br><br>'+
+    //                     'Je souhaite donc savoir quand vous êtes disponible afin que je puisse succinctement vous contacter pour vous présenter plus en détail notre Junior Entreprise et les projets que nous réalisons.'+
+    //                 '<br><br>'+
+    //         'Dans l’attente de votre retour,'+
+    //         '<br>Cordialement,<br><br>'+getSignature(mailAttributes);
+    //
+    // }
 
 
 
 
     // Envoie une requette demandant l'envoie d'un mail avec les attributs passés en paramètre
-    function sendMail(i, from, fromAlias, to, object, text, scheduledDate)
-    {
-
-        $.ajax({
-            type: 'POST',
-            url: "{{ path("gs_mailer_sendMail") }}",
-            data: {from: from, fromAlias: fromAlias, to: to, object: object, text: text, scheduledDate: scheduledDate, userid: {{ app.user.id }}},
-            dataType: "html",
-            beforeSend: function() {
-                $('#loadGif').html("<img src='http://www.mediaforma.com/sdz/jquery/ajax-loader.gif'>")
-            },
-            error: function(jqXHR, status) {
-                $('#loadGif').html("");
-                mailAttributesList[i].error = true;
-                refreshMails();
-
-            },
-            complete: function(jqXHR){
-                $('#loadGif').html("");
-                if(jqXHR.status == 200){
-                    mailAttributesList[i].sent = true;
-                }
-                else {
-                    mailAttributesList[i].error = true;
-                }
-                refreshMails();
-                saveToSession();
-            }
-        });
-    }
+    // function sendMail(i, from, fromAlias, to, object, text, scheduledDate)
+    // function sendMail(i, mailAttributes, content)
+    // {
+    //     var dataArray = {
+    //         recipientEmail: mailAttributes.recipient,
+    //         fromEmail: "pontsetudesprojets.commercial@gmail.com",
+    //         fromAlias: mailAttributes.fromAlias,
+    //         subject: mailAttributes.object,
+    //         content: content,
+    //         scheduledDate: mailAttributes.scheduledDate,
+    //         specializationIdArray: mailAttributes.specializationIdArray,
+    //         company: mailAttributes.company,
+    //         recipientName: mailAttributes.name,
+    //         titleId: mailAttributes.titleId,
+    //         userId: {# app.user.id #},
+    //         sendAsUserId: mailAttributes.sendAsUserId,
+    //         attachmentPath: "bundles/plaquette.pdf",
+    //         attachmentName: "Plaquette commerciale PEP.pdf"
+    //     }
+    //
+    //     $.ajax({
+    //         type: 'POST',
+    //         // url: "{# path("gs_mailer_sendMail") #}",
+    //         url: "{# path("gs_mailer_sendProspeMail") #}",
+    //         // data: {from: from, fromAlias: fromAlias, to: to, object: object, text: text, scheduledDate: scheduledDate, userid: {{ app.user.id }}},
+    //         data: dataArray,
+    //         dataType: "html",
+    //         beforeSend: function() {
+    //             $('#loadGif').html("<img src='http://www.mediaforma.com/sdz/jquery/ajax-loader.gif'>")
+    //         },
+    //         error: function(jqXHR, status) {
+    //             $('#loadGif').html("");
+    //             mailAttributesList[i].error = true;
+    //             refreshMails();
+    //
+    //         },
+    //         complete: function(jqXHR){
+    //             $('#loadGif').html("");
+    //             if(jqXHR.status == 200){
+    //                 mailAttributesList[i].sent = true;
+    //             }
+    //             else {
+    //                 mailAttributesList[i].error = true;
+    //             }
+    //             refreshMails();
+    //             saveToSession();
+    //         }
+    //     });
+    // }
 
     // Déclenche sendMail() sur tous les éléments de mailAttributesList
     $("#sendButton").click(function (){
@@ -676,7 +896,7 @@
             mailAttributes = mailAttributesList[i];
             if(!mailAttributes.sent){
                 //sendMail(i, mailAttributes.from, mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
-		sendMail(i, "pontsetudesprojets.commercial@gmail.com", mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
+		sendMail(i, mailAttributes, getHtml(mailAttributes, 'send'));
             }
         }
         // $('#success').html("Envoyé !");

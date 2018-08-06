@@ -14,7 +14,10 @@
     <div class="input-block-level">
         <input class="form-control mr-sm-2 input-block-level" type="search" placeholder="Rechercher" aria-label="Rechercher" id='searchBar' name='search' value='' autofocus autocomplete="off">
     </div>
-    <div style="display: block; float: right;" class="">
+    <div style="display: inline-block; float: left;">
+        <a href="{{ path("gs_mailer_prospeMailAddManually") }}" class="text-success">Ajouter</a>
+    </div>
+    <div style="display: inline-block; float: right;" class="">
         <a href="#" id="advancedSearch">Recherche avancée</a>
     </div>
     <div id="advancedSearchInputs" style="display: none;">
@@ -248,10 +251,15 @@
 
                 // onclick="window.location=\'{{ path('gs_mailer_showMailDetailsRoot')}}'+'/'+mail.id+'\'"
                 rowContent = "";
-                rowContent += '<tr onmouseover="">'; //style="cursor: pointer;" >';
+                // rowContent += '<tr onmouseover="">'; //style="cursor: pointer;" >';
+                rowContent += mail.sentAt == null ?  '<tr style="color: #f39c12;" onmouseover="">' : '<tr onmouseover="">';
                 rowContent += '<td>'+mail.recipientEmail+'</td>';
                 rowContent += '<td>'+mail.userFirstName+' '+mail.userLastName+'</td>';
-                rowContent += '<td>'+mail.sentAt+'</td>';
+
+                if(mail.sentAt == null)
+                    rowContent += '<td><img width=20px height=20px src="https://png.icons8.com/windows/50/f39c12/time.png">'+mail.scheduledDate+'</td>';
+                else
+                    rowContent += '<td>'+mail.sentAt+'</td>';
                 rowContent += '<td id="toggleStateSelector'+mail.id+'">'+getStateDiv(mail.id, mail.state)+'</td>';
                 rowContent += '</tr>';
 

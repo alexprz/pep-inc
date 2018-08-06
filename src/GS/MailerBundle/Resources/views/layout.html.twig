@@ -8,6 +8,11 @@
         </title>
     </head>
     <body>
+        {% for message in app.session.flashbag.get('success') %}
+        <div class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
         {% block body %}
         {% endblock %}
 

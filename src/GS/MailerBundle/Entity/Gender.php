@@ -3,15 +3,14 @@
 namespace GS\MailerBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-// use \Zend\Stdlib\JsonSerializable;
 
 /**
- * State
+ * Gender
  *
- * @ORM\Table(name="gs_state")
- * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\StateRepository")
+ * @ORM\Table(name="gs_prospe_mail_gender")
+ * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\GenderRepository")
  */
-class State//  implements JsonSerializable
+class Gender implements \JsonSerializable
 {
     /**
      * @var int
@@ -20,28 +19,28 @@ class State//  implements JsonSerializable
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
-    protected $name;
+    private $name;
 
     /**
-     * @var string
+     * @var int|null
      *
-     * @ORM\Column(name="sortCode", type="integer")
+     * @ORM\Column(name="sortCode", type="integer", nullable=true)
      */
-    protected $sortCode;
+    private $sortCode;
 
-    // public function toJson () {
-    //     return array(
-    //         'id'=>$this->id,
-    //         'name'=>$this->name
-    //     );
-    // }
+    public function jsonSerialize()
+    {
+        $vars = get_object_vars($this);
+
+        return $vars;
+    }
 
     /**
      * Get id.
@@ -56,11 +55,11 @@ class State//  implements JsonSerializable
     /**
      * Set name.
      *
-     * @param string $name
+     * @param string|null $name
      *
-     * @return State
+     * @return Gender
      */
-    public function setName($name)
+    public function setName($name = null)
     {
         $this->name = $name;
 
@@ -70,7 +69,7 @@ class State//  implements JsonSerializable
     /**
      * Get name.
      *
-     * @return string
+     * @return string|null
      */
     public function getName()
     {
@@ -80,11 +79,11 @@ class State//  implements JsonSerializable
     /**
      * Set sortCode.
      *
-     * @param int $sortCode
+     * @param int|null $sortCode
      *
-     * @return State
+     * @return Gender
      */
-    public function setSortCode($sortCode)
+    public function setSortCode($sortCode = null)
     {
         $this->sortCode = $sortCode;
 
@@ -94,7 +93,7 @@ class State//  implements JsonSerializable
     /**
      * Get sortCode.
      *
-     * @return int
+     * @return int|null
      */
     public function getSortCode()
     {
