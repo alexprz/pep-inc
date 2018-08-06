@@ -1,3 +1,7 @@
+gs_feedback:
+    resource: "@GSFeedbackBundle/Resources/config/routing.yml"
+    prefix:   /feedback
+
 gs_mail:
     resource: "@GSMailBundle/Resources/config/routing.yml"
     prefix:   /

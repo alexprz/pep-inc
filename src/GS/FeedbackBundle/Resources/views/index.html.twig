@@ -1,0 +1,15 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block body %}
+<h1>Feedbacks</h1>
+<a href="{{ path('gs_feedback_fbSet_add') }}"><button type="button" class="btn btn-outline-success">Ajouter une nouvelle étude aux Feedbacks</button></a>
+<br><br>
+{% for fbSet in fbSetList %}
+    <a href="{{path('gs_feedback_fbSet_view', {'id': fbSet.id})}}">
+        {{fbSet.title}}
+    </a>
+        {{countSubmittedFeedbacks[loop.index0]}}/{{countAllFeedbacks[loop.index0]}}
+    <br>
+{% endfor %}
+
+{% endblock %}

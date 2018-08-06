@@ -49,6 +49,11 @@ class MailManager
         $attachmentPath = $mail->getAttachmentPath();
         $attachmentName = $mail->getAttachmentName();
 
+        if($fromEmail == null)
+            $fromEmail = "noreply@pep.com";
+        if($fromAlias == null)
+            $fromAlias = "PEP";
+
         // Si aucun destinataires : erreur
         if($recipientEmail == null)
             return false;

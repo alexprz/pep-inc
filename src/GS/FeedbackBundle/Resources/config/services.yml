@@ -1,0 +1,4 @@
+services:
+#    gs_feedback.example:
+#        class: GS\FeedbackBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

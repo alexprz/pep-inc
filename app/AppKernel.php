@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new CoreBundle\CoreBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new GS\MailBundle\GSMailBundle(),
+            new GS\FeedbackBundle\GSFeedbackBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
