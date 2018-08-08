@@ -1,3 +1,84 @@
-<a href=" {{ path("mailer_homepage") }}">Mailer</a><br>
-<a href=" {{ path("gs_feedback_homepage") }}">Feedback</a>
-<!-- <a href=" {{ path("platform_homepage") }}">Platform</a> -->
+{% extends 'CoreBundle::layout.html.twig' %}
+{% block pageTitle %}Pep-inc{% endblock %}
+{% block mainTitle %}{% endblock %}
+
+{% block stylesheet %}
+    {% stylesheets '@CoreBundle/Resources/public/css/main.css' %}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+{{parent()}}
+
+<div class="row" style="margin-top: 10%; background: transparent; max-width:100%;">
+    <div class="col-xl-2">
+    </div>
+    <div class="col-xl-8">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4" style="min-width: 250px; cursor: pointer;">
+                    <div class="card bg-warning main-card">
+                        <a class="card-link" href="{{ path("mailer_homepage") }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/24/333/new-post.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Mailer</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-4" style="min-width: 250px;">
+                    <div class="card bg-danger main-card">
+                        <a class="card-link" href=" {{ path("gs_feedback_homepage") }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/40/333/survey.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Feedback</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4" style="min-width: 250px; cursor: pointer;">
+                    <div class="card bg-success main-card">
+                        <a class="card-link" href="{{ path("gs_mailer_showStats") }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/40/333/statistics.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Statistiques</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-4" style="min-width: 250px;">
+                    <div class="card bg-info main-card" style="background: transparent;">
+                        <a class="card-link" href=" {{ path("gs_feedback_homepage") }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/40/333/money-bag-euro.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Trésorier</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xl-2">
+    </div>
+</div>
+{% endblock %}

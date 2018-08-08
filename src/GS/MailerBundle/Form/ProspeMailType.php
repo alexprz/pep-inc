@@ -35,11 +35,14 @@ class ProspeMailType extends AbstractType
                 'class'        => 'GSUserBundle:User',
                 'choice_label' => 'email',
                 'choices'      => $sendAsUsers,
-                'multiple'     => false
+                'multiple'     => false,
+                'attr' => array('class' => 'form-control-dark')
             ));
         }
         $builder
-            ->add('company', TextType::class)
+            ->add('company', TextType::class, array(
+                'attr' => array('class' => 'form-control-dark')
+            ))
             ->add('specialization', EntityType::class, array(
                     'class'        => 'GSMailerBundle:Specialization',
                     'choice_label' => 'name',
@@ -58,7 +61,9 @@ class ProspeMailType extends AbstractType
             // 'allow_add'    => true,
             // 'allow_delete' => true
             // ))
-            ->add('recipientName', TextType::class)
+            ->add('recipientName', TextType::class, array(
+                'attr' => array('class' => 'form-control-dark')
+            ))
             ->add('mail', MailSoftType::class, array('artificial' => $artificial));
             if(!$artificial){
                 $builder->add('toggleDelayedInput', CheckboxType::class, array(

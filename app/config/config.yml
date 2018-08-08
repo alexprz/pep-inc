@@ -85,3 +85,10 @@ fos_user:
             type: GS\UserBundle\Form\RegistrationType
         confirmation:
             enabled: false
+
+assetic:
+    debug: '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    bundles: [GSMailerBundle, CoreBundle]
+    filters:
+        cssrewrite: ~

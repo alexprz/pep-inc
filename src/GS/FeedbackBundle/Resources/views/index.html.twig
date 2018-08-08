@@ -1,7 +1,19 @@
 {% extends 'CoreBundle::layout.html.twig' %}
 
+{% block pageTitle %}Feedbacks{% endblock %}
+{% block mainTitle %}{% endblock %}
+
+{% block stylesheets %}
+{{parent()}}
+{% endblock %}
+
 {% block body %}
-<h1>Feedbacks</h1>
+<main role="main" class="col-sm-10 ml-sm-auto col-sm-12 px-4">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Feedbacks</h1>
+</div>
+
+<!-- <h1>Feedbacks</h1> -->
 <a href="{{ path('gs_feedback_fbSet_add') }}"><button type="button" class="btn btn-outline-success">Ajouter une nouvelle étude aux Feedbacks</button></a>
 <br><br>
 {% for fbSet in fbSetList %}
@@ -11,5 +23,6 @@
         {{countSubmittedFeedbacks[loop.index0]}}/{{countAllFeedbacks[loop.index0]}}
     <br>
 {% endfor %}
+</main>
 
 {% endblock %}
