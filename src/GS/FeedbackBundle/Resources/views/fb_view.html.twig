@@ -2,14 +2,17 @@
 
 {% set path = app.request.getSchemeAndHttpHost() ~ path('gs_feedback_answer', {'slug': feedback.getToken.getString}) %}
 
-{% block body %}
-<h1>{{ feedback.stringTitle|capitalize }}</h1>
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': feedback.stringTitle, 'backPath': path('gs_feedback_fbSet_view', {'id': setId}), 'closeDiv': false} %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{{ path('gs_feedback_fb_edit', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary mr-2">Modifier</button></a>
+        <a href="{{ path('gs_feedback_fb_confirm_delete', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Supprimer</button></a><br>
+    </div>
+</div>
 {% if feedback.stringName != null %}
     <h4>À l'attention de {{feedback.stringName}}</h4>
 {% endif %}
-<a href="{{ path('gs_feedback_fb_edit', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-outline-primary">Modifier</button></a>
-<a href="{{ path('gs_feedback_fb_confirm_delete', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a><br>
-<br>
+<br><br><br><br>
 Lien à envoyer pour répondre au questionnaire : <a href="{{path}}">{{ path }}</a>
 <br>
 État :
@@ -17,8 +20,4 @@ Lien à envoyer pour répondre au questionnaire : <a href="{{path}}">{{ path }}<
         {{ feedback.stringState }}
     </b>
 
-<br><br>
-<a href="{{ path('gs_feedback_fbSet_view', {'id': setId})}}">
-Retour aux questionnaires
-</a>
 {% endblock %}

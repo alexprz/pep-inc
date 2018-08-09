@@ -80,3 +80,31 @@ a.card-link:hover{
     border-color: transparent;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
+
+.form-control {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control:focus {
+    /* font-size: 20px; */
+    color: #f7bf4e;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(247, 191, 78, .25);
+    /* rgba(255, 255, 255, .25); */
+}
+
+
+/* input {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+input:focus{
+    color: #f7bf4e;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+} */

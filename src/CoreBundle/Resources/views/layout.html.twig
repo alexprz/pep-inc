@@ -12,6 +12,7 @@
         <title>{% block pageTitle %}{% endblock %}</title>
     </head>
     <body>
+        {% block fullBody %}
         {% block nav %}
             <nav class="navbar navbar-expand-sm navbar-dark">
         {% endblock %}
@@ -22,7 +23,7 @@
           </a>
           <ul class="navbar-nav">
               <li class="nav-item">
-                  <a class="navbar-brand nav-item" href="#" style="font-size:30px; margin-left:10px;">{% block mainTitle %}•&nbsp;&nbsp;{% endblock %}</a>
+                  <a class="navbar-brand nav-item" href="#" style="font-size:30px; margin-left:10px;"></a>
               </li>
           </ul>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,6 +33,7 @@
           <div class="collapse navbar-collapse" id="navbarsExample03">
               <ul class="navbar-nav mr-auto">
               </ul>
+              {% if app.user is defined and app.user != null %}
               <ul class="navbar-nav">
                   <li class="nav-item" style="padding: 0 3px;">
                       <a class="nav-link" href="{{path('fos_user_profile_show')}}"><b>{{ app.user.firstName }} {{ app.user.lastName }}</b></a>
@@ -43,6 +45,7 @@
                       <a href="{{path('fos_user_security_logout')}}"><img src="https://png.icons8.com/windows/40/d11d35/shutdown.png" width="26px" height="26px"></a>
                   </li>
               </ul>
+              {% endif %}
           </div>
         </nav>
         {% endblock %}
@@ -53,8 +56,12 @@
         </div>
         {% endfor %}
         {% block body %}
+            <main role="main" class="col-sm-10 ml-sm-auto col-sm-12 px-4">
+                {% block main %}{% endblock %}
+            </main>
         {% endblock %}
         </div>
+    {% endblock %}
         {% block scripts %}
             <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
             <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -63,6 +70,5 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         {% endblock %}
-
     </body>
 </html>

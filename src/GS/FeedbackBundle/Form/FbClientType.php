@@ -33,9 +33,12 @@ class FbClientType extends AbstractType
                 'multiple'     => false,
                 'required' => false,
                 'expanded' => true,
+                'label' => 'Civilité'
         ))
-            ->add('lastName', TextType::class)
-            ->add('Ajouter', SubmitType::class)
+            ->add('lastName', TextType::class, array(
+                'label' => "Nom de famille"
+            ))
+            ->add('Enregistrer', SubmitType::class)
         ;
     }/**
      * {@inheritdoc}

@@ -24,6 +24,12 @@ security:
             anonymous: true # On autorise alors les anonymes sur ce pare-feu
             logout_on_user_change: true
 
+        main_public:
+            # Cette expression régulière permet de prendre /login (mais pas /login_check !)
+            pattern:   ^/public
+            anonymous: true # On autorise alors les anonymes sur ce pare-feu
+            logout_on_user_change: true
+
          # Firewall principal pour le reste du site
         main:
             pattern:      ^/

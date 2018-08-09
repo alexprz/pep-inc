@@ -1,11 +1,12 @@
-{% extends 'CoreBundle::layout.html.twig' %}
+{% extends 'CoreBundle::layout-form.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {{parent()}}
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 {% endblock %}
 
-{% block body %}
-<h2>Ajouter une entrée manuellement</h2>
+{% block title %}Ajouter une entrée manuellement{% endblock %}
+{% block main %}
 
 {{ form(form) }}
 

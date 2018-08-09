@@ -9,3 +9,8 @@ mailer_homepage:
 platform_homepage:
     path:     /mailer/
     defaults: { _controller: GSPlatformBundle:Default:index }
+
+gs_feedback_answer:
+    path: /public/feedback/answer/{slug}
+    defaults:
+        _controller: GSFeedbackBundle:Default:answer

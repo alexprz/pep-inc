@@ -89,6 +89,6 @@ fos_user:
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: [GSMailerBundle, CoreBundle]
+    bundles: [GSMailerBundle, CoreBundle, GSUserBundle]
     filters:
         cssrewrite: ~

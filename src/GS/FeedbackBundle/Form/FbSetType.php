@@ -27,7 +27,9 @@ class FbSetType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title', TextType::class)
+        $builder->add('title', TextType::class, array(
+            'label' => 'Titre'
+        ))
             ->add('Enregistrer', SubmitType::class)
         ;
     }/**

@@ -43,6 +43,13 @@ class FbClient_Denial extends Feedback
         return 3;
     }
 
+    public function stringName()
+    {
+        if($this->gender == null)
+            return null;
+        return $this->gender->getName()." ".$this->lastName;
+    }
+
     // /**
     //  * Get id.
     //  *
