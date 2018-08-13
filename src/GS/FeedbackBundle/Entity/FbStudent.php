@@ -47,6 +47,10 @@ class FbStudent extends Feedback
     {
         return "questionnaire de satisfaction étudiant";
     }
+    public function stringTitleLight()
+    {
+        return "étudiant";
+    }
 
     public function getType()
     {

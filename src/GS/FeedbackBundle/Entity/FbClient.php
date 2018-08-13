@@ -37,6 +37,10 @@ class FbClient extends Feedback
     {
         return "questionnaire de satisfaction client";
     }
+    public function stringTitleLight()
+    {
+        return "client";
+    }
 
     public function getType()
     {

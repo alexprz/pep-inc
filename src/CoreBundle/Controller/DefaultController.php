@@ -10,4 +10,9 @@ class DefaultController extends Controller
     {
         return $this->render('CoreBundle::index.html.twig');
     }
+
+    public function workInProgressAction()
+    {
+        return $this->render('CoreBundle::workInProgress.html.twig');
+    }
 }

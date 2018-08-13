@@ -399,7 +399,8 @@
                 dataType: "json",
                 beforeSend: function(){
                     $("#body").empty();
-                    $("#loader").html("<img style='margin: auto;' src='https://cdn.dribbble.com/users/24447/screenshots/1201310/inkling_spinner.gif'>");
+                    $("#loader").html("<img style='margin: auto;' src='/bundles/core/img/loading.gif'>");
+                    // https://cdn.dribbble.com/users/24447/screenshots/1201310/inkling_spinner.gif
                 },
                 success: function(data){
                     $("#loader").empty();

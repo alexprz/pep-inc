@@ -37,6 +37,10 @@ class FbClient_Denial extends Feedback
     {
         return "questionnaire de refus client";
     }
+    public function stringTitleLight()
+    {
+        return "refus client";
+    }
 
     public function getType()
     {

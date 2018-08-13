@@ -1,0 +1,9 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block main %}
+{% if user != null %}
+{% endif %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Profil', 'backPath': path('core_homepage')} %}
+
+    {{form(form)}}
+{% endblock %}

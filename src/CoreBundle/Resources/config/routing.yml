@@ -14,3 +14,13 @@ gs_feedback_answer:
     path: /public/feedback/answer/{slug}
     defaults:
         _controller: GSFeedbackBundle:Default:answer
+
+work_in_progress:
+    path: /workInProgress
+    defaults:
+        _controller: CoreBundle:Default:workInProgress
+
+gs_user_show_profile:
+    path: /profile
+    defaults:
+        _controller: GSUserBundle:Default:showProfile

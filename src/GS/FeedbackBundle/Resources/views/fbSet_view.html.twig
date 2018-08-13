@@ -18,32 +18,60 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-1"></div>
-    <div class="col-sm-3" style="text-align: center;">
+    <!-- <div class="col-xl-1"></div> -->
+    <div class="col-xl-4" style="text-align: center;">
         <a href="{{ path('gs_feedback_fb_add', {'setId': feedbackSet.id, 'type': 1}) }}"><button type="button" class="btn btn-outline-primary">Ajouter un questionnaire de satisfaction Étudiant</button></a><br>
+        <br>
     </div>
-    <div class="col-sm-4" style="text-align: center;">
+    <div class="col-xl-4" style="text-align: center;">
         <a href="{{ path('gs_feedback_fb_add', {'setId': feedbackSet.id, 'type': 2}) }}"><button type="button" class="btn btn-outline-success">Ajouter un questionnaire de satisfaction Client</button></a><br>
+        <br>
     </div>
-    <div class="col-sm-3" style="text-align: center;">
+    <div class="col-xl-4" style="text-align: center;">
         <a href="{{ path('gs_feedback_fb_add', {'setId': feedbackSet.id, 'type': 3}) }}"><button type="button" class="btn btn-outline-danger">Ajouter un questionnaire de refus Client</button></a>
+        <br>
     </div>
-    <div class="col-sm-1"></div>
+    <!-- <div class="col-xl-1"></div> -->
 
 </div>
 
 <br><br>
-{% for fb in fbList %}
-    <a href="{{path('gs_feedback_fb_view', {'setId': feedbackSet.id, 'fbId': fb.id})}}">
-        {{fb.stringTitle}}
-    </a>
-    {% if fb.isSubmitted %}<b class="text-success">{% else %}<b class="text-danger">{% endif %}
-        {{ fb.stringState }}
-    </b>
-    {% if fb.isSubmitted %}{{ fb.responseDate|date('d M Y') }}{% endif %}
-    {{ fb.stringName }}
-    {{ fb.creationDate|date('d M Y') }}
-    <br>
-{% endfor %}
+<table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+            <th>Destinataire</th>
+            <th>Type</th>
+            <th>État</th>
+            <th>Rempli le</th>
+            <th>Créé le</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fb in fbList %}
+            <tr>
+                <td>
+                    <a href="{{path('gs_feedback_fb_view', {'setId': feedbackSet.id, 'fbId': fb.id})}}">
+                        {{ fb.stringName|title }}
+                    </a>
+                </td>
+                <td>
+                    {{fb.stringTitleLight|capitalize}}
+                </td>
+                <td>
+                    {% if fb.isSubmitted %}<b class="text-success">{% else %}<b class="text-danger">{% endif %}
+                        {{ fb.stringState }}
+                    <!-- {% if fb.isSubmitted %} le {{ fb.responseDate|date('d M Y') }}{% endif %} -->
+                    </b>
+                </td>
+                <td>
+                    {% if fb.isSubmitted %}{{ fb.responseDate|date('d M Y') }}{% endif %}
+                </td>
+                <td>
+                    {{ fb.creationDate|date('d M Y') }}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

@@ -74,8 +74,3 @@ gs_feedback_fb_view:
     requirements:
         setId: \d+
         fbId: \d+
-
-gs_feedback_answer:
-    path: /answer/{slug}
-    defaults:
-        _controller: GSFeedbackBundle:Default:answer

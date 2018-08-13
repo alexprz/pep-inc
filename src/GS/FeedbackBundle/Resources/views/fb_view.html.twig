@@ -5,6 +5,7 @@
 {% block main %}
 {% include 'CoreBundle::topTitle.html.twig' with {'title': feedback.stringTitle, 'backPath': path('gs_feedback_fbSet_view', {'id': setId}), 'closeDiv': false} %}
     <div class="btn-toolbar mb-2 mb-md-0">
+        <span class="font-weight-light text-muted mr-3" style="margin: auto 0;">Ajouté {% if feedback.user != null %}par {{feedback.user.firstName}} {{feedback.user.lastName}}{% endif %} le {{feedback.creationDate|date('d M Y à H:i')}}</span>
         <a href="{{ path('gs_feedback_fb_edit', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary mr-2">Modifier</button></a>
         <a href="{{ path('gs_feedback_fb_confirm_delete', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Supprimer</button></a><br>
     </div>

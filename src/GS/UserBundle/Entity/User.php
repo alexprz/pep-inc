@@ -75,7 +75,7 @@ class User extends BaseUser
       protected $post;
 
       /**
-        * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\Gender")
+        * @ORM\ManyToOne(targetEntity="GS\MailerBundle\Entity\Gender")
         * @ORM\JoinColumn(nullable=true)
         */
         protected $gender;
@@ -354,11 +354,11 @@ class User extends BaseUser
     /**
      * Set gender.
      *
-     * @param \GS\UserBundle\Entity\Post|null $gender
+     * @param \GS\MailerBundle\Entity\Gender|null $gender
      *
      * @return User
      */
-    public function setGender(\GS\UserBundle\Entity\Post $gender = null)
+    public function setGender(\GS\MailerBundle\Entity\Gender $gender = null)
     {
         $this->gender = $gender;
 
@@ -368,7 +368,7 @@ class User extends BaseUser
     /**
      * Get gender.
      *
-     * @return \GS\UserBundle\Entity\Post|null
+     * @return \GS\MailerBundle\Entity\Gender|null
      */
     public function getGender()
     {
