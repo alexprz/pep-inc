@@ -38,6 +38,7 @@ class Token
 
     /**
      * @ORM\OneToOne(targetEntity="Feedback", inversedBy="token")
+     * @ORM\JoinColumn(nullable=true, onDelete="CASCADE")
      */
     private $feedback;
 

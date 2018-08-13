@@ -1,7 +1,8 @@
 {% extends 'CoreBundle::layout.html.twig' %}
 
 {% block stylesheet %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    {{ parent() }}
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
     <style media="screen">
         .modal {
             display: none; /* Hidden by default */
@@ -51,11 +52,18 @@
     </style>
 {% endblock %}
 
-{% block body %}
 
-    <a href="{{ path("gs_mailer_homepage") }}">Retour</a>
-    <a style="float: right;" href="{{ path("gs_mailer_showMailDatabase") }}">Base de données</a>
-    <br><br>
+
+{% block main %}
+
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': 'Prospection', 'backPath': path('gs_mailer_homepage'), 'closeDiv': false} %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a style="float: right;" href="{{ path("gs_mailer_showMailDatabase") }}"><button type="button" class="btn btn-sm btn-outline-info">Base de données</button></a>
+    </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
 
     {{ form(form, {'attr': {'id': 'form'}}) }}
 
@@ -113,17 +121,19 @@
     <br>
     -->
     <!-- <input type="button" name="addMail" id="addButton" value="Ajouter"> -->
+</div>
+<div class="col-lg-6">
     <input type="button" name="sendButton" id="sendButton" value="Envoyer" onclick="sendAll()">
     <a style="float: right;" class="text-danger" href="#" onclick="deleteSession()">Effacer tout</a>
     <br><br>
-
     <p><b>Liste des destinataires :</b></p>
     <div id="mailList" class="container-fluid"></div>
 
     <!-- To display gif and success message -->
     <p id="loadGif"></p>
     <p id="success"></p>
-
+</div>
+</div>
     <!-- To display mail preview -->
     <div id="myModal" class="modal">
       <!-- Modal content -->

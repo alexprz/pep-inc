@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use GS\MailerBundle\Form\MailSoftType;
@@ -28,6 +29,12 @@ class FbStudentAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('q1', ChoiceType::class, array(
+                'label' => 'Le suivi par le membre de PEP était-il à la hauteur ?',
+                'choices' => array(array('oui' => true), array('non' => false)),
+                'expanded' => true,
+                'data' => true
+            ))
             ->add('Envoyer', SubmitType::class)
         ;
     }/**

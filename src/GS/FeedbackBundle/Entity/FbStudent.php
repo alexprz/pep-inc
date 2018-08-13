@@ -34,9 +34,22 @@ class FbStudent extends Feedback
      */
     private $lastName;
 
+    /**
+     * @var boolean|null
+     *
+     * @ORM\Column(name="q1", type="boolean", nullable=true)
+     */
+    private $q1;
+
+
+
     public function stringTitle()
     {
         return "questionnaire de satisfaction étudiant";
+    }
+    public function stringTitleLight()
+    {
+        return "étudiant";
     }
 
     public function getType()
@@ -202,5 +215,29 @@ class FbStudent extends Feedback
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * Set q1.
+     *
+     * @param bool $q1
+     *
+     * @return FbStudent
+     */
+    public function setQ1($q1)
+    {
+        $this->q1 = $q1;
+
+        return $this;
+    }
+
+    /**
+     * Get q1.
+     *
+     * @return bool
+     */
+    public function getQ1()
+    {
+        return $this->q1;
     }
 }

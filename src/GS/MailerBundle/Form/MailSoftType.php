@@ -27,8 +27,9 @@ class MailSoftType extends AbstractType
         $artificial = $options['artificial'];
 
         $builder
-            ->add('recipientEmail', TextType::class)
-        ;
+            ->add('recipientEmail', TextType::class, array(
+                'attr' => array('class' => 'form-control-dark')
+            ));
         if($artificial){
             $builder->add('sentDate', DateTimeType::class, array(
                 'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
@@ -37,7 +38,7 @@ class MailSoftType extends AbstractType
         if(!$artificial){
 
             $builder->add('subject', TextType::class, array(
-                'attr' => array('value' => 'Ponts Études Projets')
+                'attr' => array('class' => 'form-control-dark', 'value' => 'Ponts Études Projets')
             ))
             ;
             $builder->add('scheduledDate',   DateTimeType::class, array(

@@ -1,6 +1,5 @@
-{% extends 'CoreBundle::layout.html.twig' %}
-
-{% block body %}
-<h1>{{ feedback.stringTitle|capitalize }}</h1>
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}{{ feedback.stringTitle|capitalize }}{% endblock %}
+{% block main %}
 {{ form(form) }}
 {% endblock %}

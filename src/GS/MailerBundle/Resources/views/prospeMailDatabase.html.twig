@@ -1,16 +1,17 @@
 {% extends 'CoreBundle::layout.html.twig' %}
 
 {% block stylesheet %}
-
+    {{ parent() }}
 {% endblock %}
 
-{% block body %}
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': 'Base de données', 'backPath': path('gs_mailer_homepage'), 'closeDiv': false} %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a style="float: right;" href="{{ path("gs_mailer_writeMail") }}"><button type="button" class="btn btn-sm btn-outline-info">Envoyer un mail</button></a>
+    </div>
+    </div>
 
-    <a href="{{ path('gs_mailer_homepage') }}">Retour</a>
-    <a style="float: right;" href="{{ path('gs_mailer_writeMail') }}">Envoyer un mail</a>
-
-    <br><br>
-
+    <br>
     <div class="input-block-level">
         <input class="form-control mr-sm-2 input-block-level" type="search" placeholder="Rechercher" aria-label="Rechercher" id='searchBar' name='search' value='' autofocus autocomplete="off">
     </div>
@@ -21,7 +22,7 @@
         <a href="#" id="advancedSearch">Recherche avancée</a>
     </div>
     <div id="advancedSearchInputs" style="display: none;">
-        <table class="table table-bordered table-light">
+        <table class="table table-bordered">
           <tbody>
             <tr>
               <th scope="row"><span style="float: right;">Mail du destinataire</span></th>
@@ -55,6 +56,7 @@
         {{ form_widget(form.stateSelector) }}
     </div>
 
+    <br><br>
     <table class="table table-hover">
       <thead class="thead-dark">
         <tr>
@@ -397,7 +399,8 @@
                 dataType: "json",
                 beforeSend: function(){
                     $("#body").empty();
-                    $("#loader").html("<img style='margin: auto;' src='https://cdn.dribbble.com/users/24447/screenshots/1201310/inkling_spinner.gif'>");
+                    $("#loader").html("<img style='margin: auto;' src='/bundles/core/img/loading.gif'>");
+                    // https://cdn.dribbble.com/users/24447/screenshots/1201310/inkling_spinner.gif
                 },
                 success: function(data){
                     $("#loader").empty();

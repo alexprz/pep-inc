@@ -33,14 +33,13 @@ abstract class Feedback
     protected $responseDate;
 
     /**
-     * @ORM\OneToOne(targetEntity="Token", mappedBy="feedback", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="Token", mappedBy="feedback", cascade={"persist", "remove"})
      */
     protected $token;
 
     /**
      * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 
@@ -142,5 +141,29 @@ abstract class Feedback
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \GS\UserBundle\Entity\User $user
+     *
+     * @return Feedback
+     */
+    public function setUser(\GS\UserBundle\Entity\User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \GS\UserBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

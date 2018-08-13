@@ -28,7 +28,7 @@ class FbClient_DenialAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('Ajouter', SubmitType::class)
+            ->add('Envoyer', SubmitType::class)
         ;
     }/**
      * {@inheritdoc}

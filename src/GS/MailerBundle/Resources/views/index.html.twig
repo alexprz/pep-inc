@@ -1,12 +1,77 @@
-MAILER
-<br>
-<a href="{{ path('gs_mailer_writeMail') }}">Send mail</a>
+{% extends 'CoreBundle::layout.html.twig' %}
+{% block pageTitle %}Mailer{% endblock %}
+{% block mainTitle %}{{parent()}} Mailer{% endblock %}
+{% block body %}
+{{ parent() }}
 
-<br>
-<a href="{{ path('gs_mailer_showMailDatabase') }}">DataBase</a>
+<div class="row" style="margin-top: 10%; background: transparent; max-width:100%;">
+    <div class="col-xl-2">
+    </div>
+    <div class="col-xl-8">
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4" style="min-width: 250px; cursor: pointer;">
+                    <div class="card bg-warning main-card">
+                        <a class="card-link" href="{{ path('gs_mailer_writeMail') }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/24/333/new-post.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Prospection</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-4" style="min-width: 250px;">
+                    <div class="card bg-warning main-card">
+                        <a class="card-link" href="{{ path('gs_mailer_writePepRecrute') }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/dotty/40/333/find-matching-job.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Pep Recrute</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-2">
+            </div>
 
-<br>
-<a href="{{ path('gs_mailer_showStats') }}">Statistiques</a>
+        </div>
+        <div class="row" style="padding-top: 30px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-4" style="min-width: 250px; cursor: pointer;">
+                    <div class="card bg-warning main-card">
+                        <a class="card-link" href="{{ path('gs_mailer_showMailDatabase') }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/dotty/40/333/database.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Base de données</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-4" style="min-width: 250px;">
+                    <div class="card bg-warning main-card" style="background: transparent;">
+                        <a class="card-link" href="{{ path('gs_mailer_showStats') }}">
+                        <div class="card-body">
+                            <div class="main-card-img">
+                                <img src="https://png.icons8.com/ios/40/333/statistics.png" style="max-height:130px; max-width=:130px;">
+                            </div>
+                            <h5 class="card-title" style="color: #333;">Statistiques</h5>
+                        </div>
+                    </a>
+                    </div>
+            </div>
+            <div class="col-md-2">
+            </div>
 
-<br><br>
-<a href="{{ path('gs_mailer_writePepRecrute') }}">Send Pep Recrute</a>
+        </div>
+    </div>
+    <div class="col-xl-2">
+    </div>
+</div>
+{% endblock %}

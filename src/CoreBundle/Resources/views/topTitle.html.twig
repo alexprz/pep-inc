@@ -1,0 +1,11 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        {% if backPath != "" %}
+            <a href="{{backPath}}"><img src="https://png.icons8.com/ios/40/f7bf4e/back.png" width="28px" height="28px"></a>
+        {% endif %}
+        {{title|capitalize}}
+    </h1>
+{% if closeDiv is defined and closeDiv == false %}
+{% else %}
+</div>
+{% endif %}

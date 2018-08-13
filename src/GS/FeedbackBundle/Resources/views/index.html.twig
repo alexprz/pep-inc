@@ -1,15 +1,41 @@
 {% extends 'CoreBundle::layout.html.twig' %}
 
-{% block body %}
-<h1>Feedbacks</h1>
+{% block pageTitle %}Feedbacks{% endblock %}
+{% block mainTitle %}{% endblock %}
+
+{% block stylesheets %}
+{{parent()}}
+{% endblock %}
+{% block topTitle %}  <h1 class="h2">Feedbacks</h1>{% endblock %}
+{% block main %}
+
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Feedbacks', 'backPath': path('core_homepage')} %}
+
 <a href="{{ path('gs_feedback_fbSet_add') }}"><button type="button" class="btn btn-outline-success">Ajouter une nouvelle étude aux Feedbacks</button></a>
 <br><br>
+
+<table class="table table-hover">
+    <tbody>
 {% for fbSet in fbSetList %}
-    <a href="{{path('gs_feedback_fbSet_view', {'id': fbSet.id})}}">
-        {{fbSet.title}}
-    </a>
-        {{countSubmittedFeedbacks[loop.index0]}}/{{countAllFeedbacks[loop.index0]}}
-    <br>
+    <tr>
+        <td>
+            <a href="{{path('gs_feedback_fbSet_view', {'id': fbSet.id})}}">
+                {{fbSet.title|capitalize}}
+            </a>
+        </td>
+        <td></td>
+        <td></td>
+        <!-- <td></td> -->
+        <td>
+            {% if countSubmittedFeedbacks[loop.index0] == countAllFeedbacks[loop.index0] and countAllFeedbacks[loop.index0] != 0 %}<span class="text-success">{% elseif countAllFeedbacks[loop.index0] != 0 %}<span class="text-danger">{% else %}<span class="text-muted">{% endif %}
+                {{countSubmittedFeedbacks[loop.index0]}}/{{countAllFeedbacks[loop.index0]}}
+            </span>
+        </td>
+        <td></td>
+        <td>{{fbSet.creationDate|date('d M Y')}}</td>
+    </tr>
 {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
