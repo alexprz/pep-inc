@@ -1,3 +1,7 @@
+gs_settings:
+    resource: "@GSSettingsBundle/Resources/config/routing.yml"
+    prefix:   /settings
+
 gs_feedback:
     resource: "@GSFeedbackBundle/Resources/config/routing.yml"
     prefix:   /feedback

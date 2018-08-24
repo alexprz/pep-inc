@@ -4,5 +4,5 @@
 Ce questionnaire a été envoyé. Ponts Études Projets vous en remercie.
 <br><br>
 
-<a style="font-size: 13px;" href="#">J'ai envoyé ce questionnaire par erreur</a>
+<a style="font-size: 13px;" href="{{path('gs_feedback_miss_submit', {'slug': fb.token.string})}}">J'ai envoyé ce questionnaire par erreur</a>
 {% endblock %}

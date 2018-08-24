@@ -29,12 +29,12 @@ class FbStudentAnswerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('q1', ChoiceType::class, array(
-                'label' => 'Le suivi par le membre de PEP était-il à la hauteur ?',
-                'choices' => array(array('oui' => true), array('non' => false)),
-                'expanded' => true,
-                'data' => true
-            ))
+            // ->add('q1', ChoiceType::class, array(
+            //     'label' => 'Le suivi par le membre de PEP était-il à la hauteur ?',
+            //     'choices' => array(array('oui' => true), array('non' => false)),
+            //     'expanded' => true,
+            //     'data' => true
+            // ))
             ->add('Envoyer', SubmitType::class)
         ;
     }/**

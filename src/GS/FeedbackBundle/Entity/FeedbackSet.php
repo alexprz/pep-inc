@@ -267,7 +267,7 @@ class FeedbackSet
      */
     public function removeFbClientDenial(\GS\FeedbackBundle\Entity\FbClient_Denial $fbClientDenial)
     {
-        $fbClient_Denial->setFeedbackSet(null);
+        $fbClientDenial->setFeedbackSet(null);
         return $this->fbClient_Denial->removeElement($fbClientDenial);
     }
 

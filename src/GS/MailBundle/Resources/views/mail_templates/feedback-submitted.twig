@@ -1,0 +1,7 @@
+{% block subject %}Questionnaire rempli{% endblock %}
+
+{% block body %}
+    <b>{{fb.stringName}}</b> a rempli son {{fb.stringTitle}} pour l'étude <b>{{fb.getFeedbackSet.getTitle|title}}</b>
+    <br>
+    Pour accéder aux réponses en ligne : {{url('gs_feedback_fb_view', {'setId': fb.getFeedbackSet.id, 'fbId': fb.id})}}
+{% endblock %}

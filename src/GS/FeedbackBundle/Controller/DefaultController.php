@@ -17,7 +17,11 @@ use GS\FeedbackBundle\Form\FbClient_DenialType;
 use GS\FeedbackBundle\Form\FbStudentAnswerType;
 use GS\FeedbackBundle\Form\FbClientAnswerType;
 use GS\FeedbackBundle\Form\FbClient_DenialAnswerType;
+use GS\FeedbackBundle\Form\FbAnswerType;
+use GS\FeedbackBundle\Form\QuestionModelType;
 use GS\MailBundle\Entity\Mail;
+use GS\FeedbackBundle\Entity\QuestionModel;
+use GS\FeedbackBundle\Entity\Question;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -149,13 +153,28 @@ class DefaultController extends Controller
 
         if($form->isSubmitted() && $form->isValid()){
             $em = $this->getDoctrine()->getManager();
+
             $repo = $em->getRepository('GSFeedbackBundle:FeedbackSet');
             $feedbackSet = $repo->find($setId);
+
             $fb->setToken($this->generateToken($em));
             $fb->setUser($this->getUser());
             $feedbackSet->addFeedback($fb);
             $em->persist($feedbackSet);
             $em->flush();
+
+            $repoQModel = $em->getRepository('GSFeedbackBundle:QuestionModel');
+            $qModelList = $repoQModel->findAll();
+            foreach ($qModelList as $questionModel){
+                if(in_array($fb->getType(), $questionModel->getFbType())){
+                    // throw new NotFoundHttpException(in_array($fb->getType(), $questionModel->getFbType()));
+                    $question = new Question();
+                    $question->setQuestionModel($questionModel);
+                    $fb->addQuestion($question);
+                }
+            }
+            $em->flush();
+
 
             return $this->redirectToRoute('gs_feedback_fb_view', array('setId' => $setId, 'fbId' => $fb->getId()));
 
@@ -252,50 +271,9 @@ class DefaultController extends Controller
         return $token;
     }
 
-    public function answerAction(Request $request, $slug)
+    public function dumpAllAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $repoFeedback = $em->getRepository('GSFeedbackBundle:Feedback');
-
-        $fb = $repoFeedback->findBySlug($slug);
-
-        if($fb == null)
-            throw new NotFoundHttpException();
-
-        if($fb->isSubmitted())
-            return $this->render('GSFeedbackBundle::fb_submitted.html.twig');
-
-        $type = $fb->getType();
-        if($type == 1)
-            $form = $this->createForm(FbStudentAnswerType::class, $fb);
-        else if($type == 2)
-            $form = $this->createForm(FbClientAnswerType::class, $fb);
-        else if($type == 3)
-            $form = $this->createForm(FbClient_DenialAnswerType::class, $fb);
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $fb->setResponseDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
-            $em->persist($fb);
-            $em->flush();
-
-            $user = $fb->getUser();
-            $mail = new Mail();
-            $mail->setRecipientEmail($user->getEmail());
-            $mail->setSubject("Questionnaire rempli");
-            $mail->setContent($fb->stringName()." a rempli son ".$fb->stringTitle()." pour l'étude ".$fb->getFeedbackSet()->getTitle().".");
-
-            $mailManager = $this->container->get('gs_mail.mail_manager');
-            $mailManager->send($mail);
-
-            return $this->render('GSFeedbackBundle::fb_submitted.html.twig');
-
-        }
-
-        return $this->render('GSFeedbackBundle::fb_answer.html.twig', array(
-            'form' => $form->createView(),
-            'feedback' => $fb
-        ));
+        
     }
+
 }

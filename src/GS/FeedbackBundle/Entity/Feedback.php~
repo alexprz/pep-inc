@@ -3,6 +3,9 @@ namespace GS\FeedbackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 /**
  * @ORM\Table(name="gs_feedback")
  * @ORM\Entity(repositoryClass="GS\FeedbackBundle\Repository\FeedbackRepository")
@@ -43,9 +46,15 @@ abstract class Feedback
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="feedback")
+     */
+    private $questionList;
+
       public function __construct()
       {
           $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+          $this->questionList = new ArrayCollection();
       }
 
       public function isSubmitted()
@@ -165,5 +174,41 @@ abstract class Feedback
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add questionList.
+     *
+     * @param \GS\FeedbackBundle\Entity\Question $questionList
+     *
+     * @return Feedback
+     */
+    public function addQuestionList(\GS\FeedbackBundle\Entity\Question $questionList)
+    {
+        $this->questionList[] = $questionList;
+
+        return $this;
+    }
+
+    /**
+     * Remove questionList.
+     *
+     * @param \GS\FeedbackBundle\Entity\Question $questionList
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeQuestionList(\GS\FeedbackBundle\Entity\Question $questionList)
+    {
+        return $this->questionList->removeElement($questionList);
+    }
+
+    /**
+     * Get questionList.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getQuestionList()
+    {
+        return $this->questionList;
     }
 }

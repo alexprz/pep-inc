@@ -1,0 +1,22 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}{{ feedback.stringTitle|capitalize }}{% endblock %}
+{% block main %}
+{{ form(form) }}
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+
+    <script type="text/javascript">
+    for (var i = 0; i < $('#fb_answer_nb_questions').val(); i++) {
+
+        if ($('#fb_answer_question_'+i+'_questionModel_answerType').val()==1) {
+            $('#fb_answer_question_'+i+'_textAnswer').css('display', 'none');
+        }
+        else {
+            $('#fb_answer_question_'+i+'_booleanAnswer').css('display', 'none')
+        }
+    }
+
+    </script>
+{% endblock %}

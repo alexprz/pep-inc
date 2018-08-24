@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Mail
  *
- * @ORM\Table(name="gs_mail")
+ * @ORM\Table(name="gs_mail_old")
  * @ORM\Entity(repositoryClass="GS\MailerBundle\Repository\MailRepository")
  */
 class Mail// implements JsonSerializable

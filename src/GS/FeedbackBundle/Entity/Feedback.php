@@ -3,6 +3,9 @@ namespace GS\FeedbackBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 /**
  * @ORM\Table(name="gs_feedback")
  * @ORM\Entity(repositoryClass="GS\FeedbackBundle\Repository\FeedbackRepository")
@@ -23,12 +26,16 @@ abstract class Feedback
     private $id;
 
     /**
-      * @ORM\Column(name="creation_date", type="date")
+      * @var \DateTime
+      *
+      * @ORM\Column(name="creation_date", type="datetime")
       */
     protected $creationDate;
 
     /**
-      * @ORM\Column(name="response_date", type="date", nullable=true)
+      * @var \DateTime
+      *
+      * @ORM\Column(name="response_date", type="datetime", nullable=true)
       */
     protected $responseDate;
 
@@ -43,9 +50,15 @@ abstract class Feedback
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="feedback", cascade={"persist", "remove"})
+     */
+    private $question;
+
       public function __construct()
       {
           $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+          $this->question = new ArrayCollection();
       }
 
       public function isSubmitted()
@@ -165,5 +178,43 @@ abstract class Feedback
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Add question.
+     *
+     * @param \GS\FeedbackBundle\Entity\Question $question
+     *
+     * @return Feedback
+     */
+    public function addQuestion(\GS\FeedbackBundle\Entity\Question $question)
+    {
+        $this->question[] = $question;
+        $question->setFeedback($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove question.
+     *
+     * @param \GS\FeedbackBundle\Entity\Question $question
+     *
+     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
+     */
+    public function removeQuestion(\GS\FeedbackBundle\Entity\Question $question)
+    {
+        $question->setFeedback(null);
+        return $this->question->removeElement($question);
+    }
+
+    /**
+     * Get question.
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getQuestion()
+    {
+        return $this->question;
     }
 }

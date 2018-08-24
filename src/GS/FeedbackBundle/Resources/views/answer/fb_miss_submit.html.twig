@@ -1,0 +1,8 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}Demander la réouverture{% endblock %}
+{% block main %}
+Cliquer sur le bouton suivant pour demander de réouvrir le questionnaire.
+<br><br>
+<a href="{{path('gs_feedback_ask_unsubmit', {'slug': slug})}}"><button type="button" class="btn btn-sm btn-outline-warning mr-2">Demander la réouverture</button></a>
+
+{% endblock %}

@@ -9,8 +9,11 @@
 {% block topTitle %}  <h1 class="h2">Feedbacks</h1>{% endblock %}
 {% block main %}
 
-{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Feedbacks', 'backPath': path('core_homepage')} %}
-
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Feedbacks', 'backPath': path('core_homepage'), 'closeDiv': false} %}
+<div class="btn-toolbar mb-2 mb-md-0">
+    <a style="float: right;" href="{{ path("gs_feedback_dump_all_fb") }}"><button type="button" class="btn btn-sm btn-outline-info">Tous les questionnaires</button></a>
+</div>
+</div>
 <a href="{{ path('gs_feedback_fbSet_add') }}"><button type="button" class="btn btn-outline-success">Ajouter une nouvelle étude aux Feedbacks</button></a>
 <br><br>
 

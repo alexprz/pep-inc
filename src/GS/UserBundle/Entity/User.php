@@ -91,6 +91,17 @@ class User extends BaseUser
        $this->expiration_date = new \DateTime();
      }
 
+     public function stringName()
+     {
+        $string = "";
+        if($this->firstName != null){
+            $string = ucfirst($this->firstName);
+            if($this->lastName != null)
+                $string = $string." ".strtoupper($this->lastName);
+        }
+        return $string;
+     }
+
      public function isAdmin()
      {
          return $this->hasRole('ROLE_ADMIN') || $this->hasRole('ROLE_SUPER_ADMIN');

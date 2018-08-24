@@ -74,3 +74,53 @@ gs_feedback_fb_view:
     requirements:
         setId: \d+
         fbId: \d+
+
+gs_feedback_question_manager:
+    path: /question-manager
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionManager
+
+gs_feedback_question_add:
+    path: /question-manager/add
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionEdit
+
+gs_feedback_question_edit:
+    path: /question-manager/edit/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionEdit
+    requirements:
+        id: \d+
+
+gs_feedback_question_confirm_delete:
+    path: /question-manager/confirm-delete/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:confirmDelete
+    requirements:
+        id: \d+
+
+gs_feedback_question_delete:
+    path: /question-manager/delete/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:delete
+    requirements:
+        id: \d+
+
+gs_feedback_question_show:
+    path: /question-manager/show/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionShow
+    requirements:
+        id: \d+
+
+gs_feedback_open:
+    path: /open/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Answer:open
+    requirements:
+        id: \d+
+
+gs_feedback_dump_all_fb:
+    path: /all
+    defaults:
+        _controller: GSFeedbackBundle:Default:dumpAll

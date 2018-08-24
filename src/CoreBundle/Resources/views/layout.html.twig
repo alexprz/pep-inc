@@ -12,6 +12,9 @@
         <title>{% block pageTitle %}{% endblock %}</title>
     </head>
     <body>
+        <div class="background-div">
+            <br>
+        </div>
         {% block fullBody %}
         {% block nav %}
             <nav class="navbar navbar-expand-sm navbar-dark">
@@ -40,7 +43,7 @@
                       <!-- fos_user_profile_show -->
                   </li>
                   <li class="nav-item" style="padding: 0 3px;">
-                      <a href="{{path('work_in_progress')}}"><img src="https://png.icons8.com/windows/40/FDB60D/settings.png" width="26px" height="26px"></a>
+                      <a href="{{path('gs_settings_homepage')}}"><img src="https://png.icons8.com/windows/40/FDB60D/settings.png" width="26px" height="26px"></a>
                   </li>
                   <li class="nav-item" style="padding: 0 3px;">
                       <a href="{{path('fos_user_security_logout')}}"><img src="https://png.icons8.com/windows/40/d11d35/shutdown.png" width="26px" height="26px"></a>

@@ -9,7 +9,8 @@
             "GS\\PlatformBundle\\": "src/GS/PlatformBundle",
             "GS\\MailerBundle\\": "src/GS/MailerBundle",
             "GS\\MailBundle\\": "src/GS/MailBundle",
-            "GS\\FeedbackBundle\\": "src/GS/FeedbackBundle"
+            "GS\\FeedbackBundle\\": "src/GS/FeedbackBundle",
+            "GS\\SettingsBundle\\": "src/GS/SettingsBundle"
         },
         "classmap": [
             "app/AppKernel.php",

@@ -1,0 +1,12 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Gestionnaire de questions', 'backPath': path('core_homepage')} %}
+
+<a href="{{ path('gs_feedback_question_add') }}"><button type="button" class="btn btn-sm btn-outline-success mr-2">Ajouter une question</button></a>
+<br><br>
+{% for question in questionList %}
+    <a href="{{path('gs_feedback_question_show', {'id': question.id})}}">{{question.title}}</a> <br>
+{% endfor %}
+
+{% endblock %}
