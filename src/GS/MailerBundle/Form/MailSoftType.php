@@ -28,22 +28,26 @@ class MailSoftType extends AbstractType
 
         $builder
             ->add('recipientEmail', TextType::class, array(
-                'attr' => array('class' => 'form-control-dark')
+                'attr' => array('class' => 'form-control-dark'),
+                'label' => 'Email'
             ));
         if($artificial){
             $builder->add('sentDate', DateTimeType::class, array(
                 'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
+                'label' => 'Envoyé le',
             ));
         }
         if(!$artificial){
 
             $builder->add('subject', TextType::class, array(
-                'attr' => array('class' => 'form-control-dark', 'value' => 'Ponts Études Projets')
+                'attr' => array('class' => 'form-control-dark', 'value' => 'Ponts Études Projets'),
+                'label' => 'Objet'
             ))
             ;
             $builder->add('scheduledDate',   DateTimeType::class, array(
                 'attr' => array('class' => "datePicker"),
-                'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris"))
+                'data' => new \DateTime("now", new \DateTimeZone("EUROPE/Paris")),
+                'label' => 'Envoyer le'
             ));
         }
         // $builder->get('artificial')

@@ -1,5 +1,5 @@
 {% extends 'CoreBundle::layout.html.twig' %}
-
+{% block pageTitle %}Prospection{% endblock %}
 {% block stylesheet %}
     {{ parent() }}
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
@@ -20,7 +20,8 @@
         /* Modal Content/Box */
         .modal-content {
             position: fixed;
-            background-color: #fefefe;
+            background-color: white;
+            color: black;
             margin: 5% auto; /* 15% from the top and centered */
             padding: 20px;
             border: 1px solid #888;
@@ -63,7 +64,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-xl-6">
 
     {{ form(form, {'attr': {'id': 'form'}}) }}
 
@@ -122,8 +123,8 @@
     -->
     <!-- <input type="button" name="addMail" id="addButton" value="Ajouter"> -->
 </div>
-<div class="col-lg-6">
-    <input type="button" name="sendButton" id="sendButton" value="Envoyer" onclick="sendAll()">
+<div class="col-xl-6">
+    <input class="btn btn-outline-warning" type="button" name="sendButton" id="sendButton" value="Envoyer" onclick="sendAll()">
     <a style="float: right;" class="text-danger" href="#" onclick="deleteSession()">Effacer tout</a>
     <br><br>
     <p><b>Liste des destinataires :</b></p>
@@ -412,11 +413,11 @@
         else{
             string += "<div class='row'>";
         }
-        string += "<div class='col-md-1'>"
+        string += "<div class='col-md-2'>"
             string += "<img width='20' height='20' src='"+imgDeleteData+"' style='cursor: pointer;' onclick='deleteProspeMail("+prospeMail.pseudo_id+")'>"
             string += "<img width='20' height='20' src='"+imgEyeData+"' style='cursor: pointer;' onclick='previewMail("+prospeMail.pseudo_id+")'>"
         string += "</div>";
-        string += "<div class='col-md-3'>";
+        string += "<div class='col-md-4'>";
             if (prospeMail.multiple)
                 string += "<img width='20' height='20' src='"+imgDangerData+"' style='cursor: pointer;' onclick='previewMultipleMails("+prospeMail.pseudo_id+")'>&nbsp;";
             if(prospeMail.multiple && ! prospeMail.sent){
@@ -443,10 +444,10 @@
                 string += prospeMail.company
             }
         string += "</div>";
-        string += "<div class='col-md-2'>"
-            if(prospeMail.mail.subject == "" || prospeMail.mail.subject == undefined){
-                string += "<b style='color: red;'>Aucun objet !</b>";
-            }
+        // string += "<div class='col-md-2'>"
+        //     if(prospeMail.mail.subject == "" || prospeMail.mail.subject == undefined){
+        //         string += "<b style='color: red;'>Aucun objet !</b>";
+        //     }
             // else if(prospeMail.specialization == "" || mailAttributes.specialization == undefined){
             //     string += "<b style='color: red;'>Aucune spécialisation !</b>";
             // }

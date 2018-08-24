@@ -36,18 +36,21 @@ class ProspeMailType extends AbstractType
                 'choice_label' => 'email',
                 'choices'      => $sendAsUsers,
                 'multiple'     => false,
-                'attr' => array('class' => 'form-control-dark')
+                'attr' => array('class' => 'form-control-dark'),
+                'label' => 'Envoyer en tant que :'
             ));
         }
         $builder
             ->add('company', TextType::class, array(
-                'attr' => array('class' => 'form-control-dark')
+                'attr' => array('class' => 'form-control-dark'),
+                'label' => 'Entreprise'
             ))
             ->add('specialization', EntityType::class, array(
                     'class'        => 'GSMailerBundle:Specialization',
                     'choice_label' => 'name',
                     'multiple'     => true,
                     'expanded' => true,
+                    'label' => 'Spécialisation'
             ))
             ->add('gender', EntityType::class, array(
                     'class'        => 'GSMailerBundle:Gender',
@@ -55,6 +58,7 @@ class ProspeMailType extends AbstractType
                     'multiple'     => false,
                     'required' => false,
                     'expanded' => true,
+                    'label' => 'Civilité'
             ))
             // ->add('specialization', CollectionType::class, array(
             // 'entry_type'   => ChoiceType::class,
@@ -62,13 +66,18 @@ class ProspeMailType extends AbstractType
             // 'allow_delete' => true
             // ))
             ->add('recipientName', TextType::class, array(
-                'attr' => array('class' => 'form-control-dark')
+                'attr' => array('class' => 'form-control-dark'),
+                'label' => 'Nom'
             ))
-            ->add('mail', MailSoftType::class, array('artificial' => $artificial));
+            ->add('mail', MailSoftType::class, array(
+                'artificial' => $artificial,
+                'label' => false
+            ));
             if(!$artificial){
                 $builder->add('toggleDelayedInput', CheckboxType::class, array(
                     'required' => false,
-                    'mapped' => false
+                    'mapped' => false,
+                    'label' => 'Envoi différé'
                 ));
             }
             // ->add('user', HiddenType::class, array(
@@ -81,7 +90,9 @@ class ProspeMailType extends AbstractType
             // ))
 
 
-        $builder->add('Ajouter', SubmitType::class);
+        $builder->add('Ajouter', SubmitType::class, array(
+            'attr' => array('class' => 'btn btn-outline-success')
+        ));
         // $builder->get('user')
         //    ->addModelTransformer(new CallbackTransformer(
         //        function ($property) {
