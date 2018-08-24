@@ -5,16 +5,23 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 {% endblock %}
 
-{% block body %}
-
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': 'Pep Recrute', 'backPath': path('gs_mailer_homepage'), 'closeDiv': false} %}
+    <!-- <div class="btn-toolbar mb-2 mb-md-0">
+        <a style="float: right;" href="{{ path("gs_mailer_showMailDatabase") }}"><button type="button" class="btn btn-sm btn-outline-info">Base de données</button></a>
+    </div> -->
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
     <!-- <div class="container"> -->
-        <div class="row">
-            <div class="col-sm-6">
+        <!-- <div class="row">
+            <div class="col-sm-6"> -->
             <div style='margin-left: 20px;'>
 
 
     <label for="titleInput">Ce qu'il faut faire EN PEU DE MOTS (ex: Création d'une application, Étude de marché...) :</label><br>
-    <input type="text" name="" value="" id="titleInput" onkeyup="refresh()">
+    <input class="form-control-dark" type="text" name="" value="" id="titleInput" onkeyup="refresh()">
     <br><br>
 
     <label for="priceInput">Estimation du prix :</label><br>
@@ -28,7 +35,7 @@
     <br><br>
 
     <label for="clientInput">Client :</label><br>
-    <input type="text" value="" id="clientInput" onkeyup="refresh()">
+    <input class="form-control-dark" type="text" value="" id="clientInput" onkeyup="refresh()">
     <br><br>
 
     <label for="dep">Départements concernés :</label><br>
@@ -42,31 +49,33 @@
     <br><br>
 
     <label for="detailsInput">Description détaillée :</label><br>
-    <textarea style='width: 500px; height: 300px;' value="" id="detailsInput" onkeyup="refresh()"></textarea>
+    <textarea class="form-control-dark" style='width: 100%; height: 300px;' value="" id="detailsInput" onkeyup="refresh()"></textarea>
     <br><br>
 
     <input type="checkbox" id="signatureCheckbox" name="delayed" onchange="toggleSignature()">Afficher la signature</input>
     <br><br>
 
     <label for="objectInput">Objet :</label><br>
-    <input type="text" value="[PEP Recrute]" id="objectInput">
+    <input class="form-control-dark" type="text" value="[PEP Recrute]" id="objectInput">
     <br><br>
 
     <label for="recipientInput">Destinataire :</label><br>
-    <input type="text" value="" id="recipientInput">
+    <input class="form-control-dark" type="text" value="" id="recipientInput">
     <br><br>
 
-    <input type="button" name="sendButton" id="sendButton" value="Envoyer">
+    <input class="btn btn-outline-warning" type="button" name="sendButton" id="sendButton" value="Envoyer">
 
     </div>
 
     </div>
         <div class="col-sm-6">
-            <div id="content" style='margin-right: 20px;'>
+            <div id="content" style='margin-right: 20px; background-color: white; border-style: outset; border-color: white; color: black;'>
                 {% include 'GSMailerBundle::pepRecruteModel.html.twig' %}
             </div>
         </div>
     </div>
+
+    <br><br>
 
     <!-- </div> -->
 
