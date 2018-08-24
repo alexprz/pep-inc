@@ -7,7 +7,10 @@
             "CoreBundle\\": "src/CoreBundle",
             "GS\\UserBundle\\": "src/GS/UserBundle",
             "GS\\PlatformBundle\\": "src/GS/PlatformBundle",
-            "GS\\MailerBundle\\": "src/GS/MailerBundle"
+            "GS\\MailerBundle\\": "src/GS/MailerBundle",
+            "GS\\MailBundle\\": "src/GS/MailBundle",
+            "GS\\FeedbackBundle\\": "src/GS/FeedbackBundle",
+            "GS\\SettingsBundle\\": "src/GS/SettingsBundle"
         },
         "classmap": [
             "app/AppKernel.php",
@@ -36,7 +39,10 @@
         "symfony/swiftmailer-bundle": "^2.3.10",
         "symfony/symfony": "3.4.*",
         "doctrine/doctrine-fixtures-bundle": "~2.3",
-        "twig/twig": "2.4.4"
+        "twig/twig": "2.4.4",
+        "symfony/assetic-bundle": "^2.7.1",
+        "leafo/scssphp": "~0.6",
+        "patchwork/jsqueeze": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",

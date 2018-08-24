@@ -1,0 +1,9 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+
+
+{% block title %}Êtes-vous sûr de vouloir supprimer ce questionnaire ?{% endblock %}
+{% block main %}
+<a href="{{ path('gs_feedback_fb_view', {'setId': setId, 'fbId': id}) }}"><button type="button" class="btn btn-outline-primary">Annuler</button></a>
+<a href="{{ path('gs_feedback_fb_delete', {'setId': setId, 'id': id}) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a><br>
+
+{% endblock %}

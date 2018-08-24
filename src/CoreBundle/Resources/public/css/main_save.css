@@ -1,0 +1,142 @@
+html {
+  height: 100%;
+  width: 100%;
+  /* background-color: #333; */
+  /* background-color: #444; */
+  /* background-color: white; */
+  /* text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+  background-attachment: fixed;
+  color: white; */
+  /* margin-top: 40px; */
+  background-color: #333;
+  background-attachment: fixed;
+  position: fixed;
+  overflow: scroll;
+  /* background-color: #444; */
+  /* background-color: white; */
+  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
+  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+}
+
+nav {
+    /* background:transparent; */
+    /* background-color: #333; */
+    /* box-shadow: inset 0 1em 5rem rgba(0, 0, 0, .5); */
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  background-attachment: fixed;
+  color: white;
+  position: fixed;
+  overflow-y: scroll;
+
+
+}
+
+.main{
+
+    /* margin: 0px 80px; */
+    /* padding-top: 70px; */
+}
+
+.cover-container {
+  max-width: 42em;
+}
+
+a{
+    color: #f7bf4e;
+}
+a:hover{
+    color: #f7bf4e;
+}
+a.card-link:hover{
+    color: #f7bf4e;
+    opacity: 0.5;
+    /* background-color: white; */
+}
+
+.main-card{
+    text-align: center;
+}
+
+.main-card-img{
+    height: 150px;
+
+}
+
+.navbar-logo {
+    height: 50px;
+    width: 50px;
+    margin: 5px;
+}
+
+.navbar-brand {
+    font-size:30px;
+    margin-left:10px;
+}
+
+.form-control {
+  padding: .75rem 1rem;
+  border-width: 0;
+  border-radius: 0;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+    color: #f7bf4e;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+.form-control {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control:focus {
+    /* font-size: 20px; */
+    color: #f7bf4e;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(247, 191, 78, .25);
+    /* rgba(255, 255, 255, .25); */
+}
+
+.form-control:disabled{
+    background: transparent;
+}
+
+.disabled-textarea {
+    color: white;
+    background: transparent;
+    font-size: 20px;
+    margin-left: -15px;
+    margin-bottom: -20px;
+    resize: none;
+    overflow: hidden;
+    /* border-color: rgba(255, 255, 255, .1); */
+}
+
+
+/* input {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+input:focus{
+    color: #f7bf4e;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+} */

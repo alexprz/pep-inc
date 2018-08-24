@@ -1,0 +1,9 @@
+services:
+#    gs_mail.example:
+#        class: GS\MailBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    gs_mail.mail_manager:
+        class: GS\MailBundle\Service\MailManager
+        arguments:
+            - "@mailer"
+            - "@doctrine.orm.entity_manager"

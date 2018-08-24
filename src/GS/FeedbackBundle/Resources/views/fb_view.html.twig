@@ -1,0 +1,56 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% set path = app.request.getSchemeAndHttpHost() ~ path('gs_feedback_answer', {'slug': feedback.getToken.getString}) %}
+
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': feedback.stringTitle, 'backPath': path('gs_feedback_fbSet_view', {'id': setId}), 'closeDiv': false} %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <span class="font-weight-light text-muted mr-3" style="margin: auto 0;">Ajouté {% if feedback.user != null %}par {{feedback.user.firstName}} {{feedback.user.lastName}}{% endif %} le {{feedback.creationDate|date('d M Y à H:i')}}</span>
+        <a href="{{ path('gs_feedback_fb_edit', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary mr-2">Modifier</button></a>
+        <a href="{{ path('gs_feedback_fb_confirm_delete', {'setId': setId, 'id': feedback.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Supprimer</button></a><br>
+    </div>
+</div>
+{% if feedback.stringName != null %}
+    <h4>À l'attention de {{feedback.stringName}}</h4>
+{% endif %}
+<br><br><br><br>
+Lien à envoyer pour répondre au questionnaire : <a href="{{path}}">{{ path }}</a>
+<br>
+État :
+    {% if feedback.isSubmitted %}<b class="text-success">{% else %}<b class="text-danger">{% endif %}
+        {{ feedback.stringState }}
+    </b>
+    <br>
+    {% if feedback.isSubmitted %} <a href="{{path('gs_feedback_open', {'id': feedback.id})}}">Réouvrir le questionnaire</a> {% endif %}
+<br><br><br>
+{% if feedback.isSubmitted %}
+<h1 class="h2">Réponses au questionnaire :</h1>
+<br>
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-sm-8">
+
+    <table class="table table-borderless">
+        <tbody>
+            <tr>
+                <td>Rempli le</td>
+                <td>{{feedback.responseDate|date('d M Y à H:i')}}</td>
+            </tr>
+            {% for question in feedback.question %}
+                <tr>
+                    <td>{{question.questionModel.title}}</td>
+                    <td>
+                        {% if question.questionModel.isBooleanType %}{{question.stringBooleanAnswer}}
+                        {% elseif question.questionModel.isTextType %}{{question.textAnswer}}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    <div class="col-lg-2"></div>
+</div>
+{% endif %}
+
+{% endblock %}

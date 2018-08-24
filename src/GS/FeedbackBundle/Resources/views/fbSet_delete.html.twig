@@ -1,0 +1,9 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}Êtes-vous sûr de vouloir supprimer ce jeu de questionnaires ?{% endblock %}
+{% block main %}
+<!-- <h4>Êtes-vous sûr de vouloir supprimer ce jeu de questionnaires ?</h4> -->
+<br>
+<a href="{{ path('gs_feedback_fbSet_view', {'id': setId}) }}"><button type="button" class="btn btn-outline-primary mr-3">Annuler</button></a>
+<a href="{{ path('gs_feedback_fbSet_delete', {'setId': setId}) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a><br>
+
+{% endblock %}

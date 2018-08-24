@@ -1,0 +1,8 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Paramètres', 'backPath': path('core_homepage')} %}
+
+<a href="{{path('gs_feedback_question_manager')}}">Gestionnaire de questions</a>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block stylesheet %}
+    {{parent()}}
+    {% stylesheets 'bundles/gsuser/css/sign-in.css'%}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+    {% stylesheets 'bundles/core/css/main.css'%}
+        <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+
+{% endblock %}
+
+{# Dans notre layout, il faut définir le block body #}
+{% block fullBody %}
+
+  {# On définit ce block, dans lequel vont venir s'insérer les autres vues du bundle #}
+  <form class="form-signin" action="{{path('fos_user_security_check')}}" method="post">
+      <div class="text-center mb-4">
+        <img src="/bundles/core/img/logo-pep.png" alt="Logo PEP" height="70px" width="70px">
+        <h1 class="h1 mb-5 font-weight-normal">Work in progress...</h1>
+        <p class="h6 mb-3"></p>
+      </div>
+
+    </form>
+
+{% endblock %}

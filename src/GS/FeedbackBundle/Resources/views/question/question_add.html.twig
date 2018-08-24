@@ -1,0 +1,8 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': title, 'backPath': path('gs_feedback_question_manager')} %}
+
+{{form(form)}}
+
+{% endblock %}

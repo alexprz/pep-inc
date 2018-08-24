@@ -1,0 +1,10 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}Êtes-vous sûr de vouloir supprimer cette question ?{% endblock %}
+
+{% block main %}
+<br>
+<a href="{{ path('gs_feedback_question_show', {'id': id}) }}"><button type="button" class="btn btn-outline-primary mr-3">Annuler</button></a>
+<a href="{{ path('gs_feedback_question_delete', {'id': id}) }}"><button type="button" class="btn btn-outline-danger">Supprimer</button></a><br>
+
+
+{% endblock %}

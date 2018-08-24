@@ -9,3 +9,28 @@ mailer_homepage:
 platform_homepage:
     path:     /mailer/
     defaults: { _controller: GSPlatformBundle:Default:index }
+
+gs_feedback_answer:
+    path: /public/feedback/answer/{slug}
+    defaults:
+        _controller: GSFeedbackBundle:Answer:answer
+
+work_in_progress:
+    path: /workInProgress
+    defaults:
+        _controller: CoreBundle:Default:workInProgress
+
+gs_user_show_profile:
+    path: /profile
+    defaults:
+        _controller: GSUserBundle:Default:showProfile
+
+gs_feedback_miss_submit:
+    path: /public/feedback/miss-submit/{slug}
+    defaults:
+        _controller: GSFeedbackBundle:Answer:missSubmit
+
+gs_feedback_ask_unsubmit:
+    path: /public/feedback/ask-unsubmit/{slug}
+    defaults:
+        _controller: GSFeedbackBundle:Answer:askUnsubmit

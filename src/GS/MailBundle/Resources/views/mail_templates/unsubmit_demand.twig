@@ -1,0 +1,7 @@
+{% block subject %}Impossible de remplir le questionnaire{% endblock %}
+
+{% block body %}
+    <b>{{fb.stringName}}</b> demande la réouverture de son {{fb.stringTitle}}.
+    <br>
+    Pour le réouvrir, cliquez ici : {{url('gs_feedback_open', {'id': fb.id})}}
+{% endblock %}

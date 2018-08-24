@@ -1,0 +1,213 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block stylesheet %}
+{{parent()}}
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+{% endblock %}
+
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': 'Pep Recrute', 'backPath': path('gs_mailer_homepage'), 'closeDiv': false} %}
+    <!-- <div class="btn-toolbar mb-2 mb-md-0">
+        <a style="float: right;" href="{{ path("gs_mailer_showMailDatabase") }}"><button type="button" class="btn btn-sm btn-outline-info">Base de données</button></a>
+    </div> -->
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-lg-6">
+    <!-- <div class="container"> -->
+        <!-- <div class="row">
+            <div class="col-sm-6"> -->
+            <div style='margin-left: 20px;'>
+
+
+    <label for="titleInput">Ce qu'il faut faire EN PEU DE MOTS (ex: Création d'une application, Étude de marché...) :</label><br>
+    <input class="form-control-dark" type="text" name="" value="" id="titleInput" onkeyup="refresh()">
+    <br><br>
+
+    <label for="priceInput">Estimation du prix :</label><br>
+    <!-- <input type="text" name="" value="" id="priceInput"> -->
+    <div class="input-group" style="width: 200px;">
+        <input type="text" class="form-control" aria-label="0" id="priceInput" onkeyup="refresh()">
+        <div class="input-group-append">
+            <span class="input-group-text">€</span>
+        </div>
+    </div>
+    <br><br>
+
+    <label for="clientInput">Client :</label><br>
+    <input class="form-control-dark" type="text" value="" id="clientInput" onkeyup="refresh()">
+    <br><br>
+
+    <label for="dep">Départements concernés :</label><br>
+    <input type="checkbox" name="dep" value="1" class="depInput" onchange="refresh()">GCC</input><br>
+    <input type="checkbox" name="dep" value="2" class="depInput" onchange="refresh()">GMM</input><br>
+    <input type="checkbox" name="dep" value="3" class="depInput" onchange="refresh()">IMI</input><br>
+    <input type="checkbox" name="dep" value="4" class="depInput" onchange="refresh()">SEGF</input><br>
+    <input type="checkbox" name="dep" value="5" class="depInput" onchange="refresh()">VET</input><br>
+    <input type="checkbox" name="dep" value="6" class="depInput" onchange="refresh()">GI</input><br>
+    <input type="checkbox" name="dep" value="0" class="depInput" onchange="refresh()">1A</input><br>
+    <br><br>
+
+    <label for="detailsInput">Description détaillée :</label><br>
+    <textarea class="form-control-dark" style='width: 100%; height: 300px;' value="" id="detailsInput" onkeyup="refresh()"></textarea>
+    <br><br>
+
+    <input type="checkbox" id="signatureCheckbox" name="delayed" onchange="toggleSignature()">Afficher la signature</input>
+    <br><br>
+
+    <label for="objectInput">Objet :</label><br>
+    <input class="form-control-dark" type="text" value="[PEP Recrute]" id="objectInput">
+    <br><br>
+
+    <label for="recipientInput">Destinataire :</label><br>
+    <input class="form-control-dark" type="text" value="" id="recipientInput">
+    <br><br>
+
+    <input class="btn btn-outline-warning" type="button" name="sendButton" id="sendButton" value="Envoyer">
+
+    </div>
+
+    </div>
+        <div class="col-sm-6">
+            <div id="content" style='margin-right: 20px; background-color: white; border-style: outset; border-color: white; color: black;'>
+                {% include 'GSMailerBundle::pepRecruteModel.html.twig' %}
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+
+    <!-- </div> -->
+
+{% endblock %}
+
+{% block scripts %}
+
+    {{ parent() }}
+
+    <script type="text/javascript">
+
+        function toggleSignature()
+        {
+            if($("#signatureCheckbox:checked").length>0){
+                $("#signatureOutput").html(getSignature());
+            }
+            else {
+                $("#signatureOutput").html("");
+            }
+        }
+        toggleSignature()
+
+        function getContent()
+        {
+            $("#content").html();
+        }
+
+        function refresh()
+        {
+            $("#titleOutput").html($("#titleInput").val())
+            $("#priceOutput").html($("#priceInput").val())
+            $("#clientOutput").html($("#clientInput").val())
+            $("#detailsOutput").html($("#detailsInput").val())
+
+            for (var i = 0; i < 7; i++) {
+                setInactive(i);
+            }
+            var id;
+            $('.depInput:checked').each(function() {
+                id  = $(this).attr('value');
+                setActive(id);
+            });
+        }
+
+        // function refreshSignature()
+        // {
+        //     if(toggledSignature){
+        //         $("#signatureOutput").html(getSignature());
+        //         alert("disp sign")
+        //     }
+        //     else {
+        //         $("#signatureOutput").html();
+        //     }
+        // }
+
+        function setActive(id)
+        {
+            $("#yellow_dep"+id).css('display', 'inline-block');
+            $("#gray_dep"+id).css('display', 'none');
+        }
+        function setInactive(id)
+        {
+            $("#yellow_dep"+id).css('display', 'none');
+            $("#gray_dep"+id).css('display', 'inline-block');
+        }
+
+        for (var i = 0; i < 7; i++) {
+            setInactive(i);
+        }
+
+        function getSignature(){
+            return '<table style="width: 509px; background-color: none;" class="mceItemTable" cellspacing="5" cellpadding="0" border="0" align="left" height="130">'+
+            '<tbody>'+
+            '<tr>'+
+            '<td style="text-align: center; width: 150px;">'+
+            '<div style="text-align: center;"><a href="http://pep.enpc.org"><img moz-do-not-send="false" src="https://pbs.twimg.com/profile_images/580072788721008640/YT4GZ0RK.png" width="100" height="100" /></a></div>'+
+            '<div style="text-align: center;"><a href="https://www.facebook.com/pontsetudespro/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://facebook.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
+                '<a href="https://twitter.com/pontsetudes"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=http://twitter.com" width="16" height="16" /></a>&nbsp;&nbsp;'+
+                '<a href="https://www.linkedin.com/company-beta/423587/"><img moz-do-not-send="false" src="http://s2.googleusercontent.com/s2/favicons?domain_url=www.linkedin.com" width="16" height="16" /></a></div>'+
+            '</td>'+
+            '<td>'+
+            '<div><span style="font-size: 12pt;"><strong><strong><span style="font-family: \'trebuchet ms\', sans-serif;">'+'{{ app.user.firstName }} {{ app.user.lastName }}'+'</span></strong></strong></span><hr /><span style="font-size: xx-small;"><strong><span style="font-family: \'trebuchet ms\', sans-serif;"></span></strong></span></div>'+
+            '<div><span style="font-family: \'trebuchet ms\' , sans-serif; font-size: small; color: #404040;"><b>'+'{% if app.user.post != null %}{{ app.user.post.name }}{% endif %}'+'</b>&nbsp;chez</span><span style="color: #404040; font-family: \'trebuchet ms\', sans-serif; font-size: small;">&nbsp;Ponts Etudes Projets,</span></div>'+
+            '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">la Junior-Entreprise de l\'Ecole des Ponts ParisTech</span></div>'+
+            '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: x-small; color: #404040;">&nbsp;</span></div>'+
+            '<div><span style="font-family: \'trebuchet ms\', sans-serif; font-size: small; color: #336699; background-color: none;">'+
+                '<span class="Object" id="OBJ_PREFIX_DWT1173_com_zimbra_phone" style="cursor: pointer;">'+
+                    '<span style="cursor: pointer;">'+'{{ app.user.phone }}'+'&nbsp;&nbsp;&ndash;&nbsp;&nbsp;</span></span></span>'+
+                    '<span class="Object" id="OBJ_PREFIX_DWT166_com_zimbra_url" style="color: #336699; cursor: pointer;"><a href="https://zimbra.enpc.fr/pep.enpc.org" title="Site Web" target="_blank" style="color: #336699; text-decoration: none; cursor: pointer;"><span style="color: #8e3232;"><em>pep.enpc.org</em>'+
+                    '</span></a></span></div>'+
+            '</td>'+
+            '</tr>'+
+            '</tbody>'+
+            '</table>'
+            ;
+        }
+
+        function sendMail()
+        {
+            //var from = '{{ app.user.email }}'
+	    var from = "pontsetudesprojets.recrute@gmail.com"
+            var fromAlias = '{{ app.user.firstName }}'+" "+'{{app.user.lastName }}'
+            var to = $("#recipientInput").val();
+            var object = $("#objectInput").val();
+            var text = $("#content").html();
+
+            $.ajax({
+                type: 'POST',
+                url: "{{ path("gs_mailer_send") }}",
+                data: {from: from, fromAlias: fromAlias, to: to, object: object, text: text},
+                dataType: "html",
+                beforeSend: function() {
+                    $('#loadGif').html("<img src='http://www.mediaforma.com/sdz/jquery/ajax-loader.gif'>")
+                },
+                error: function(jqXHR, status) {
+                    $('#loadGif').html("");
+                    alert("ERREUR");
+                },
+                success: function(jqXHR){
+                    $('#loadGif').html("");
+                    alert("SUCCESS");
+                }
+            });
+        }
+
+        $("#sendButton").click(function(){
+            sendMail();
+        });
+
+
+
+
+    </script>
+
+{% endblock %}

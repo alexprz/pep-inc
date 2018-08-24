@@ -1,0 +1,126 @@
+gs_feedback_homepage:
+    path:     /
+    defaults: { _controller: GSFeedbackBundle:Default:index }
+
+gs_feedback_fbSet_add:
+    path: /add-feedback-set
+    defaults:
+        _controller: GSFeedbackBundle:Default:addSet
+
+gs_feedback_fbSet_edit:
+    path: /edit-feedback-set/{setId}
+    defaults:
+        _controller: GSFeedbackBundle:Default:editSet
+    requirements:
+        setId: \d+
+
+gs_feedback_fbSet_confirm_delete:
+    path: /confirm-delete-feedback-set/{setId}
+    defaults:
+        _controller: GSFeedbackBundle:Default:confirmDeleteSet
+    requirements:
+        setId: \d+
+
+gs_feedback_fbSet_delete:
+    path: /delete-feedback-set/{setId}
+    defaults:
+        _controller: GSFeedbackBundle:Default:deleteSet
+    requirements:
+        setId: \d+
+
+gs_feedback_fbSet_view:
+    path: /feedback-set/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Default:viewSet
+    requirements:
+        id: \d+
+
+gs_feedback_fb_add:
+    path: /feedback-set/{setId}/add-feedback/{type}
+    defaults:
+        _controller: GSFeedbackBundle:Default:addFb
+    requirements:
+        setId: \d+
+        type: \d+
+
+gs_feedback_fb_edit:
+    path: /feedback-set/{setId}/edit-feedback/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Default:editFb
+        requirements:
+            setId: \d+
+            id: \d+
+
+gs_feedback_fb_delete:
+    path: /feedback-set/{setId}/delete-feedback/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Default:deleteFb
+        requirements:
+            setId: \d+
+            id: \d+
+
+gs_feedback_fb_confirm_delete:
+    path: /feedback-set/{setId}/confirm-delete-feedback/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Default:confirmDeleteFb
+        requirements:
+            setId: \d+
+            id: \d+
+
+gs_feedback_fb_view:
+    path: /feedback-set/{setId}/feedback/{fbId}
+    defaults:
+        _controller: GSFeedbackBundle:Default:viewFb
+    requirements:
+        setId: \d+
+        fbId: \d+
+
+gs_feedback_question_manager:
+    path: /question-manager
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionManager
+
+gs_feedback_question_add:
+    path: /question-manager/add
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionEdit
+
+gs_feedback_question_edit:
+    path: /question-manager/edit/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionEdit
+    requirements:
+        id: \d+
+
+gs_feedback_question_confirm_delete:
+    path: /question-manager/confirm-delete/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:confirmDelete
+    requirements:
+        id: \d+
+
+gs_feedback_question_delete:
+    path: /question-manager/delete/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:delete
+    requirements:
+        id: \d+
+
+gs_feedback_question_show:
+    path: /question-manager/show/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Question:questionShow
+    requirements:
+        id: \d+
+
+gs_feedback_open:
+    path: /open/{id}
+    defaults:
+        _controller: GSFeedbackBundle:Answer:open
+    requirements:
+        id: \d+
+
+gs_feedback_dump_all_fb:
+    path: /all
+    defaults:
+        _controller: GSFeedbackBundle:Default:dumpAll

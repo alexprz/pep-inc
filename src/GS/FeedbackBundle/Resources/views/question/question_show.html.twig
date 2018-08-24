@@ -1,0 +1,13 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block main %}
+{% include 'CoreBundle::topTitle.html.twig' with {'title': 'Question', 'backPath': path('gs_feedback_question_manager'), 'closeDiv': false} %}
+<div class="btn-toolbar mb-2 mb-md-0">
+<a href="{{ path('gs_feedback_question_edit', {'id': question.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary mr-2">Modifier</button></a>
+<!-- </div> -->
+<a href="{{ path('gs_feedback_question_confirm_delete', {'id': question.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Supprimer</button></a><br>
+</div>
+</div>
+<h3>{{question.title}}</h3>
+{{question.stringAnswerType}}
+{% endblock %}

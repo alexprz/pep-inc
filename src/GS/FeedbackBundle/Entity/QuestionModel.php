@@ -1,0 +1,210 @@
+<?php
+
+namespace GS\FeedbackBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * QuestionModel
+ *
+ * @ORM\Table(name="gs_feedback_question_model")
+ * @ORM\Entity(repositoryClass="GS\FeedbackBundle\Repository\QuestionModelRepository")
+ */
+class QuestionModel
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="title", type="text", nullable=true)
+     */
+    private $title;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="questionNumber", type="integer", nullable=true)
+     */
+    private $questionNumber;
+
+    /**
+     * @var int|null
+     *
+     * @ORM\Column(name="fbType", type="array", nullable=true)
+     */
+    private $fbType;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="answerType", type="integer")
+     */
+    private $answerType = 1;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="creationDate", type="datetime")
+     */
+    private $creationDate;
+
+    public function __construct()
+    {
+        $this->creationDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+    }
+
+    public function stringAnswerType()
+    {
+        if($this->answerType == 1)
+            return "Oui/Non";
+        else if($this->answerType == 2)
+            return "Texte";
+    }
+
+    public function isBooleanType()
+    {
+        return $this->answerType == 1;
+    }
+    public function isTextType()
+    {
+        return $this->answerType == 2;
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set title.
+     *
+     * @param string|null $title
+     *
+     * @return QuestionModel
+     */
+    public function setTitle($title = null)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title.
+     *
+     * @return string|null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set questionNumber.
+     *
+     * @param int|null $questionNumber
+     *
+     * @return QuestionModel
+     */
+    public function setQuestionNumber($questionNumber = null)
+    {
+        $this->questionNumber = $questionNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get questionNumber.
+     *
+     * @return int|null
+     */
+    public function getQuestionNumber()
+    {
+        return $this->questionNumber;
+    }
+
+    /**
+     * Set fbType.
+     *
+     * @param int|null $fbType
+     *
+     * @return QuestionModel
+     */
+    public function setFbType($fbType = null)
+    {
+        $this->fbType = $fbType;
+
+        return $this;
+    }
+
+    /**
+     * Get fbType.
+     *
+     * @return int|null
+     */
+    public function getFbType()
+    {
+        return $this->fbType;
+    }
+
+    /**
+     * Set answerType.
+     *
+     * @param int $answerType
+     *
+     * @return QuestionModel
+     */
+    public function setAnswerType($answerType)
+    {
+        $this->answerType = $answerType;
+
+        return $this;
+    }
+
+    /**
+     * Get answerType.
+     *
+     * @return int
+     */
+    public function getAnswerType()
+    {
+        return $this->answerType;
+    }
+
+    /**
+     * Set creationDate.
+     *
+     * @param \DateTime $creationDate
+     *
+     * @return QuestionModel
+     */
+    public function setCreationDate($creationDate)
+    {
+        $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get creationDate.
+     *
+     * @return \DateTime
+     */
+    public function getCreationDate()
+    {
+        return $this->creationDate;
+    }
+}

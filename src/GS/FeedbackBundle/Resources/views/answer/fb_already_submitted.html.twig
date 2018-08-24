@@ -1,0 +1,8 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}Oops !{% endblock %}
+{% block main %}
+Ce questionnaire a déjà été envoyé !
+<br><br>
+
+<a style="font-size: 13px;" href="{{path('gs_feedback_miss_submit', {'slug': fb.token.string})}}">Je n'ai pas envoyé ce questionnaire</a>
+{% endblock %}

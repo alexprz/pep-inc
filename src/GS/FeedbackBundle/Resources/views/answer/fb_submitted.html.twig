@@ -1,0 +1,8 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+{% block title %}Merci !{% endblock %}
+{% block main %}
+Ce questionnaire a été envoyé. Ponts Études Projets vous en remercie.
+<br><br>
+
+<a style="font-size: 13px;" href="{{path('gs_feedback_miss_submit', {'slug': fb.token.string})}}">J'ai envoyé ce questionnaire par erreur</a>
+{% endblock %}
