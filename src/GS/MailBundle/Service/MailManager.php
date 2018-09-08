@@ -144,7 +144,7 @@ class MailManager
             {
                 if($bill->isMemberBill()){
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-1.twig');
-                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                    // $mailPerso->setAttachmentPath('bundles/rib.pdf');
                 }
                 else
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-1.twig');
@@ -168,7 +168,7 @@ class MailManager
             {
                 if($bill->isMemberBill()){
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-2.twig');
-                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                    // $mailPerso->setAttachmentPath('bundles/rib.pdf');
                 }
                 else
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-2.twig');
@@ -192,7 +192,7 @@ class MailManager
             {
                 if($bill->isMemberBill()){
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-3.twig');
-                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                    // $mailPerso->setAttachmentPath('bundles/rib.pdf');
                 }
                 else
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-3.twig');

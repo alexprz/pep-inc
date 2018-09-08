@@ -73,7 +73,7 @@ swiftmailer:
     # port: 587
     # encryption: tls
     disable_delivery: false
-    delivery_addresses: ['alexperez@wanadoo.fr']
+    # delivery_addresses: ['alexperez@wanadoo.fr']
 
 fos_user:
     db_driver:     orm
