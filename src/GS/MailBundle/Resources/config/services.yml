@@ -5,6 +5,6 @@ services:
     gs_mail.mail_manager:
         class: GS\MailBundle\Service\MailManager
         arguments:
-            - "@twig"
             - "@mailer"
             - "@doctrine.orm.entity_manager"
+            - "@twig"
