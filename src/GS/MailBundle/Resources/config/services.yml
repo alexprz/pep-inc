@@ -8,3 +8,4 @@ services:
             - "@mailer"
             - "@doctrine.orm.entity_manager"
             - "@twig"
+            - "@service_container"

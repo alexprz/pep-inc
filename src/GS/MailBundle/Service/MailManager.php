@@ -7,19 +7,22 @@ use Twig_Environment as Environment;
 
 use GS\BillBundle\Entity\Bill;
 use GS\BillBundle\Entity\BillMail;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class MailManager
 {
     private $mailer;
     private $entityManager;
     private $twig;
+    private $container;
 
 
-    public function __construct(\Swift_Mailer $mailer, EntityManager $entityManager, Environment $twig)
+    public function __construct(\Swift_Mailer $mailer, EntityManager $entityManager, Environment $twig, ContainerInterface $container)
     {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
         $this->twig = $twig;
+        $this->container = $container;
     }
 
     public function prepareSend($mail)
@@ -80,7 +83,7 @@ class MailManager
             $message->setContentType('text/html');
 
         if($attachmentPath != null)
-            $message->attach(\Swift_Attachment::fromPath($attachmentPath)->setFilename($attachmentName));
+            $message->attach(\Swift_Attachment::fromPath($this->container->get('kernel')->getRootDir().'/../web/'.$attachmentPath)->setFilename($attachmentName));
 
         $mailer = $this->mailer;
 
@@ -144,7 +147,7 @@ class MailManager
             {
                 if($bill->isMemberBill()){
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-1.twig');
-                    $mailPerso->setAttachmentPath('/bundles/rib.pdf');
+                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
                 }
                 else
                     $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-1.twig');
