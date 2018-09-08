@@ -1,0 +1,14 @@
+{% block subject %}Wesh déconne pas{% endblock %}
+
+{% block body %}
+La facture numéro {{bill.billNumber}} d'un montant TTC de {{bill.amount}}€ concernant un certain {{bill.getRealClientName}} vient d'arriver à échéance. <br>
+Prière de payer tes dettes stp.
+
+<br><br>
+
+Le trez.
+
+<br><br><br>
+Adresse suiveur : {{mailPerso}}
+Adresse trez : {{mailTrez}}
+{% endblock %}

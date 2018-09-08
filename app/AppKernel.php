@@ -25,6 +25,7 @@ class AppKernel extends Kernel
             new GS\FeedbackBundle\GSFeedbackBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new GS\SettingsBundle\GSSettingsBundle(),
+            new GS\BillBundle\GSBillBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

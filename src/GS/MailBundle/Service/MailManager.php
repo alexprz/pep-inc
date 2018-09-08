@@ -3,17 +3,23 @@ namespace GS\MailBundle\Service;
 
 use Doctrine\ORM\EntityManager;
 use GS\MailBundle\Entity\Mail;
+use Twig_Environment as Environment;
+
+use GS\BillBundle\Entity\Bill;
+use GS\BillBundle\Entity\BillMail;
 
 class MailManager
 {
     private $mailer;
     private $entityManager;
+    private $twig;
 
 
-    public function __construct(\Swift_Mailer $mailer, EntityManager $entityManager)
+    public function __construct(\Swift_Mailer $mailer, EntityManager $entityManager, Environment $twig)
     {
         $this->mailer = $mailer;
         $this->entityManager = $entityManager;
+        $this->twig = $twig;
     }
 
     public function prepareSend($mail)
@@ -99,6 +105,119 @@ class MailManager
             $this->send($mail);
         }
         $em->flush();
+    }
+
+    public function checkTreasury()
+    {
+        $em = $this->entityManager;
+
+        $billList = $em->getRepository("GSBillBundle:Bill")->findUnpaid();
+        $todayDate = new \DateTime("now", new \DateTimeZone("EUROPE/Paris"));
+        $treasurer = $em->getRepository('GSUserBundle:User')->findCurrentTreasurer();
+
+        foreach ($billList as $bill) {
+            $dueDate = $bill->getDueDate();
+            $interval = $dueDate->diff($todayDate);
+
+            $mailPerso = new Mail();
+            $mailTrez = new Mail();
+
+            $billMailPerso = new BillMail();
+            $billMailTrez = new BillMail();
+
+            $billMailPerso->setMail($mailPerso);
+            $billMailTrez->setMail($mailTrez);
+
+            $twig = $this->twig;
+
+            $mailPerso->setRecipientEmail($bill->getMail());
+            if($treasurer != null)
+                $mailTrez->setRecipientEmail($treasurer->getEmail());
+
+            $parameters  = array('bill' => $bill,
+                'mailPerso' => $mailPerso->getRecipientEmail(),
+                'mailTrez' => $mailTrez->getRecipientEmail()
+            );
+
+            // Arrivé à la date d'échéance
+            if($dueDate->format('Y-m-d') == $todayDate->format('Y-m-d'))
+            {
+                if($bill->isMemberBill()){
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-1.twig');
+                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                }
+                else
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-1.twig');
+                $subject  = $template->renderBlock('subject',   $parameters);
+                $body = $template->renderBlock('body', $parameters);
+
+                $mailPerso->setSubject($subject);
+                $mailPerso->setContent($body);
+                $mailTrez->setSubject($subject);
+                $mailTrez->setContent($body);
+
+                $this->send($mailPerso);
+                $this->send($mailTrez);
+
+                $em->persist($billMailPerso);
+                $em->persist($billMailTrez);
+                $em->flush();
+            }
+            // Arrivée à la date d'échéance + 15j
+            else if($dueDate->modify('+15 days')->format('Y-m-d') == $todayDate->format('Y-m-d'))
+            {
+                if($bill->isMemberBill()){
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-2.twig');
+                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                }
+                else
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-2.twig');
+                $subject  = $template->renderBlock('subject',   $parameters);
+                $body = $template->renderBlock('body', $parameters);
+
+                $mailPerso->setSubject($subject);
+                $mailPerso->setContent($body);
+                $mailTrez->setSubject($subject);
+                $mailTrez->setContent($body);
+
+                $this->send($mailPerso);
+                $this->send($mailTrez);
+
+                $em->persist($billMailPerso);
+                $em->persist($billMailTrez);
+                $em->flush();
+            }
+            // Arrivée à la date d'échéance + 30j
+            else if($dueDate->modify('+15 days')->format('Y-m-d') == $todayDate->format('Y-m-d'))
+            {
+                if($bill->isMemberBill()){
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-member-3.twig');
+                    $mailPerso->setAttachmentPath('bundles/rib.pdf');
+                }
+                else
+                    $template = $twig->loadTemplate('@GSMailBundle/Resources/views/mail_templates/late-treasury-3.twig');
+                $subject  = $template->renderBlock('subject',   $parameters);
+                $body = $template->renderBlock('body', $parameters);
+
+                $mailTrez->setSubject($subject);
+                $mailTrez->setContent($body);
+
+                if($bill->isMemberBill()){
+                    $this->send($mailPerso);
+                    $em->persist($billMailPerso);
+                }
+
+                $this->send($mailTrez);
+                $em->persist($billMailTrez);
+                $em->flush();
+            }
+
+
+
+        }
+
+
+
     }
 
 }

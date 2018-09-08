@@ -1,0 +1,14 @@
+{% block subject %}Wesh tu payes quand ?{% endblock %}
+
+{% block body %}
+La facture numéro {{bill.billNumber}} d'un montant TTC de {{bill.amount}}€ concernant un certain {{bill.getRealClientName}} est arrivée à échéance il y a 15 jours. <br>
+Rend l'argent stp.
+
+<br><br>
+
+Le trez.
+
+<br><br><br>
+Adresse suiveur : {{mailPerso}}
+Adresse trez : {{mailTrez}}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% block subject %}Wesh il a pas payé{% endblock %}
+
+{% block body %}
+La facture numéro {{bill.billNumber}} d'un montant TTC de {{bill.amount}}€ concernant le client {{bill.clientName}} est arrivée à échéance aujourd'hui. <br>
+Prière de relancer gentillment le client.
+
+<br><br>
+
+La PEP
+
+<br><br><br>
+Adresse suiveur : {{mailPerso}}
+Adresse trez : {{mailTrez}}
+{% endblock %}

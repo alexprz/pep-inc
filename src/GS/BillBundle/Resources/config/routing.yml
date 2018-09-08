@@ -1,0 +1,57 @@
+gs_bill_view_all:
+    path:     /
+    defaults: { _controller: GSBillBundle:Bill:viewAll }
+
+gs_bill_view:
+    path:   /view/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:view
+    requirements:
+        id: \d+
+
+gs_bill_add:
+    path:   /add
+    defaults:
+        _controller: GSBillBundle:Bill:edit
+
+gs_bill_edit:
+    path:   /edit/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:edit
+    requirements:
+        id: \d+
+
+gs_bill_confirmDelete:
+    path:   /confirm-delete/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:confirmDelete
+    requirements:
+        id: \d+
+
+gs_bill_delete:
+    path:   /delete/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:delete
+    requirements:
+        id: \d+
+
+gs_bill_pay:
+    path: /pay/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:pay
+    requirements:
+        id: \d+
+
+gs_bill_abort:
+    path: /abort/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:abort
+    requirements:
+        id: \d+
+
+gs_bill_return:
+    path: /return/{id}
+    defaults:
+        _controller: GSBillBundle:Bill:return
+    requirements:
+        id: \d+

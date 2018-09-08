@@ -23,4 +23,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
           ->getResult()
         ;
     }
+
+    public function findCurrentTreasurer()
+    {
+        $qb = $this->createQueryBuilder('u')
+          ->leftJoin('u.post', 'p')
+          ->where('p.name LIKE :pattern')
+          ->setParameter('pattern', 'Trésorier')
+        ;
+
+        return $qb
+          ->getQuery()
+          ->getOneOrNullResult()
+        ;
+    }
 }

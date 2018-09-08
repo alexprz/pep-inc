@@ -39,3 +39,9 @@ services:
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
         exclude: '../../src/GS/MailBundle/{Entity,Repository}'
+
+    GS\BillBundle\:
+        resource: '../../src/GS/BillBundle/*'
+        # you can exclude directories or files
+        # but if a service is unused, it's removed anyway
+        exclude: '../../src/GS/BillBundle/{Entity,Repository}'

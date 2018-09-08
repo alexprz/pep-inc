@@ -23,7 +23,8 @@ class LoadPost implements FixtureInterface
         'DESI',
         'Directeur Commercial',
         'Responsable Appels d\'offre',
-        'Responsable Communication & Événementiels'
+        'Responsable Communication',
+        'Responsable Événementiel'
     );
 
     foreach ($names as $name) {
