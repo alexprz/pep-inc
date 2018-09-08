@@ -8,6 +8,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    bill_directory: '%kernel.project_dir%/web/uploads/bills'
 
 framework:
     translator:      { fallbacks: ["%locale%"] }
@@ -71,7 +72,8 @@ swiftmailer:
     password: '%mailer_password%'
     # port: 587
     # encryption: tls
-    disable_delivery: true
+    disable_delivery: false
+    delivery_addresses: ['alexperez@wanadoo.fr']
 
 fos_user:
     db_driver:     orm
@@ -89,6 +91,6 @@ fos_user:
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: [GSMailerBundle, CoreBundle, GSUserBundle]
+    bundles: [GSMailerBundle, CoreBundle, GSUserBundle, GSBillBundle]
     filters:
         cssrewrite: ~

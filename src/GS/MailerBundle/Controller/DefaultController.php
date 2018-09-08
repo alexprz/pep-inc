@@ -200,7 +200,7 @@ class DefaultController extends Controller
         //
         // //Récupère l'utilisateur
         // $em = $this->getDoctrine()->getManager();
-        // $user = $em->getRepository('GSUserBundle:User')->find($request->get("userid"));
+        // // $user = $em->getRepository('GSUserBundle:User')->find($request->get("userid"));
         //
         // // Crée une nouvelle instance de Mail
         // $repoMail = $em->getRepository('GSMailerBundle:Mail');
@@ -210,9 +210,9 @@ class DefaultController extends Controller
         // $mail->setFromAlias($fromAlias);
         // $mail->setFromEmail($from);
         // $mail->setRecipientEmail($to);
-        // $mail->setObject($object);
+        // $mail->setSubject($object);
         // $mail->setContent($text);
-        // $mail->setUser($user);
+        // // $mail->setUser($user);
         // $mail->setScheduledDate(new \DateTime($scheduledDate));
         // if ($scheduledDate == null) {
         //     $mail->setScheduledDate(null);
@@ -220,14 +220,14 @@ class DefaultController extends Controller
 
         // Crée une réponse
         $response = new Response();
-
-        // Si aucun destinataires : erreur
+        //
+        // // Si aucun destinataires : erreur
         // if($to == null){
         //     $response->setStatusCode(450);
         //     return $response;
         // }
-
-        // Prépare le message
+        //
+        // // Prépare le message
         // $message = (new \Swift_Message($object))
         //     ->setFrom([$from => $fromAlias])
         //     ->setTo($to)
@@ -242,7 +242,7 @@ class DefaultController extends Controller
         // $mailer = $this->get('mailer');
         //
         //
-        // $mail->setSent(false);
+        // // $mail->setSent(false);
         // $sent = false;
         //
         // // Envoie le message ou non
@@ -250,8 +250,8 @@ class DefaultController extends Controller
         //     //Pas d'envoie différé
         //     $sent = $mailer->send($message);
         //     if($sent){
-        //         $mail->setSent(true);
-        //         $mail->setSentAt(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
+        //         // $mail->setSent(true);
+        //         $mail->setSentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
         //     }
         // }
         //
@@ -272,42 +272,42 @@ class DefaultController extends Controller
     public function sendAction(Request $request)
     {
         // Récupère les paramètres de la requette
-        // $text = $request->get("text");
-        // $from = $request->get("from");
-        // $fromAlias = $request->get("fromAlias");
-        // $to = $request->get("to");
-        // $object = $request->get("object");
-        //
-        // // Crée une réponse
+        $text = $request->get("text");
+        $from = $request->get("from");
+        $fromAlias = $request->get("fromAlias");
+        $to = $request->get("to");
+        $object = $request->get("object");
+
+        // Crée une réponse
         $response = new Response();
-        //
-        // // Si aucun destinataires : erreur
-        // if($to == null){
-        //     $response->setStatusCode(450);
-        //     return $response;
-        // }
-        //
-        // // Prépare le message
-        // $message = (new \Swift_Message($object))
-        //     ->setFrom([$from => $fromAlias])
-        //     ->setTo($to)
-        //     // ->setReplyTo($from)
-        //     ->setBody(
-        //         $text,
-        //         'text/html'
-        //     )
-        // ;
-        //
-        // $mailer = $this->get('mailer');
-        //
-        // $sent = $mailer->send($message);
-        // if(!$sent){
-        //     // Erreur : renvoie directement un code d'erreur
-        //     $response->setStatusCode(451);
-        // }
-        // else {
-        //     $response->setStatusCode(200);
-        // }
+
+        // Si aucun destinataires : erreur
+        if($to == null){
+            $response->setStatusCode(450);
+            return $response;
+        }
+
+        // Prépare le message
+        $message = (new \Swift_Message($object))
+            ->setFrom([$from => $fromAlias])
+            ->setTo($to)
+            // ->setReplyTo($from)
+            ->setBody(
+                $text,
+                'text/html'
+            )
+        ;
+
+        $mailer = $this->get('mailer');
+
+        $sent = $mailer->send($message);
+        if(!$sent){
+            // Erreur : renvoie directement un code d'erreur
+            $response->setStatusCode(451);
+        }
+        else {
+            $response->setStatusCode(200);
+        }
 
         return $response;
     }

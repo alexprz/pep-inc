@@ -1,0 +1,65 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+{% block stylesheet %}
+    {{parent()}}
+    <style media="screen">
+        table tr {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': 'Factures', 'backPath': path('core_homepage')} %}
+    <a href="{{ path('gs_bill_add') }}"><button type="button" class="btn btn-outline-success">Ajouter une facture</button></a>
+
+<br><br>
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Numéro</th>
+                <th>Type</th>
+                <th>Client</th>
+                <th>Montant</th>
+                <th>État</th>
+                <th>Date d'échéance</th>
+                <th>Date de paiement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bill in billList %}
+                <tr href="{{path('gs_bill_view', {'id': bill.id})}}">
+                    <!-- <a href="{{path('gs_bill_view', {'id': bill.id})}}"> -->
+                    <td>{{bill.billNumber}}</td>
+                    <td>{% if bill.billType != null %}{{bill.billType.name}}{% endif %}</td>
+                    <td>{{bill.getRealClientName|title}}</td>
+                    <td>{{bill.amount}}€</td>
+                    <td>
+                        {% if bill.isCancelled %}<b class="text-muted">{# elseif bill.isLate %}<b class="text-danger">#}{% elseif bill.isPaid %}<b class="text-success">{% else %}<b class="text-warning">{% endif %}
+                            {{ bill.billState.name }}
+                        </b>
+                    </td>
+                    <td>
+                        {% if not bill.isCancelled and bill.isLate %}<b class="text-danger">{% elseif bill.isPaid and not bill.isLate %}<b class="text-success">{% endif %}{{ bill.dueDate|date('d M Y') }}
+                    </td>
+                    <td>{% if bill.isPaid %}{{ bill.paymentDate|date('d M Y') }}{% endif %}</td>
+                <!-- </a> -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('table tr').click(function(){
+            window.location = $(this).attr('href');
+            return false;
+        });
+        });
+    </script>
+
+{% endblock %}

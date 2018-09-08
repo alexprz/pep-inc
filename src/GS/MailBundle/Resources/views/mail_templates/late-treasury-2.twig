@@ -1,0 +1,14 @@
+{% block subject %}Rend l'argent{% endblock %}
+
+{% block body %}
+La facture numéro {{bill.billNumber}} d'un montant TTC de {{bill.amount}}€ concernant le client {{bill.clientName}} est arrivée à échéance il y a 15 jours. <br>
+Prière de relancer le client moins gentillement et de contacter le trez de la PEP.
+
+<br><br>
+
+Le Trez en colère.
+
+<br><br><br>
+Adresse suiveur : {{mailPerso}}
+Adresse trez : {{mailTrez}}
+{% endblock %}

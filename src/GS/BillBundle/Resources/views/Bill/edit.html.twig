@@ -1,0 +1,69 @@
+{% extends 'CoreBundle::layout-form.html.twig' %}
+
+
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': title, 'backPath': path('gs_bill_view_all')} %}
+
+    {{ form(form) }}
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    <script type="text/javascript">
+
+    // Toggle unregistred member
+    $("#bill_followerMember").change(function (){
+        if($(this).val() == ""){
+            $("#bill_followerEmail").parent().css("display", "block")
+            $("#bill_followerEmail").prop('required',true);
+        }
+        else {
+            $("#bill_followerEmail").parent().css("display", "none")
+            $("#bill_followerEmail").prop('required',false);
+        }
+    });
+    $('#bill_followerMember').trigger('change');
+
+    // Toggle clientMember/clientName
+    $("#bill_billType").change(function (){
+        if($(this).val() == {{ idBillType1 }}){
+            $("#bill_clientName").parent().css("display", "block")
+            $("#bill_clientName").prop('required',true);
+            $("#bill_clientMember").parent().css("display", "none")
+            $("#bill_clientMember").prop('required',false);
+            $("#bill_followerMember").parent().css("display", "block")
+            $("#bill_followerMember").prop('required',true);
+                $('#bill_followerMember').trigger('change');
+        }
+        else if ($(this).val() == {{ idBillType2 }}) {
+            $("#bill_clientName").parent().css("display", "none")
+            $("#bill_clientName").prop('required',false);
+            $("#bill_clientMember").parent().css("display", "block")
+            $("#bill_clientMember").prop('required',true);
+            $("#bill_followerEmail").parent().css("display", "none")
+            $("#bill_followerEmail").prop('required',false);
+            $("#bill_followerMember").parent().css("display", "none")
+            $("#bill_followerMember").prop('required',false);
+        }
+    });
+    $('#bill_billType').trigger('change');
+
+    // Toggle unregistred member
+    $("#bill_billState").change(function (){
+        if($(this).val() == {{ idBillStatePaid }}){
+            $("#bill_paymentMean").parent().css("display", "block")
+            $("#bill_paymentMean").prop('required',true);
+            $("#bill_paymentDate").parent().css("display", "block")
+            $("#bill_paymentDate").prop('required',true);
+        }
+        else {
+            $("#bill_paymentMean").parent().css("display", "none")
+            $("#bill_paymentMean").prop('required',false);
+            $("#bill_paymentDate").parent().css("display", "none")
+            $("#bill_paymentDate").prop('required',false);
+        }
+    });
+    $('#bill_billState').trigger('change');
+
+    </script>
+{% endblock %}

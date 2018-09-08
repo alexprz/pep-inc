@@ -1,0 +1,28 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+
+{% block main %}
+    {% include 'CoreBundle::topTitle.html.twig' with {'title': bill.getRealClientName, 'backPath': path('gs_bill_view_all'), 'closeDiv' : false} %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <span class="font-weight-light text-muted mr-3" style="margin: auto 0;">Ajouté {% if bill.user != null %}par {{bill.user.firstName}} {{bill.user.lastName}}{% endif %} le {{bill.creationDate|date('d M Y à H:i')}}</span>
+      <a href="{{ path('gs_bill_edit', {'id': bill.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary mr-2">Modifier</button></a>
+      <a href="{{ path('gs_bill_confirmDelete', {'id': bill.id}) }}"><button type="button" class="btn btn-sm btn-outline-secondary">Supprimer</button></a><br>
+    </div>
+</div>
+
+<h1>{% if bill.billState != null %} {{ bill.billState.name }} {% if bill.isPaid %} le {{bill.paymentDate|date('d M Y')}} {% endif %} {% endif %} </h1>
+
+{% if not bill.isPaid and not bill.isCancelled %}
+    <a href="{{ path('gs_bill_pay', {'id': bill.id}) }}"><button type="button" class="btn btn-outline-success">Paiement effectué</button></a>
+    <a href="{{ path('gs_bill_abort', {'id': bill.id}) }}"><button type="button" class="btn btn-outline-danger">Annuler la facture</button></a><br>
+{% else %}
+    <a href="{{ path('gs_bill_return', {'id': bill.id}) }}"><button type="button" class="btn btn-outline-primary">Retourner à l'état initial</button></a><br>
+
+{% endif %}
+
+<br>
+{% if bill.billPdf != null %}<a href="{{ asset('uploads/bills/' ~ bill.billPdf) }}">Télécharger la facture</a>{% endif %}
+
+
+
+{% endblock %}

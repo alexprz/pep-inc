@@ -1,0 +1,14 @@
+{% block subject %}Il déconne complètement{% endblock %}
+
+{% block body %}
+La facture numéro {{bill.billNumber}} d'un montant TTC de {{bill.amount}}€ concernant le client {{bill.clientName}} est arrivée à échéance il y a 30 jours. <br>
+Prière de relancer le client encore moins gentillement.
+
+<br><br>
+
+La PEP en colère
+
+<br><br><br>
+Adresse suiveur : {{mailPerso}}
+Adresse trez : {{mailTrez}}
+{% endblock %}
