@@ -12,6 +12,12 @@ security:
         in_memory:
             memory: ~
 
+    role_hierarchy:
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_TREASURER, ROLE_ALLOWED_TO_SWITCH]
+
+    # access_control:
+    #     - {path: ^/bill, roles: ROLE_TREASURER}
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:

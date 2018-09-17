@@ -5,13 +5,17 @@ namespace GS\BillBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 use GS\BillBundle\Entity\Bill;
 use GS\BillBundle\Form\BillType;
 use GS\BillBundle\Form\BillPayType;
 
 use Symfony\Component\HttpFoundation\File\File;
 
-
+/**
+ * @IsGranted("ROLE_TREASURER", message="Seulement pour les Trez...")
+ */
 class BillController extends Controller
 {
     public function viewAllAction()
@@ -125,7 +129,7 @@ class BillController extends Controller
         $em = $this->getDoctrine()->getManager();
         $bill = $em->getRepository('GSBillBundle:Bill')->find($id);
         $bill->setPaymentDate(new \DateTime("now", new \DateTimeZone("EUROPE/Paris")));
-        
+
         $form = $this->createForm(BillPayType::class, $bill);
         $form->handleRequest($request);
 
