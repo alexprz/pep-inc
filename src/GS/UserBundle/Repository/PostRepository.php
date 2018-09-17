@@ -1,6 +1,6 @@
 <?php
 
-namespace GS\PlatformBundle\Repository;
+namespace GS\UserBundle\Repository;
 
 /**
  * PostRepository

@@ -325,6 +325,9 @@ class User extends BaseUser
     {
         $this->post = $post;
 
+        if($post != null && ($post->getName() == 'Trésorier' || $post->getName() == 'Vice-Trésorier'))
+            $this->addRole('ROLE_TREASURER');
+
         return $this;
     }
 

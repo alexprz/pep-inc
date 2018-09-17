@@ -5,6 +5,8 @@ namespace GS\UserBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -19,6 +21,10 @@ class RegistrationType extends AbstractType
         $builder
           ->add('last_name', TextType::class)
           ->add('first_name', TextType::class)
+          ->add('post', EntityType::class, array(
+              'class'        => 'GSUserBundle:Post',
+              'choice_label' => 'name'
+          ))
           // ->add('expiration_date', DateType::class)
           // ->add('post', EntityType::class, array(
           //   'class'        => 'JEPlatformBundle:Post',
