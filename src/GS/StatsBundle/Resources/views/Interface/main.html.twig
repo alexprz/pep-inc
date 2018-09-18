@@ -1,0 +1,17 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+
+{% block main %}
+    Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
+    Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
+    Nombre de mails envoyés en différé : {{ repo.nbSentAndScheduledProspeMails }} <br>
+
+    {% for nb in repo.getDateDistributionProspeMail %}
+        {{nb[1]}} {{nb['sentDate'] }} <br>
+    {% endfor %}
+
+    {% for nb in repo.getSpecDistributionProspeMail %}
+        {{nb['name']}} <br>
+    {% endfor %}
+
+{% endblock %}

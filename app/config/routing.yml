@@ -1,3 +1,7 @@
+gs_stats:
+    resource: "@GSStatsBundle/Resources/config/routing.yml"
+    prefix:   /stats
+
 gs_bill:
     resource: "@GSBillBundle/Resources/config/routing.yml"
     prefix:   /bill

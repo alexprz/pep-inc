@@ -1,0 +1,4 @@
+gs_stats_main:
+    path:     /
+    defaults:
+        _controller: GSStatsBundle:Interface:main
