@@ -91,6 +91,8 @@ class ProspeMailController extends Controller
                     ));
                 }
 
+                // throw new NotFoundHttpException(":".json_encode($prospeMail));
+                $em->detach($prospeMail);
 
                 $pseudo_id = 0;
                 if($prospeMailList==null)
@@ -144,6 +146,7 @@ class ProspeMailController extends Controller
 
     public function removeProspeMailAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $session = $request->getSession();
         $pseudo_id = $request->get('pseudo_id');
         $prospeMailList = $session->get('prospeMailList');
@@ -160,18 +163,27 @@ class ProspeMailController extends Controller
     {
         $session = $request->getSession();
         $em = $this->getDoctrine()->getManager();
+        $repoUser = $em->getRepository('GSUserBundle:User');
+        $repoSpecialization = $em->getRepository('GSMailerBundle:Specialization');
         $mailManager = $this->container->get('gs_mail.mail_manager');
         $pseudo_id = $request->get('pseudo_id');
         $prospeMailList = $session->get('prospeMailList');
         for($i=0; $i<count($prospeMailList); $i++){
             if($prospeMailList[$i]['pseudo_id'] == $pseudo_id){
                 $prospeMail = $prospeMailList[$i]['mail'];
-                $prospeMail->setUser($this->getUser());
-                $prospeMail = $em->merge($prospeMail);
-
                 // throw new NotFoundHttpException(":".json_encode($prospeMail));
+                $specializationArray = $prospeMail->getSpecialization();
+                $prospeMail->setSpecialization(array());
+                for ($i=0; $i < count($specializationArray); $i++)
+                    $prospeMail->addSpecialization($repoSpecialization->find($specializationArray[$i]));
+
+                $prospeMail->setGender($em->merge($prospeMail->getGender()));
+                $prospeMail->setUser($this->getUser());
+
                 $sent = $mailManager->prepareSend($prospeMail->getMail());
-                $prospeMail = $em->merge($prospeMail);
+                if($prospeMail->getSendAsUser() != null)
+                    $prospeMail->setSendAsUser($repoUser->find($prospeMail->getSendAsUser()->getId()));
+                $em->persist($prospeMail);
                 $em->flush();
                 break;
             }

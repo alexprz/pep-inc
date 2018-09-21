@@ -1,0 +1,462 @@
+{% extends 'CoreBundle::stats-layout.html.twig' %}
+
+
+{% block main %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Tableau de bord</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button> -->
+  </div>
+</div>
+<div class="row"><canvas class="my-4 w-100" id="dateDistributionChart" width="900" height="380"></canvas></div>
+<canvas class="my-4 w-100" id="userRankingChart" width="900" height="200"></canvas>
+<br>
+<div class="row">
+    <div class="col-xl-5">
+        <canvas class="my-4 w-100" id="specDistributionChart" height="450"></canvas>
+    </div>
+    <div class="col-xl-7">
+        <canvas class="my-4 w-100" id="dailyDistributionChart" height="450"></canvas>
+    </div>
+
+</div>
+<canvas class="my-4 w-100" id="hourlyDistributionChart" width="900" height="380"></canvas>
+<div class="row">
+    <div class="col-xl-6">
+        <canvas class="my-4 w-100" id="stateDistChart" height="450"></canvas>
+    </div>
+    <div class="col-xl-6">
+        <canvas class="my-4 w-100" id="genderDistChart" height="450"></canvas>
+    </div>
+</div>
+
+    <!-- Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
+    Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
+    Nombre de mails envoyés en différé : {{ repo.nbSentAndScheduledProspeMails }} <br>
+
+    {% for nb in repo.getDateDistributionProspeMail %}
+        {{nb[1]}} {{nb['sentDate'] }} <br>
+    {% endfor %}
+
+    Specialization distribution :<br>
+    {% for nb in repo.getSpecDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    {% set dailyDistribution = repo.getDailyDistributionProspeMail %}
+    Day of the week distribution :<br>
+    {% for day, count in dailyDistribution %}
+        {{day}} {{count}} <br>
+    {% endfor %}
+
+    Hour distribution :<br>
+    {% for i, nb in repo.getHourlyDistributionProspeMail %}
+        {{i}} {{nb}} <br>
+    {% endfor %}
+
+    State distribution :<br>
+    {% for nb in repo.getStateDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Gender distribution :<br>
+    {% for nb in repo.getGenderDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Ranking :<br>
+    {% for nb in repo.getUserRankingProspeMail %}
+        {{nb['count']}} {{nb['lastName']}} <br>
+    {% endfor %}
+
+    State distribution by specialization :<br>
+    {% set prec = repo.getStateDistBySpecProspeMail[0]['specName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistBySpecProspeMail %}
+        {% if prec != nb['specName']%}
+            {% set prec = nb['specName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+
+    Day of the week response distribution :<br>
+    {% for day, count in repo.getResponseDistByDay %}
+        {{day}} {{count}} <br>
+    {% endfor %}
+
+    Hour response distribution :<br>
+    {% for hour, count in repo.getResponseDistByHour %}
+        {{hour}} {{count}} <br>
+    {% endfor %}
+
+    Gender response distribution :<br>
+    {% for nb in repo.getResponseDistByGender %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    State distribution by gender :<br>
+    {% set prec = repo.getStateDistByGenderProspeMail[0]['genderName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistByGenderProspeMail %}
+        {% if prec != nb['genderName']%}
+            {% set prec = nb['genderName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+ -->
+
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> -->
+    <script>
+      var timeFormat = 'YYYY-MM-DD';
+      var dateDistributionChart = new Chart(document.getElementById("dateDistributionChart"), {
+        type: 'line',
+        data:    {
+            datasets: [
+                {
+                    label: "US Dates",
+                    data: [
+                            {% for nb in repo.getDateDistributionProspeMail %}
+                                { t: new Date('{{nb['sentDate']}}'), y:{{nb[1]}} },
+                            {% endfor %}
+                    ],
+                    fill: false,
+                    borderColor: 'red'
+                }
+            ]
+        },
+        options: {
+            borderColor: 'white',
+            responsive: true,
+            title:      {
+                fontColor: 'white',
+                display: true,
+                text:    "Nombre de mails de prospection envoyés en fonction du temps"
+            },
+            scales:     {
+                xAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    type:       "time",
+                    time:       {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Date',
+                        fontColor: "white"
+                    },
+                    ticks:{
+                        fontColor: "white",
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Mails',
+                        fontColor: "white"
+                    },
+                    ticks:{
+                        fontColor: "white",
+                    }
+                }]
+            },
+            legend: {
+                 display: false
+             },
+             tooltips: {
+                 callbacks: {
+                    label: function(tooltipItem) {
+                           return tooltipItem.yLabel;
+                    }
+                 }
+             }
+        }
+      });
+      var specDistributionChart = new Chart(document.getElementById("specDistributionChart"), {
+        type: 'doughnut',
+        data: {
+          labels:
+          [
+              {% for nb in repo.getSpecDistributionProspeMail %}
+                {% if nb['name'] == null %}
+                    "Aucune",
+                {% else %}
+                    "{{nb['name']}}",
+                {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Population (millions)",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"," #FF420E", "#89DA59", "F98866"],
+              borderColor: 'none',
+              data: [
+                  {% for nb in repo.getSpecDistributionProspeMail %}
+                      "{{nb[1]}}",
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+            cutoutPercentage: 80,
+            legend: {
+                labels: {
+                    fontColor: 'white'
+                }
+            },
+          title: {
+            fontColor: 'white',
+            display: true,
+            text: 'Nombre de mails envoyés en fonction des spécialisations'
+          }
+        }
+    });
+    {% set dailyDist = repo.getDailyDistributionProspeMail %}
+    var dailyDistributionChart = new Chart(document.getElementById("dailyDistributionChart"), {
+        type: 'bar',
+        data: {
+          labels: [
+                {% for day, count in dailyDist %}
+                    '{{day}}',
+                {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails",
+              backgroundColor: "#3e95cd",
+              data: [
+                  {% for count in dailyDist %}
+                        {{count}},
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            fontColor: 'white',
+            display: true,
+            text: 'Nombre de mails envoyés en fonction du jour de la semaine'
+        },
+            scales: {
+            yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }]
+            }
+        }
+    });
+    new Chart(document.getElementById("userRankingChart"), {
+        type: 'horizontalBar',
+        data: {
+          labels: [
+              {% for nb in repo.getUserRankingProspeMail %}
+                  {% if nb['lastName'] != null %}
+                      '{{nb['lastName']}}',
+                  {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails envoyés",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [
+                  {% for nb in repo.getUserRankingProspeMail %}
+                      {% if nb['lastName'] != null %}
+                          {{nb['count']}},
+                      {% endif %}
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            fontColor: 'white',
+            display: true,
+            text: 'Classement des prospecteurs'
+        },
+          scales: {
+          yAxes: [{
+                  gridLines: {
+                    display: true ,
+                    color: "grey"
+                },
+                  ticks: {
+                      fontColor: "white"
+                  }
+              }],
+              xAxes: [{
+                  gridLines: {
+                    display: true ,
+                    color: "grey"
+                },
+                  ticks: {
+                      fontColor: "white"
+                  }
+              }]
+          }
+        }
+    });
+
+    {% set hourlyDist = repo.getHourlyDistributionProspeMail %}
+    var dailyDistributionChart = new Chart(document.getElementById("hourlyDistributionChart"), {
+        type: 'bar',
+        data: {
+          labels: [
+              {% for i, value in hourlyDist %}
+                    '{{i}}H',
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails",
+              backgroundColor: "#3e95cd",
+              data: [
+                  {% for nb in hourlyDist %}
+                        {{nb}},
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            fontColor: 'white',
+            display: true,
+            text: 'Nombre de mails envoyés en fonction de l\'heure de la journée'
+          },
+              scales: {
+              yAxes: [{
+                      gridLines: {
+                        display: true ,
+                        color: "grey"
+                    },
+                      ticks: {
+                          fontColor: "white"
+                      }
+                  }],
+                  xAxes: [{
+                      ticks: {
+                          fontColor: "white"
+                      }
+                  }]
+              }
+          }
+
+    });
+    {% set stateDist = repo.getStateDistributionProspeMail %}
+    var stateDistChart = new Chart(document.getElementById("stateDistChart"), {
+      type: 'doughnut',
+      data: {
+        labels:
+        [
+            {% for nb in stateDist %}
+              {% if nb['name'] == null %}
+                  "Sans réponse",
+              {% else %}
+                  "{{nb['name']}}",
+              {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Mails",
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            data: [
+                {% for nb in stateDist %}
+                    "{{nb[1]}}",
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+          cutoutPercentage: 80,
+          legend: {
+              labels: {
+                  fontColor: 'white'
+              }
+          },
+        title: {
+          fontColor: 'white',
+          display: true,
+          text: 'Nombre de mails par type de réponse'
+        }
+      }
+  });
+    {% set genderDist = repo.getGenderDistributionProspeMail %}
+    var genderDistChart = new Chart(document.getElementById("genderDistChart"), {
+      type: 'doughnut',
+      data: {
+        labels:
+        [
+            {% for nb in genderDist %}
+              {% if nb['name'] == null %}
+                  "Non spécifié",
+              {% else %}
+                  "{{nb['name']}}",
+              {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Mails",
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            data: [
+                {% for nb in genderDist %}
+                    "{{nb[1]}}",
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+          cutoutPercentage: 80,
+          legend: {
+              labels: {
+                  fontColor: 'white'
+              }
+          },
+        title: {
+          fontColor: 'white',
+          display: true,
+          text: 'Genre des personnes contactées'
+        }
+      }
+  });
+    </script>
+{% endblock %}

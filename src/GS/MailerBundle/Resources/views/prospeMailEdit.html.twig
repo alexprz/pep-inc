@@ -902,17 +902,17 @@
     // }
 
     // Déclenche sendMail() sur tous les éléments de mailAttributesList
-    $("#sendButton").click(function (){
-        for (var i = 0; i < mailAttributesList.length; i++) {
-            mailAttributes = mailAttributesList[i];
-            if(!mailAttributes.sent){
-                //sendMail(i, mailAttributes.from, mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
-		sendMail(i, mailAttributes, getHtml(mailAttributes, 'send'));
-            }
-        }
-        // $('#success').html("Envoyé !");
-        // $('#success').fadeIn(50).delay(1500).fadeOut(600);
-        // $('#success').html("");
-    });
+    // $("#sendButton").click(function (){
+    //     for (var i = 0; i < mailAttributesList.length; i++) {
+    //         mailAttributes = mailAttributesList[i];
+    //         if(!mailAttributes.sent){
+    //             //sendMail(i, mailAttributes.from, mailAttributes.fromAlias, mailAttributes.recipient, mailAttributes.object, getHtml(mailAttributes, 'send'), mailAttributes.scheduledDate);
+	// 	sendMail(i, mailAttributes, getHtml(mailAttributes, 'send'));
+    //         }
+    //     }
+    //     // $('#success').html("Envoyé !");
+    //     // $('#success').fadeIn(50).delay(1500).fadeOut(600);
+    //     // $('#success').html("");
+    // });
     </script>
 {% endblock %}
