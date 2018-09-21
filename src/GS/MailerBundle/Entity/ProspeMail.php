@@ -30,12 +30,12 @@ class ProspeMail implements \JsonSerializable
 
     /**
      * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="GS\UserBundle\Entity\User", cascade={"detach"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $sendAsUser;
@@ -59,7 +59,7 @@ class ProspeMail implements \JsonSerializable
     private $recipientName;
 
     /**
-     * @ORM\ManyToOne(targetEntity="GS\MailerBundle\Entity\Gender", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="GS\MailerBundle\Entity\Gender", cascade={"detach"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $gender;
@@ -71,7 +71,7 @@ class ProspeMail implements \JsonSerializable
     private $company;
 
     /**
-     * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Specialization", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="GS\MailerBundle\Entity\Specialization", cascade={"detach"})
      *
      */
     private $specialization;
@@ -87,8 +87,16 @@ class ProspeMail implements \JsonSerializable
     {
         $vars = get_object_vars($this);
 
+        // return json_encode($this);
         return $vars;
     }
+
+    // public static function fromStdClass(\stdClass $entry)
+    // {
+    //     return new self(
+    //
+    //     );
+    // }
 
     /**
      * Get id.
@@ -376,5 +384,12 @@ class ProspeMail implements \JsonSerializable
     public function getSpecialization()
     {
         return $this->specialization;
+    }
+
+    public function setSpecialization($specializationArray)
+    {
+        $this->specialization = $specializationArray;
+
+        return $this;
     }
 }

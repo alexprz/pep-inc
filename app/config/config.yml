@@ -63,6 +63,14 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        dql:
+            numeric_functions:
+                DAYOFWEEK:      Oro\ORM\Query\AST\Functions\SimpleFunction
+                HOUR:           Oro\ORM\Query\AST\Functions\SimpleFunction
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day
+                CAST: DoctrineExtensions\Query\Mysql\Cast
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -72,7 +80,7 @@ swiftmailer:
     password: '%mailer_password%'
     # port: 587
     # encryption: tls
-    disable_delivery: false
+    disable_delivery: true
     # delivery_addresses: ['alexperez@wanadoo.fr']
 
 fos_user:
@@ -91,6 +99,6 @@ fos_user:
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: [GSMailerBundle, CoreBundle, GSUserBundle, GSBillBundle]
+    bundles: [GSMailerBundle, CoreBundle, GSUserBundle, GSBillBundle, GSStatsBundle]
     filters:
         cssrewrite: ~

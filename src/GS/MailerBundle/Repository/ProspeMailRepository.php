@@ -158,4 +158,14 @@ class ProspeMailRepository extends \Doctrine\ORM\EntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findNext($id)
+    {
+              $qb = $this->createQueryBuilder('prospeMail')
+                  ->where('prospeMail.id > :id')
+                  ->setParameter('id', $id)
+              ;
+
+              return $qb->getQuery()->getResult()[0];
+    }
 }
