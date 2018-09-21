@@ -1,0 +1,84 @@
+{% extends 'CoreBundle::layout.html.twig' %}
+
+
+{% block main %}
+    Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
+    Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
+    Nombre de mails envoyés en différé : {{ repo.nbSentAndScheduledProspeMails }} <br>
+
+    {% for nb in repo.getDateDistributionProspeMail %}
+        {{nb[1]}} {{nb['sentDate'] }} <br>
+    {% endfor %}
+
+    Specialization distribution :<br>
+    {% for nb in repo.getSpecDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    {% set dailyDistribution = repo.getDailyDistributionProspeMail %}
+    Day of the week distribution :<br>
+    {% for nb in dailyDistribution %}
+        {{nb[1]}} {{nb['sentDay']}} <br>
+    {% endfor %}
+
+    Hour distribution :<br>
+    {% for nb in repo.getHourlyDistributionProspeMail %}
+        {{nb[1]}} {{nb['sentHour']}} <br>
+    {% endfor %}
+
+    State distribution :<br>
+    {% for nb in repo.getStateDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Gender distribution :<br>
+    {% for nb in repo.getGenderDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Ranking :<br>
+    {% for nb in repo.getUserRankingProspeMail %}
+        {{nb['count']}} {{nb['lastName']}} <br>
+    {% endfor %}
+
+    State distribution by specialization :<br>
+    {% set prec = repo.getStateDistBySpecProspeMail[0]['specName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistBySpecProspeMail %}
+        {% if prec != nb['specName']%}
+            {% set prec = nb['specName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+
+    Day of the week response distribution :<br>
+    {% for nb in repo.getResponseDistByDay %}
+        {{nb[1]}} {{nb['sentDay']}} <br>
+    {% endfor %}
+
+    Hour response distribution :<br>
+    {% for nb in repo.getResponseDistByHour %}
+        {{nb[1]}} {{nb['sentDay']}} <br>
+    {% endfor %}
+
+    Gender response distribution :<br>
+    {% for nb in repo.getResponseDistByGender %}
+        {{nb[1]}} {{nb['genderName']}} <br>
+    {% endfor %}
+
+    State distribution by gender :<br>
+    {% set prec = repo.getStateDistByGenderProspeMail[0]['genderName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistByGenderProspeMail %}
+        {% if prec != nb['genderName']%}
+            {% set prec = nb['genderName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+
+
+{% endblock %}

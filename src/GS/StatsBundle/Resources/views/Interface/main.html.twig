@@ -1,7 +1,34 @@
-{% extends 'CoreBundle::layout.html.twig' %}
+{% extends 'CoreBundle::stats-layout.html.twig' %}
 
 
 {% block main %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Tableau de bord</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button class="btn btn-sm btn-outline-secondary">Share</button>
+      <button class="btn btn-sm btn-outline-secondary">Export</button>
+    </div>
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div>
+</div>
+
+<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="myDoughnutChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="dailyDistributionChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="hourlyDistributionChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="userRankingChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="stateDistChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="genderDistChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="dailyResponseDistChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="genderResponseDistChart" width="900" height="380"></canvas>
+<canvas class="my-4 w-100" id="hourlyResponseDistChart" width="900" height="380"></canvas>
+
+
     Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
     Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
     Nombre de mails envoyés en différé : {{ repo.nbSentAndScheduledProspeMails }} <br>
@@ -10,8 +37,424 @@
         {{nb[1]}} {{nb['sentDate'] }} <br>
     {% endfor %}
 
+    Specialization distribution :<br>
     {% for nb in repo.getSpecDistributionProspeMail %}
-        {{nb['name']}} <br>
+        {{nb[1]}} {{nb['name']}} <br>
     {% endfor %}
 
+    {% set dailyDistribution = repo.getDailyDistributionProspeMail %}
+    Day of the week distribution :<br>
+    {% for day, count in dailyDistribution %}
+        {{day}} {{count}} <br>
+    {% endfor %}
+
+    Hour distribution :<br>
+    {% for i, nb in repo.getHourlyDistributionProspeMail %}
+        {{i}} {{nb}} <br>
+    {% endfor %}
+
+    State distribution :<br>
+    {% for nb in repo.getStateDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Gender distribution :<br>
+    {% for nb in repo.getGenderDistributionProspeMail %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    Ranking :<br>
+    {% for nb in repo.getUserRankingProspeMail %}
+        {{nb['count']}} {{nb['lastName']}} <br>
+    {% endfor %}
+
+    State distribution by specialization :<br>
+    {% set prec = repo.getStateDistBySpecProspeMail[0]['specName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistBySpecProspeMail %}
+        {% if prec != nb['specName']%}
+            {% set prec = nb['specName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+
+    Day of the week response distribution :<br>
+    {% for day, count in repo.getResponseDistByDay %}
+        {{day}} {{count}} <br>
+    {% endfor %}
+
+    Hour response distribution :<br>
+    {% for hour, count in repo.getResponseDistByHour %}
+        {{hour}} {{count}} <br>
+    {% endfor %}
+
+    Gender response distribution :<br>
+    {% for nb in repo.getResponseDistByGender %}
+        {{nb[1]}} {{nb['name']}} <br>
+    {% endfor %}
+
+    State distribution by gender :<br>
+    {% set prec = repo.getStateDistByGenderProspeMail[0]['genderName'] %}
+    {{prec}} <br>
+    {% for nb in repo.getStateDistByGenderProspeMail %}
+        {% if prec != nb['genderName']%}
+            {% set prec = nb['genderName'] %}
+            <br>
+            {{prec}} <br>
+        {% endif %}
+        {{nb[1]}} {{nb['stateName']}} <br>
+    {% endfor %}
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> -->
+    <script>
+      var timeFormat = 'YYYY-MM-DD';
+      var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data:    {
+            datasets: [
+                {
+                    label: "US Dates",
+                    data: [
+                            {% for nb in repo.getDateDistributionProspeMail %}
+                                { t: new Date('{{nb['sentDate']}}'), y:{{nb[1]}} },
+                            {% endfor %}
+                    ],
+                    fill: false,
+                    borderColor: 'red'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            title:      {
+                display: true,
+                text:    "Nombre de mails de prospection envoyés en fonction du temps"
+            },
+            scales:     {
+                xAxes: [{
+                    type:       "time",
+                    time:       {
+                        format: timeFormat,
+                        tooltipFormat: 'll'
+                    },
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display:     true,
+                        labelString: 'Mails'
+                    }
+                }]
+            },
+            legend: {
+                 display: false
+             },
+             tooltips: {
+                 callbacks: {
+                    label: function(tooltipItem) {
+                           return tooltipItem.yLabel;
+                    }
+                 }
+             }
+        }
+      });
+      var ctx2 = document.getElementById("myDoughnutChart");
+      var myDoughnutChart = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels:
+          [
+              {% for nb in repo.getSpecDistributionProspeMail %}
+                {% if nb['name'] == null %}
+                    "Aucune",
+                {% else %}
+                    "{{nb['name']}}",
+                {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Population (millions)",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [
+                  {% for nb in repo.getSpecDistributionProspeMail %}
+                      "{{nb[1]}}",
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Nombre de mails envoyés en fonction des spécialisations'
+          }
+        }
+    });
+    {% set dailyDist = repo.getDailyDistributionProspeMail %}
+    var dailyDistributionChart = new Chart(document.getElementById("dailyDistributionChart"), {
+        type: 'bar',
+        data: {
+          labels: [
+                {% for day, count in dailyDist %}
+                    '{{day}}',
+                {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails",
+              backgroundColor: "#3e95cd",
+              data: [
+                  {% for count in dailyDist %}
+                        {{count}},
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Nombre de mails envoyés en fonction du jour de la semaine'
+          }
+        }
+    });
+    new Chart(document.getElementById("userRankingChart"), {
+        type: 'horizontalBar',
+        data: {
+          labels: [
+              {% for nb in repo.getUserRankingProspeMail %}
+                  {% if nb['lastName'] != null %}
+                      '{{nb['lastName']}}',
+                  {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails envoyés",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [
+                  {% for nb in repo.getUserRankingProspeMail %}
+                      {% if nb['lastName'] != null %}
+                          {{nb['count']}},
+                      {% endif %}
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Classement des prospecteurs'
+          }
+        }
+    });
+
+    {% set hourlyDist = repo.getHourlyDistributionProspeMail %}
+    var dailyDistributionChart = new Chart(document.getElementById("hourlyDistributionChart"), {
+        type: 'bar',
+        data: {
+          labels: [
+              {% for i, value in hourlyDist %}
+                    '{{i}}H',
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Mails",
+              backgroundColor: "#3e95cd",
+              data: [
+                  {% for nb in hourlyDist %}
+                        {{nb}},
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          legend: { display: false },
+          title: {
+            display: true,
+            text: 'Nombre de mails envoyés en fonction de l\'heure de la journée'
+          }
+        }
+    });
+    {% set stateDist = repo.getStateDistributionProspeMail %}
+    var stateDistChart = new Chart(document.getElementById("stateDistChart"), {
+      type: 'doughnut',
+      data: {
+        labels:
+        [
+            {% for nb in stateDist %}
+              {% if nb['name'] == null %}
+                  "Sans réponse",
+              {% else %}
+                  "{{nb['name']}}",
+              {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Mails",
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            data: [
+                {% for nb in stateDist %}
+                    "{{nb[1]}}",
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Nombre de mails en fonction des réponses'
+        }
+      }
+  });
+    {% set genderDist = repo.getGenderDistributionProspeMail %}
+    var genderDistChart = new Chart(document.getElementById("genderDistChart"), {
+      type: 'doughnut',
+      data: {
+        labels:
+        [
+            {% for nb in genderDist %}
+              {% if nb['name'] == null %}
+                  "Non spécifié",
+              {% else %}
+                  "{{nb['name']}}",
+              {% endif %}
+            {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Mails",
+            backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+            data: [
+                {% for nb in genderDist %}
+                    "{{nb[1]}}",
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        title: {
+          display: true,
+          text: 'Genre des personnes contactées'
+        }
+      }
+  });
+  {% set dailyResponseDist = repo.getResponseDistByDay %}
+  var dailyResponseDistChart = new Chart(document.getElementById("dailyResponseDistChart"), {
+      type: 'bar',
+      data: {
+        labels: [
+              {% for day, count in dailyResponseDist %}
+                  '{{day}}',
+              {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Part",
+            backgroundColor: "#3e95cd",
+            data: [
+                {% for day, count in dailyResponseDist %}
+                      {% set val = count/dailyDist[day] %}
+                      {{ val |round(2, 'floor') }},
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Pourcentage de réponses en fonction du jour de la semaine'
+        }
+      }
+  });
+  {% set hourlyResponseDist = repo.getResponseDistByHour %}
+  var hourlyResponseDistChart = new Chart(document.getElementById("hourlyResponseDistChart"), {
+      type: 'bar',
+      data: {
+        labels: [
+              {% for hour, count in hourlyResponseDist %}
+                  '{{hour}}H',
+              {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Part",
+            backgroundColor: "#3e95cd",
+            data: [
+                {% for hour, count in hourlyResponseDist %}
+                        {% if hourlyDist[hour] == 0%}
+                            {% set val = 0 %}
+                        {% else %}
+                            {% set val = count/hourlyDist[hour] %}
+                        {% endif %}
+                      {{ val |round(2, 'floor') }},
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          display: true,
+          text: 'Pourcentage de réponses en fonction de l\'heure de la journée'
+        }
+      }
+  });
+  {% set genderResponseDist = repo.getResponseDistByGender %}
+      var genderResponseDistChart = new Chart(document.getElementById("genderResponseDistChart"), {
+        type: 'doughnut',
+        data: {
+          labels:
+          [
+              {% for nb in genderResponseDist %}
+                {% if nb['name'] == null %}
+                    "Non spécifié",
+                {% else %}
+                    "{{nb['name']}}",
+                {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Réponse",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [
+                  {% for nb in genderResponseDist %}
+                      "{{nb[1]}}",
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          title: {
+            display: true,
+            text: 'Genre des personnes ayant donné une réponse'
+          }
+        }
+    });
+    </script>
 {% endblock %}

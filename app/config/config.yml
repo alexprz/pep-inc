@@ -64,8 +64,12 @@ doctrine:
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
         dql:
+            numeric_functions:
+                DAYOFWEEK:      Oro\ORM\Query\AST\Functions\SimpleFunction
+                HOUR:           Oro\ORM\Query\AST\Functions\SimpleFunction
             string_functions:
                 MONTH: DoctrineExtensions\Query\Mysql\Month
+                DAY: DoctrineExtensions\Query\Mysql\Day
                 CAST: DoctrineExtensions\Query\Mysql\Cast
 
 # Swiftmailer Configuration
@@ -95,6 +99,6 @@ fos_user:
 assetic:
     debug: '%kernel.debug%'
     use_controller: '%kernel.debug%'
-    bundles: [GSMailerBundle, CoreBundle, GSUserBundle, GSBillBundle]
+    bundles: [GSMailerBundle, CoreBundle, GSUserBundle, GSBillBundle, GSStatsBundle]
     filters:
         cssrewrite: ~
