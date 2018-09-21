@@ -6,10 +6,10 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Tableau de bord</h1>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+    <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
       <span data-feather="calendar"></span>
       This week
-    </button>
+    </button> -->
   </div>
 </div>
 <div class="row"><canvas class="my-4 w-100" id="dateDistributionChart" width="900" height="380"></canvas></div>
@@ -34,7 +34,7 @@
     </div>
 </div>
 
-    Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
+    <!-- Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
     Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
     Nombre de mails envoyés en différé : {{ repo.nbSentAndScheduledProspeMails }} <br>
 
@@ -111,7 +111,7 @@
         {% endif %}
         {{nb[1]}} {{nb['stateName']}} <br>
     {% endfor %}
-
+ -->
 
 {% endblock %}
 
@@ -207,7 +207,7 @@
           datasets: [
             {
               label: "Population (millions)",
-              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"," #FF420E", "#89DA59", "F98866"],
               borderColor: 'none',
               data: [
                   {% for nb in repo.getSpecDistributionProspeMail %}

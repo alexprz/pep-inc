@@ -6,10 +6,10 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Analyse</h1>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+    <!-- <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
       <span data-feather="calendar"></span>
       This week
-    </button>
+    </button> -->
   </div>
 </div>
 <div class="row">
@@ -46,7 +46,11 @@
             backgroundColor: "#3e95cd",
             data: [
                 {% for day, count in dailyResponseDist %}
-                      {% set val = count/dailyDist[day] %}
+                        {% if dailyDist[day]  == 0 %}
+                            {% set val = 0 %}
+                        {% else %}
+                            {% set val = count/dailyDist[day] %}
+                        {% endif %}
                       {{ val |round(2, 'floor') }},
                 {% endfor %}
             ]
