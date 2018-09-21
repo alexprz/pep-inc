@@ -6,28 +6,33 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h1 class="h2">Tableau de bord</h1>
   <div class="btn-toolbar mb-2 mb-md-0">
-    <div class="btn-group mr-2">
-      <button class="btn btn-sm btn-outline-secondary">Share</button>
-      <button class="btn btn-sm btn-outline-secondary">Export</button>
-    </div>
     <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
       <span data-feather="calendar"></span>
       This week
     </button>
   </div>
 </div>
+<div class="row"><canvas class="my-4 w-100" id="dateDistributionChart" width="900" height="380"></canvas></div>
+<canvas class="my-4 w-100" id="userRankingChart" width="900" height="200"></canvas>
+<br>
+<div class="row">
+    <div class="col-xl-5">
+        <canvas class="my-4 w-100" id="specDistributionChart" height="450"></canvas>
+    </div>
+    <div class="col-xl-7">
+        <canvas class="my-4 w-100" id="dailyDistributionChart" height="450"></canvas>
+    </div>
 
-<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="myDoughnutChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="dailyDistributionChart" width="900" height="380"></canvas>
+</div>
 <canvas class="my-4 w-100" id="hourlyDistributionChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="userRankingChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="stateDistChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="genderDistChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="dailyResponseDistChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="genderResponseDistChart" width="900" height="380"></canvas>
-<canvas class="my-4 w-100" id="hourlyResponseDistChart" width="900" height="380"></canvas>
-
+<div class="row">
+    <div class="col-xl-6">
+        <canvas class="my-4 w-100" id="stateDistChart" height="450"></canvas>
+    </div>
+    <div class="col-xl-6">
+        <canvas class="my-4 w-100" id="genderDistChart" height="450"></canvas>
+    </div>
+</div>
 
     Nombre de mails de prospé envoyés : {{ repo.nbSentProspeMails }} <br>
     Nombre de mails de prospé en attente : {{ repo.nbScheduledProspeMails }} <br>
@@ -115,8 +120,7 @@
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> -->
     <script>
       var timeFormat = 'YYYY-MM-DD';
-      var ctx = document.getElementById("myChart");
-      var myChart = new Chart(ctx, {
+      var dateDistributionChart = new Chart(document.getElementById("dateDistributionChart"), {
         type: 'line',
         data:    {
             datasets: [
@@ -133,13 +137,19 @@
             ]
         },
         options: {
+            borderColor: 'white',
             responsive: true,
             title:      {
+                fontColor: 'white',
                 display: true,
                 text:    "Nombre de mails de prospection envoyés en fonction du temps"
             },
             scales:     {
                 xAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
                     type:       "time",
                     time:       {
                         format: timeFormat,
@@ -147,13 +157,25 @@
                     },
                     scaleLabel: {
                         display:     true,
-                        labelString: 'Date'
+                        labelString: 'Date',
+                        fontColor: "white"
+                    },
+                    ticks:{
+                        fontColor: "white",
                     }
                 }],
                 yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
                     scaleLabel: {
                         display:     true,
-                        labelString: 'Mails'
+                        labelString: 'Mails',
+                        fontColor: "white"
+                    },
+                    ticks:{
+                        fontColor: "white",
                     }
                 }]
             },
@@ -169,8 +191,7 @@
              }
         }
       });
-      var ctx2 = document.getElementById("myDoughnutChart");
-      var myDoughnutChart = new Chart(ctx2, {
+      var specDistributionChart = new Chart(document.getElementById("specDistributionChart"), {
         type: 'doughnut',
         data: {
           labels:
@@ -187,6 +208,7 @@
             {
               label: "Population (millions)",
               backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              borderColor: 'none',
               data: [
                   {% for nb in repo.getSpecDistributionProspeMail %}
                       "{{nb[1]}}",
@@ -196,7 +218,14 @@
           ]
         },
         options: {
+            cutoutPercentage: 80,
+            legend: {
+                labels: {
+                    fontColor: 'white'
+                }
+            },
           title: {
+            fontColor: 'white',
             display: true,
             text: 'Nombre de mails envoyés en fonction des spécialisations'
           }
@@ -226,9 +255,26 @@
         options: {
           legend: { display: false },
           title: {
+            fontColor: 'white',
             display: true,
             text: 'Nombre de mails envoyés en fonction du jour de la semaine'
-          }
+        },
+            scales: {
+            yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }]
+            }
         }
     });
     new Chart(document.getElementById("userRankingChart"), {
@@ -258,8 +304,29 @@
         options: {
           legend: { display: false },
           title: {
+            fontColor: 'white',
             display: true,
             text: 'Classement des prospecteurs'
+        },
+          scales: {
+          yAxes: [{
+                  gridLines: {
+                    display: true ,
+                    color: "grey"
+                },
+                  ticks: {
+                      fontColor: "white"
+                  }
+              }],
+              xAxes: [{
+                  gridLines: {
+                    display: true ,
+                    color: "grey"
+                },
+                  ticks: {
+                      fontColor: "white"
+                  }
+              }]
           }
         }
     });
@@ -288,10 +355,28 @@
         options: {
           legend: { display: false },
           title: {
+            fontColor: 'white',
             display: true,
             text: 'Nombre de mails envoyés en fonction de l\'heure de la journée'
+          },
+              scales: {
+              yAxes: [{
+                      gridLines: {
+                        display: true ,
+                        color: "grey"
+                    },
+                      ticks: {
+                          fontColor: "white"
+                      }
+                  }],
+                  xAxes: [{
+                      ticks: {
+                          fontColor: "white"
+                      }
+                  }]
+              }
           }
-        }
+
     });
     {% set stateDist = repo.getStateDistributionProspeMail %}
     var stateDistChart = new Chart(document.getElementById("stateDistChart"), {
@@ -320,9 +405,16 @@
         ]
       },
       options: {
+          cutoutPercentage: 80,
+          legend: {
+              labels: {
+                  fontColor: 'white'
+              }
+          },
         title: {
+          fontColor: 'white',
           display: true,
-          text: 'Nombre de mails en fonction des réponses'
+          text: 'Nombre de mails par type de réponse'
         }
       }
   });
@@ -353,108 +445,18 @@
         ]
       },
       options: {
+          cutoutPercentage: 80,
+          legend: {
+              labels: {
+                  fontColor: 'white'
+              }
+          },
         title: {
+          fontColor: 'white',
           display: true,
           text: 'Genre des personnes contactées'
         }
       }
   });
-  {% set dailyResponseDist = repo.getResponseDistByDay %}
-  var dailyResponseDistChart = new Chart(document.getElementById("dailyResponseDistChart"), {
-      type: 'bar',
-      data: {
-        labels: [
-              {% for day, count in dailyResponseDist %}
-                  '{{day}}',
-              {% endfor %}
-        ],
-        datasets: [
-          {
-            label: "Part",
-            backgroundColor: "#3e95cd",
-            data: [
-                {% for day, count in dailyResponseDist %}
-                      {% set val = count/dailyDist[day] %}
-                      {{ val |round(2, 'floor') }},
-                {% endfor %}
-            ]
-          }
-        ]
-      },
-      options: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: 'Pourcentage de réponses en fonction du jour de la semaine'
-        }
-      }
-  });
-  {% set hourlyResponseDist = repo.getResponseDistByHour %}
-  var hourlyResponseDistChart = new Chart(document.getElementById("hourlyResponseDistChart"), {
-      type: 'bar',
-      data: {
-        labels: [
-              {% for hour, count in hourlyResponseDist %}
-                  '{{hour}}H',
-              {% endfor %}
-        ],
-        datasets: [
-          {
-            label: "Part",
-            backgroundColor: "#3e95cd",
-            data: [
-                {% for hour, count in hourlyResponseDist %}
-                        {% if hourlyDist[hour] == 0%}
-                            {% set val = 0 %}
-                        {% else %}
-                            {% set val = count/hourlyDist[hour] %}
-                        {% endif %}
-                      {{ val |round(2, 'floor') }},
-                {% endfor %}
-            ]
-          }
-        ]
-      },
-      options: {
-        legend: { display: false },
-        title: {
-          display: true,
-          text: 'Pourcentage de réponses en fonction de l\'heure de la journée'
-        }
-      }
-  });
-  {% set genderResponseDist = repo.getResponseDistByGender %}
-      var genderResponseDistChart = new Chart(document.getElementById("genderResponseDistChart"), {
-        type: 'doughnut',
-        data: {
-          labels:
-          [
-              {% for nb in genderResponseDist %}
-                {% if nb['name'] == null %}
-                    "Non spécifié",
-                {% else %}
-                    "{{nb['name']}}",
-                {% endif %}
-              {% endfor %}
-          ],
-          datasets: [
-            {
-              label: "Réponse",
-              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
-              data: [
-                  {% for nb in genderResponseDist %}
-                      "{{nb[1]}}",
-                  {% endfor %}
-              ]
-            }
-          ]
-        },
-        options: {
-          title: {
-            display: true,
-            text: 'Genre des personnes ayant donné une réponse'
-          }
-        }
-    });
     </script>
 {% endblock %}

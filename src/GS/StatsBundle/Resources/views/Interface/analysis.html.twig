@@ -1,0 +1,173 @@
+{% extends 'CoreBundle::stats-layout.html.twig' %}
+
+
+{% block main %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Analyse</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+      <span data-feather="calendar"></span>
+      This week
+    </button>
+  </div>
+</div>
+<div class="row">
+    <div class="col-xl-5">
+        <canvas class="my-4 w-100" id="genderResponseDistChart" height="380"></canvas>
+    </div>
+    <div class="col-xl-7">
+        <canvas class="my-4 w-100" id="dailyResponseDistChart" height="380"></canvas>
+    </div>
+</div>
+<canvas class="my-4 w-100" id="hourlyResponseDistChart" width="900" height="380"></canvas>
+
+{% endblock %}
+
+{% block scripts %}
+    {{parent()}}
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script> -->
+    <script>
+
+    {% set dailyDist = repo.getDailyDistributionProspeMail %}
+    {% set hourlyDist = repo.getHourlyDistributionProspeMail %}
+  {% set dailyResponseDist = repo.getResponseDistByDay %}
+  var dailyResponseDistChart = new Chart(document.getElementById("dailyResponseDistChart"), {
+      type: 'bar',
+      data: {
+        labels: [
+              {% for day, count in dailyResponseDist %}
+                  '{{day}}',
+              {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Part",
+            backgroundColor: "#3e95cd",
+            data: [
+                {% for day, count in dailyResponseDist %}
+                      {% set val = count/dailyDist[day] %}
+                      {{ val |round(2, 'floor') }},
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          fontColor: 'white',
+          display: true,
+          text: 'Pourcentage de réponses en fonction du jour d\'envoi'
+        },
+            scales: {
+            yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }]
+            }
+      }
+  });
+  {% set hourlyResponseDist = repo.getResponseDistByHour %}
+  var hourlyResponseDistChart = new Chart(document.getElementById("hourlyResponseDistChart"), {
+      type: 'bar',
+      data: {
+        labels: [
+              {% for hour, count in hourlyResponseDist %}
+                  '{{hour}}H',
+              {% endfor %}
+        ],
+        datasets: [
+          {
+            label: "Part",
+            backgroundColor: "#3e95cd",
+            data: [
+                {% for hour, count in hourlyResponseDist %}
+                        {% if hourlyDist[hour] == 0%}
+                            {% set val = 0 %}
+                        {% else %}
+                            {% set val = count/hourlyDist[hour] %}
+                        {% endif %}
+                      {{ val |round(2, 'floor') }},
+                {% endfor %}
+            ]
+          }
+        ]
+      },
+      options: {
+        legend: { display: false },
+        title: {
+          fontColor: 'white',
+          display: true,
+          text: 'Pourcentage de réponses en fonction de l\'heure d\'envoi'
+        },
+            scales: {
+            yAxes: [{
+                    gridLines: {
+                      display: true ,
+                      color: "grey"
+                  },
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "white"
+                    }
+                }]
+            }
+      }
+  });
+  {% set genderResponseDist = repo.getResponseDistByGender %}
+      var genderResponseDistChart = new Chart(document.getElementById("genderResponseDistChart"), {
+        type: 'doughnut',
+        data: {
+          labels:
+          [
+              {% for nb in genderResponseDist %}
+                {% if nb['name'] == null %}
+                    "Non spécifié",
+                {% else %}
+                    "{{nb['name']}}",
+                {% endif %}
+              {% endfor %}
+          ],
+          datasets: [
+            {
+              label: "Réponse",
+              backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+              data: [
+                  {% for nb in genderResponseDist %}
+                      "{{nb[1]}}",
+                  {% endfor %}
+              ]
+            }
+          ]
+        },
+        options: {
+          cutoutPercentage: 80,
+          legend: {
+              labels: {
+                  fontColor: 'white'
+              }
+          },
+          title: {
+            fontColor: 'white',
+            display: true,
+            text: 'Genre des personnes ayant donné une réponse'
+          }
+        }
+    });
+    </script>
+{% endblock %}
