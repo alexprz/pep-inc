@@ -88,6 +88,12 @@ gs_mailer_prospeMailAddManually:
     defaults:
         _controller: GSMailerBundle:Default:addProspeMailManually
 
+gs_mailer_prospeMailUpdateManually:
+    path: /updateProspeMailManually/{id}
+    defaults:
+        _controller: GSMailerBundle:Default:updateProspeMailManually
+    requirements:
+        id: \d+
 gs_mailer_writeMail:
     path:   /writeProspeMail
     defaults:

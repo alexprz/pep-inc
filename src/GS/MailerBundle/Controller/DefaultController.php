@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use GS\MailerBundle\Form\MailType;
 use GS\MailerBundle\Form\DatabaseType;
 use GS\MailerBundle\Form\ProspeMailType;
+use GS\MailerBundle\Form\ProspeMailUpdateType;
 // use GS\MailerBundle\Entity\Mail;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use GS\MailBundle\Entity\Mail;
@@ -593,4 +594,35 @@ class DefaultController extends Controller
             "form" => $form->createView()
         ));
     }
+
+    public function updateProspeMailManuallyAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repoProspeMail = $em->getRepository('GSMailerBundle:ProspeMail');
+        $session = $request->getSession();
+
+        $prospeMail = $repoProspeMail->findNext($id);
+
+        $form   = $this->createForm(ProspeMailUpdateType::class, $prospeMail, array(
+            "artificial" => true,
+            "sendAsUsers" => null
+        ));//, array('user' => $this->getUser()));
+
+        if ($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if($form->get('Ajouter')->isClicked() && $form->isValid()){
+                $em->persist($prospeMail);
+                $em->flush();
+
+                $session->getFlashBag()->add('success',  $prospeMail->getMail()->getRecipientEmail()." mis à jour.");
+                return $this->redirectToRoute('gs_mailer_prospeMailUpdateManually', array('id' => $prospeMail->getId()));
+            }
+        }
+        return $this->render("GSMailerBundle::prospeMailUpdate.html.twig", array(
+            "form" => $form->createView(),
+            'id' => $prospeMail->getId(),
+            'content' => $prospeMail->getMail()->getContent()
+        ));
+    }
+
 }
