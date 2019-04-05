@@ -1,0 +1,12 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: goldSeeker
+    database_user: root
+    database_password: root
+    mailer_transport: gmail
+    mailer_user: pontsetudesprojets.commercial@gmail.com
+    mailer_password: banane20
+    secret: e89fe59743b79eb29a5db92e0245fb710a8e9cf1
+    mailer_host: null
