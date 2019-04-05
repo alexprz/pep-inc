@@ -175,8 +175,8 @@
 
         function sendMail()
         {
-            //var from = '{{ app.user.email }}'
-	    var from = "pontsetudesprojets.recrute@gmail.com"
+            var from = '{{ app.user.email }}'
+	    // var from = "pontsetudesprojets.recrute@gmail.com"
             var fromAlias = '{{ app.user.firstName }}'+" "+'{{app.user.lastName }}'
             var to = $("#recipientInput").val();
             var object = $("#objectInput").val();

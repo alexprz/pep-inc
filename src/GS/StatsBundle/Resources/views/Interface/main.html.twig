@@ -121,7 +121,7 @@
     <script>
       var timeFormat = 'YYYY-MM-DD';
       var dateDistributionChart = new Chart(document.getElementById("dateDistributionChart"), {
-        type: 'line',
+        type: 'bar',
         data:    {
             datasets: [
                 {
@@ -132,7 +132,8 @@
                             {% endfor %}
                     ],
                     fill: false,
-                    borderColor: 'red'
+                    borderColor: 'red',
+                    backgroundColor: 'red'
                 }
             ]
         },
@@ -324,7 +325,8 @@
                     color: "grey"
                 },
                   ticks: {
-                      fontColor: "white"
+                      fontColor: "white",
+                      beginAtZero: true
                   }
               }]
           }
