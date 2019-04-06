@@ -14,5 +14,4 @@
 !symfony/var/sessions/.gitkeep
 !symfony/var/SymfonyRequirements.php
 symfony/vendor/
-*.sh
 .env
