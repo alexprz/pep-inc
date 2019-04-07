@@ -1,10 +1,10 @@
 # This file is auto-generated during the composer install
 parameters:
-    database_host: 127.0.0.1
-    database_port: null
-    database_name: goldSeeker
-    database_user: root
-    database_password: root
+    database_host: db
+    database_port: 3306
+    database_name: pep-inc
+    database_user: symfony
+    database_password: TMulW5fWpG99KVfX
     mailer_transport: gmail
     mailer_user: pontsetudesprojets.commercial@gmail.com
     mailer_password: banane20

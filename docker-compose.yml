@@ -30,13 +30,21 @@ services:
                 - SSH_ROOT_PASSWORD
         ports:
             - ${SSH_PORT}:22
+        environment:
+             MYSQL_PORT: ${MYSQL_PORT}
+             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+             MYSQL_USER: ${MYSQL_USER}
+             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+             MYSQL_DATABASE: ${MYSQL_DATABASE}
         volumes:
             - ${SYMFONY_APP_PATH}:/var/www/symfony
             - ./logs/symfony:/var/www/symfony/app/logs
     nginx:
         depends_on:
           - db
-        build: nginx
+        build:
+            context: nginx
+            dockerfile: Dockerfile
         ports:
             - ${NGINX_PORT}:80
         volumes_from:

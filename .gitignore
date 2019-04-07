@@ -1,8 +1,8 @@
 /.web-server-pid
-/app/config/parameters.yml
+symfony/app/config/parameters.yml
 /build/
 /phpunit.xml
-/symfony/var/*
+symfony/var/*
 !/symfony/var/cache
 /symfony/var/cache/*
 !symfony/var/cache/.gitkeep

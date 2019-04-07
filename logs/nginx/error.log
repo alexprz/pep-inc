@@ -1,0 +1,2 @@
+2019/04/06 17:12:45 [emerg] 1#0: invalid condition "os.getenv("ENV_MODE")" in /etc/nginx/sites-enabled/symfony:10
+2019/04/07 10:47:58 [emerg] 1#0: invalid condition "os.getenv("ENV_MODE")" in /etc/nginx/sites-enabled/symfony:10
