@@ -5,8 +5,8 @@ parameters:
     database_name: '%env(MYSQL_DATABASE)%'
     database_user: '%env(MYSQL_USER)%'
     database_password: '%env(MYSQL_PASSWORD)%'
-    mailer_transport: gmail
-    mailer_user: pontsetudesprojets.commercial@gmail.com
-    mailer_password: banane20
-    secret: e89fe59743b79eb29a5db92e0245fb710a8e9cf1
-    mailer_host: null
+    mailer_transport: '%env(MAILER_TRANSPORT)%'
+    mailer_user: '%env(MAILER_USER)%'
+    mailer_password: '%env(MAILER_PASSWORD)%'
+    mailer_host: '%env(MAILER_HOST)%'
+    secret: '%env(SECRET)%'
