@@ -57,7 +57,7 @@ jobs:
           command: pwd
           working_directory: ~/
       - run:
-          command: touch ../../storage/testing.sqlite
+          command: touch storage/testing.sqlite
           working_directory: ~/
       - run:
           command: php artisan migrate --env=testing --database=sqlite_testing --force
