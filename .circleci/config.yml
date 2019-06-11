@@ -17,10 +17,11 @@ jobs:
       # - image: circleci/mysql:5.7-ram
       #
       # - image: redis:2.8.19
-    working_directory: /symfony
+    working_directory: ~/pep-inc/symfony
 
     steps:
-      - checkout
+      - checkout:
+          path: ~/pep-inc
 
       - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
       - run: sudo docker-php-ext-install zip
