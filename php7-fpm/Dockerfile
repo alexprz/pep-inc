@@ -60,10 +60,27 @@ ENV NOTVISIBLE "in users profile"
 RUN echo "export VISIBLE=now" >> /etc/profile
 #ENV NOTVISIBLE "in users profile"
 #RUN echo "export VISIBLE=now" >> /etc/profile
-# ADD symfony /var/www/symfony
-# RUN pwd
-# RUN ls
-# RUN php /var/www/symfony/bin/console cache:clear --env=prod
+
+ENV MYSQL_DATABASE ''
+ENV MYSQL_USER ''
+ENV MYSQL_PASSWORD ''
+ENV MAILER_TRANSPORT ''
+ENV MAILER_USER ''
+ENV MAILER_PASSWORD ''
+ENV MAILER_HOST ''
+ENV SECRET ''
+
+ADD symfony /var/www/symfony
+# RUN php bin/console assets:install
+RUN php bin/console assets:install --symlink
+RUN php bin/console assetic:dump --env=prod --no-debug
+RUN php bin/console assetic:dump --env=dev
+RUN rm -rf var/cache/dev/*
+RUN rm -rf var/cache/prod/*
+# RUN rm -r var/cache
+# RUN mkdir var/cache
+# RUN mkdir var/cache/prod
+# RUN mkdir var/cache/dev
 EXPOSE 22
 
 #COPY ./start-script.sh /var/www/symfony/start-script.sh

@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+    php:
+        volumes:
+            - ${SYMFONY_APP_PATH}:/var/www/symfony:cached
+            - ./logs/symfony:/var/www/symfony/app/logs:delegated
+    nginx:
+        build:
+            dockerfile: Dockerfile_dev
+        volumes_from:
+            - php
+        volumes:
+            - ./logs/nginx/:/var/log/nginx:delegated

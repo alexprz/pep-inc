@@ -11,7 +11,7 @@ services:
            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
            MYSQL_DATABASE: ${MYSQL_DATABASE}
         volumes:
-            - db-data:/var/lib/mysql
+            - db-data:/var/lib/mysql:delegated
 
     phpmyadmin:
         image: phpmyadmin/phpmyadmin
@@ -20,8 +20,6 @@ services:
         ports:
             - ${PMA_PORT}:80
     php:
-        # build:
-        #     context: php7-fpm
         build:
             context: .
             dockerfile: ./php7-fpm/Dockerfile
@@ -31,14 +29,16 @@ services:
         ports:
             - ${SSH_PORT}:22
         environment:
-             MYSQL_PORT: ${MYSQL_PORT}
-             MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-             MYSQL_USER: ${MYSQL_USER}
-             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-             MYSQL_DATABASE: ${MYSQL_DATABASE}
-        volumes:
-            - ${SYMFONY_APP_PATH}:/var/www/symfony
-            - ./logs/symfony:/var/www/symfony/app/logs
+            - MYSQL_PORT
+            - MYSQL_ROOT_PASSWORD
+            - MYSQL_USER
+            - MYSQL_PASSWORD
+            - MYSQL_DATABASE
+            - MAILER_TRANSPORT
+            - MAILER_USER
+            - MAILER_PASSWORD
+            - MAILER_HOST
+            - SECRET
     nginx:
         depends_on:
           - db
@@ -47,10 +47,6 @@ services:
             dockerfile: Dockerfile
         ports:
             - ${NGINX_PORT}:80
-        volumes_from:
-            - php
-        volumes:
-            - ./logs/nginx/:/var/log/nginx
         links:
             - db
 

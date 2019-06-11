@@ -1,12 +1,21 @@
 # This file is auto-generated during the composer install
 parameters:
+    env(MYSQL_DATABASE): ''
+    env(MYSQL_USER): ''
+    env(MYSQL_PASSWORD): ''
+    env(MAILER_TRANSPORT): ''
+    env(MAILER_USER): ''
+    env(MAILER_PASSWORD): ''
+    env(MAILER_HOST): ''
+    env(SECRET): ''
+
     database_host: db
     database_port: 3306
-    database_name: '%env(MYSQL_DATABASE)%'
-    database_user: '%env(MYSQL_USER)%'
-    database_password: '%env(MYSQL_PASSWORD)%'
-    mailer_transport: '%env(MAILER_TRANSPORT)%'
-    mailer_user: '%env(MAILER_USER)%'
-    mailer_password: '%env(MAILER_PASSWORD)%'
-    mailer_host: '%env(MAILER_HOST)%'
-    secret: '%env(SECRET)%'
+    database_name: '%env(resolve:MYSQL_DATABASE)%'
+    database_user: '%env(resolve:MYSQL_USER)%'
+    database_password: '%env(resolve:MYSQL_PASSWORD)%'
+    mailer_transport: '%env(resolve:MAILER_TRANSPORT)%'
+    mailer_user: '%env(resolve:MAILER_USER)%'
+    mailer_password: '%env(resolve:MAILER_PASSWORD)%'
+    mailer_host: '%env(resolve:MAILER_HOST)%'
+    secret: '%env(resolve:SECRET)%'
