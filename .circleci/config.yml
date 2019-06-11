@@ -53,6 +53,7 @@ jobs:
       # prepare the database
       # - checkout:
       #     path: ~
+      - run: pwd
       - run:
           command: touch storage/testing.sqlite
           working_directory: pep-inc
