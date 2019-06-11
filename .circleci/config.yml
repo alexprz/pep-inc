@@ -66,3 +66,25 @@ jobs:
       #- run: ./vendor/bin/phpunit
       # - run: ./vendor/bin/codecept build
       # - run: ./vendor/bin/codecept run
+  deploy:
+    machine:
+      enabled: true
+    steps:
+    - add_ssh_keys:
+        fingerprints:
+        - d1:cd:d9:31:3f:88:2f:ea:9c:e6:4c:36:7b:64:df:e8
+    - run:
+        name: Deploy Over SSH
+        command: |
+          ssh pi@thierryp34.ddns.net /home/pi/srv/subsrv/deploy_pep-inc.sh
+workflows:
+  version: 2
+  deploy_workflow:
+    jobs:
+    - build
+    - deploy:
+        requires:
+        - build
+        filters:
+          branches:
+            only: master
