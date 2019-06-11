@@ -51,11 +51,14 @@ jobs:
       #       - node_modules
 
       # prepare the database
-      - checkout:
-          path: ~
-      - run: touch storage/testing.sqlite
-      - run: php artisan migrate --env=testing --database=sqlite_testing --force
-
+      # - checkout:
+      #     path: ~
+      - run:
+          command: touch storage/testing.sqlite
+          working_directory: pep-inc
+      - run:
+          command: php artisan migrate --env=testing --database=sqlite_testing --force
+          working_directory: pep-inc
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/codecept build
