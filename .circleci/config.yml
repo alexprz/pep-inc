@@ -87,4 +87,4 @@ workflows:
         - build
         filters:
           branches:
-            only: master
+            only: auto_deploy #master
