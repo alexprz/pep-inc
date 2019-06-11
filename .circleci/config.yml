@@ -53,13 +53,15 @@ jobs:
       # prepare the database
       # - checkout:
       #     path: ~
-      - run: pwd
       - run:
-          command: touch storage/testing.sqlite
-          working_directory: pep-inc
+          command: pwd
+          working_directory: ~/
+      - run:
+          command: touch ../../storage/testing.sqlite
+          working_directory: ~/
       - run:
           command: php artisan migrate --env=testing --database=sqlite_testing --force
-          working_directory: pep-inc
+          working_directory: ~/
       # run tests with phpunit or codecept
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/codecept build
